@@ -1,22 +1,21 @@
-//
-//  AppDelegate.swift
-//  AuditorApp
-//
-//  Created by Филипп Бесядовский on 24.06.2018.
-//  Copyright © 2018 dimFcompany. All rights reserved.
-//
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let AvenirMedium : String = "Avenir-Medium"
+    let segueToUserMEnu : String = "toUserMenu"
+    var downloadingShablon : Model_Shablon!
+    var shablonToShow : Model_Shablon!
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
         return true
     }
 

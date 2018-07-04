@@ -7,23 +7,107 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		181E3A55D951E3D4CF68AC99 /* Pods_AuditorApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B9EF89DF6C9FA8BADF30452 /* Pods_AuditorApp.framework */; };
+		E41EB25B20E7DFBA00362BCA /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41EB25A20E7DFBA00362BCA /* MyViewController.swift */; };
+		E41EB25D20E8395900362BCA /* myViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41EB25C20E8395900362BCA /* myViews.swift */; };
+		E422303820E19DA3009DC220 /* Audit_Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = E422303720E19DA3009DC220 /* Audit_Element.swift */; };
+		E422303A20E19ECF009DC220 /* Model_Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = E422303920E19ECF009DC220 /* Model_Question.swift */; };
+		E422303C20E19FF0009DC220 /* Model_Categ.swift in Sources */ = {isa = PBXBuildFile; fileRef = E422303B20E19FF0009DC220 /* Model_Categ.swift */; };
 		E436AC6120DFE45100A80C02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E436AC6020DFE45100A80C02 /* AppDelegate.swift */; };
-		E436AC6320DFE45100A80C02 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E436AC6220DFE45100A80C02 /* ViewController.swift */; };
+		E436AC6320DFE45100A80C02 /* FirstVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E436AC6220DFE45100A80C02 /* FirstVC.swift */; };
 		E436AC6620DFE45100A80C02 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E436AC6420DFE45100A80C02 /* Main.storyboard */; };
-		E436AC6920DFE45100A80C02 /* AuditorApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E436AC6720DFE45100A80C02 /* AuditorApp.xcdatamodeld */; };
 		E436AC6B20DFE45200A80C02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E436AC6A20DFE45200A80C02 /* Assets.xcassets */; };
 		E436AC6E20DFE45200A80C02 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E436AC6C20DFE45200A80C02 /* LaunchScreen.storyboard */; };
+		E436AC7720DFFFF200A80C02 /* UserLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E436AC7620DFFFF200A80C02 /* UserLoginVC.swift */; };
+		E436AC7A20E00C7900A80C02 /* myExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E436AC7920E00C7900A80C02 /* myExtensions.swift */; };
+		E441D8E920EB9A7500FDE959 /* myPodpisDialogVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E441D8E820EB9A7500FDE959 /* myPodpisDialogVC.swift */; };
+		E4422FD420ED14E100E49E4A /* Skrepka_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4422FD320ED14E100E49E4A /* Skrepka_Data.swift */; };
+		E4422FD620ED15CB00E49E4A /* mySkrepkaDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4422FD520ED15CB00E49E4A /* mySkrepkaDialog.swift */; };
+		E464F94F20E15B0A00AF85EB /* DownloadAuditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E464F94E20E15B0A00AF85EB /* DownloadAuditCell.swift */; };
+		E4750BE220E794A700908250 /* auQuestionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4750BE120E794A700908250 /* auQuestionVC.swift */; };
+		E4750BE420E798F700908250 /* beginAuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4750BE320E798F700908250 /* beginAuVC.swift */; };
+		E4750BF020E7C85D00908250 /* GlobalClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4750BEF20E7C85D00908250 /* GlobalClass.swift */; };
+		E4750BF220E7D65C00908250 /* auditCategVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4750BF120E7D65C00908250 /* auditCategVC.swift */; };
+		E47795B320E55BCA0041FE89 /* MyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47795B220E55BCA0041FE89 /* MyModel.swift */; };
+		E47795B520E55C3D0041FE89 /* MyNibClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47795B420E55C3D0041FE89 /* MyNibClass.swift */; };
+		E47795B720E55EA50041FE89 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47795B620E55EA50041FE89 /* ViewController.swift */; };
+		E48046E920EA3E65006CFAF0 /* auditHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48046E820EA3E65006CFAF0 /* auditHeaderView.swift */; };
+		E488CAC220E2900300EEE6AB /* Model_Adress.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAC120E2900300EEE6AB /* Model_Adress.swift */; };
+		E488CAC420E29BF100EEE6AB /* Model_CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAC320E29BF100EEE6AB /* Model_CheckBox.swift */; };
+		E488CAC620E29D9600EEE6AB /* Model_Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAC520E29D9600EEE6AB /* Model_Date.swift */; };
+		E488CAC820E2A1AB00EEE6AB /* Model_Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAC720E2A1AB00EEE6AB /* Model_Info.swift */; };
+		E488CACA20E2AC0A00EEE6AB /* Model_Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAC920E2AC0A00EEE6AB /* Model_Media.swift */; };
+		E488CACC20E2AE7C00EEE6AB /* Model_Podpis.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CACB20E2AE7C00EEE6AB /* Model_Podpis.swift */; };
+		E488CACE20E2AF9100EEE6AB /* Model_QuestVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CACD20E2AF9100EEE6AB /* Model_QuestVar.swift */; };
+		E488CAD020E2B52500EEE6AB /* Model_Seeker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CACF20E2B52500EEE6AB /* Model_Seeker.swift */; };
+		E488CAD220E2CF7700EEE6AB /* Model_TextLarge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAD120E2CF7700EEE6AB /* Model_TextLarge.swift */; };
+		E488CAD420E2CF9300EEE6AB /* Model_TextOneLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAD320E2CF9300EEE6AB /* Model_TextOneLine.swift */; };
+		E488CAD620E2CFD200EEE6AB /* Model_Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAD520E2CFD200EEE6AB /* Model_Toggle.swift */; };
+		E488CAD820E2D00400EEE6AB /* Model_Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAD720E2D00400EEE6AB /* Model_Timer.swift */; };
+		E488CADA20E2D51600EEE6AB /* MySqlite.swift in Sources */ = {isa = PBXBuildFile; fileRef = E488CAD920E2D51600EEE6AB /* MySqlite.swift */; };
+		E4B8FDA020E0211800A4C5E8 /* UserMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B8FD9F20E0211800A4C5E8 /* UserMenu.swift */; };
+		E4B8FDA220E02E6800A4C5E8 /* GlobalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B8FDA120E02E6800A4C5E8 /* GlobalHelper.swift */; };
+		E4C4F1FD20E0482D000CE6FF /* DownloadAudits.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4F1FC20E0482D000CE6FF /* DownloadAudits.swift */; };
+		E4C4F20020E04F37000CE6FF /* Model_Shablon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4F1FF20E04F37000CE6FF /* Model_Shablon.swift */; };
+		E4C4F20220E051EA000CE6FF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4C4F20120E051E9000CE6FF /* GoogleService-Info.plist */; };
+		E4CBBDEE20E4348B0033349B /* SkachannieAudits.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CBBDED20E4348B0033349B /* SkachannieAudits.swift */; };
+		E4CBBDF120E437670033349B /* skachanniiElement.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4CBBDF020E437670033349B /* skachanniiElement.xib */; };
+		E4CBBDF320E43F610033349B /* SkachannieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CBBDF220E43F600033349B /* SkachannieCell.swift */; };
+		E4FB917220E6FE3A00A1F428 /* audit_question.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4FB917120E6FE3A00A1F428 /* audit_question.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8B9EF89DF6C9FA8BADF30452 /* Pods_AuditorApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AuditorApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE21C8CEF71E46CC307E5567 /* Pods-AuditorApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuditorApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-AuditorApp/Pods-AuditorApp.release.xcconfig"; sourceTree = "<group>"; };
+		C17FF285F32E16C6DC40D385 /* Pods-AuditorApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuditorApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AuditorApp/Pods-AuditorApp.debug.xcconfig"; sourceTree = "<group>"; };
+		E41EB25A20E7DFBA00362BCA /* MyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
+		E41EB25C20E8395900362BCA /* myViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myViews.swift; sourceTree = "<group>"; };
+		E422303720E19DA3009DC220 /* Audit_Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audit_Element.swift; sourceTree = "<group>"; };
+		E422303920E19ECF009DC220 /* Model_Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Question.swift; sourceTree = "<group>"; };
+		E422303B20E19FF0009DC220 /* Model_Categ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Categ.swift; sourceTree = "<group>"; };
 		E436AC5D20DFE45100A80C02 /* AuditorApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuditorApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E436AC6020DFE45100A80C02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E436AC6220DFE45100A80C02 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E436AC6220DFE45100A80C02 /* FirstVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstVC.swift; sourceTree = "<group>"; };
 		E436AC6520DFE45100A80C02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E436AC6820DFE45100A80C02 /* AuditorApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AuditorApp.xcdatamodel; sourceTree = "<group>"; };
 		E436AC6A20DFE45200A80C02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E436AC6D20DFE45200A80C02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E436AC6F20DFE45200A80C02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E436AC7620DFFFF200A80C02 /* UserLoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginVC.swift; sourceTree = "<group>"; };
+		E436AC7920E00C7900A80C02 /* myExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myExtensions.swift; sourceTree = "<group>"; };
+		E441D8E820EB9A7500FDE959 /* myPodpisDialogVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myPodpisDialogVC.swift; sourceTree = "<group>"; };
+		E4422FD320ED14E100E49E4A /* Skrepka_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skrepka_Data.swift; sourceTree = "<group>"; };
+		E4422FD520ED15CB00E49E4A /* mySkrepkaDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mySkrepkaDialog.swift; sourceTree = "<group>"; };
+		E464F94E20E15B0A00AF85EB /* DownloadAuditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAuditCell.swift; sourceTree = "<group>"; };
+		E4750BE120E794A700908250 /* auQuestionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = auQuestionVC.swift; sourceTree = "<group>"; };
+		E4750BE320E798F700908250 /* beginAuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = beginAuVC.swift; sourceTree = "<group>"; };
+		E4750BEF20E7C85D00908250 /* GlobalClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalClass.swift; sourceTree = "<group>"; };
+		E4750BF120E7D65C00908250 /* auditCategVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = auditCategVC.swift; sourceTree = "<group>"; };
+		E47795B220E55BCA0041FE89 /* MyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyModel.swift; sourceTree = "<group>"; };
+		E47795B420E55C3D0041FE89 /* MyNibClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNibClass.swift; sourceTree = "<group>"; };
+		E47795B620E55EA50041FE89 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E48046E820EA3E65006CFAF0 /* auditHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = auditHeaderView.swift; sourceTree = "<group>"; };
+		E488CAC120E2900300EEE6AB /* Model_Adress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Adress.swift; sourceTree = "<group>"; };
+		E488CAC320E29BF100EEE6AB /* Model_CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_CheckBox.swift; sourceTree = "<group>"; };
+		E488CAC520E29D9600EEE6AB /* Model_Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Date.swift; sourceTree = "<group>"; };
+		E488CAC720E2A1AB00EEE6AB /* Model_Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Info.swift; sourceTree = "<group>"; };
+		E488CAC920E2AC0A00EEE6AB /* Model_Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Media.swift; sourceTree = "<group>"; };
+		E488CACB20E2AE7C00EEE6AB /* Model_Podpis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Podpis.swift; sourceTree = "<group>"; };
+		E488CACD20E2AF9100EEE6AB /* Model_QuestVar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_QuestVar.swift; sourceTree = "<group>"; };
+		E488CACF20E2B52500EEE6AB /* Model_Seeker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Seeker.swift; sourceTree = "<group>"; };
+		E488CAD120E2CF7700EEE6AB /* Model_TextLarge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_TextLarge.swift; sourceTree = "<group>"; };
+		E488CAD320E2CF9300EEE6AB /* Model_TextOneLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_TextOneLine.swift; sourceTree = "<group>"; };
+		E488CAD520E2CFD200EEE6AB /* Model_Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Toggle.swift; sourceTree = "<group>"; };
+		E488CAD720E2D00400EEE6AB /* Model_Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Timer.swift; sourceTree = "<group>"; };
+		E488CAD920E2D51600EEE6AB /* MySqlite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySqlite.swift; sourceTree = "<group>"; };
+		E4B8FD9F20E0211800A4C5E8 /* UserMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMenu.swift; sourceTree = "<group>"; };
+		E4B8FDA120E02E6800A4C5E8 /* GlobalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHelper.swift; sourceTree = "<group>"; };
+		E4C4F1FC20E0482D000CE6FF /* DownloadAudits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAudits.swift; sourceTree = "<group>"; };
+		E4C4F1FF20E04F37000CE6FF /* Model_Shablon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Shablon.swift; sourceTree = "<group>"; };
+		E4C4F20120E051E9000CE6FF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E4CBBDED20E4348B0033349B /* SkachannieAudits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkachannieAudits.swift; sourceTree = "<group>"; };
+		E4CBBDF020E437670033349B /* skachanniiElement.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = skachanniiElement.xib; sourceTree = "<group>"; };
+		E4CBBDF220E43F600033349B /* SkachannieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkachannieCell.swift; sourceTree = "<group>"; };
+		E4FB917120E6FE3A00A1F428 /* audit_question.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = audit_question.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +115,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				181E3A55D951E3D4CF68AC99 /* Pods_AuditorApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0FF7ECCFD2F610619D543B05 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C17FF285F32E16C6DC40D385 /* Pods-AuditorApp.debug.xcconfig */,
+				BE21C8CEF71E46CC307E5567 /* Pods-AuditorApp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		4E809BE79440BDD2411B4FA2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8B9EF89DF6C9FA8BADF30452 /* Pods_AuditorApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E436AC5420DFE45100A80C02 = {
 			isa = PBXGroup;
 			children = (
 				E436AC5F20DFE45100A80C02 /* AuditorApp */,
 				E436AC5E20DFE45100A80C02 /* Products */,
+				0FF7ECCFD2F610619D543B05 /* Pods */,
+				4E809BE79440BDD2411B4FA2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +160,103 @@
 		E436AC5F20DFE45100A80C02 /* AuditorApp */ = {
 			isa = PBXGroup;
 			children = (
+				E47795B120E55BA70041FE89 /* stackTest */,
+				E4CBBDEF20E437430033349B /* Views */,
+				E4C4F1FE20E04F1D000CE6FF /* Models */,
+				E436AC7820E00C5600A80C02 /* Extensions */,
+				E436AC7520DFFD7300A80C02 /* ViewControllers */,
 				E436AC6020DFE45100A80C02 /* AppDelegate.swift */,
-				E436AC6220DFE45100A80C02 /* ViewController.swift */,
 				E436AC6420DFE45100A80C02 /* Main.storyboard */,
 				E436AC6A20DFE45200A80C02 /* Assets.xcassets */,
 				E436AC6C20DFE45200A80C02 /* LaunchScreen.storyboard */,
+				E4C4F20120E051E9000CE6FF /* GoogleService-Info.plist */,
 				E436AC6F20DFE45200A80C02 /* Info.plist */,
-				E436AC6720DFE45100A80C02 /* AuditorApp.xcdatamodeld */,
 			);
 			path = AuditorApp;
+			sourceTree = "<group>";
+		};
+		E436AC7520DFFD7300A80C02 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E464F94D20E15AA200AF85EB /* CellVC */,
+				E436AC6220DFE45100A80C02 /* FirstVC.swift */,
+				E436AC7620DFFFF200A80C02 /* UserLoginVC.swift */,
+				E4B8FD9F20E0211800A4C5E8 /* UserMenu.swift */,
+				E4C4F1FC20E0482D000CE6FF /* DownloadAudits.swift */,
+				E4CBBDED20E4348B0033349B /* SkachannieAudits.swift */,
+				E4750BE320E798F700908250 /* beginAuVC.swift */,
+				E4750BF120E7D65C00908250 /* auditCategVC.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E436AC7820E00C5600A80C02 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E436AC7920E00C7900A80C02 /* myExtensions.swift */,
+				E4B8FDA120E02E6800A4C5E8 /* GlobalHelper.swift */,
+				E488CAD920E2D51600EEE6AB /* MySqlite.swift */,
+				E4750BEF20E7C85D00908250 /* GlobalClass.swift */,
+				E41EB25C20E8395900362BCA /* myViews.swift */,
+				E48046E820EA3E65006CFAF0 /* auditHeaderView.swift */,
+				E441D8E820EB9A7500FDE959 /* myPodpisDialogVC.swift */,
+				E4422FD520ED15CB00E49E4A /* mySkrepkaDialog.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E464F94D20E15AA200AF85EB /* CellVC */ = {
+			isa = PBXGroup;
+			children = (
+				E464F94E20E15B0A00AF85EB /* DownloadAuditCell.swift */,
+				E4CBBDF220E43F600033349B /* SkachannieCell.swift */,
+				E4750BE120E794A700908250 /* auQuestionVC.swift */,
+			);
+			path = CellVC;
+			sourceTree = "<group>";
+		};
+		E47795B120E55BA70041FE89 /* stackTest */ = {
+			isa = PBXGroup;
+			children = (
+				E47795B220E55BCA0041FE89 /* MyModel.swift */,
+				E47795B420E55C3D0041FE89 /* MyNibClass.swift */,
+				E47795B620E55EA50041FE89 /* ViewController.swift */,
+				E41EB25A20E7DFBA00362BCA /* MyViewController.swift */,
+			);
+			path = stackTest;
+			sourceTree = "<group>";
+		};
+		E4C4F1FE20E04F1D000CE6FF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E4C4F1FF20E04F37000CE6FF /* Model_Shablon.swift */,
+				E422303720E19DA3009DC220 /* Audit_Element.swift */,
+				E422303920E19ECF009DC220 /* Model_Question.swift */,
+				E422303B20E19FF0009DC220 /* Model_Categ.swift */,
+				E488CAC120E2900300EEE6AB /* Model_Adress.swift */,
+				E488CAC320E29BF100EEE6AB /* Model_CheckBox.swift */,
+				E488CAC520E29D9600EEE6AB /* Model_Date.swift */,
+				E488CAC720E2A1AB00EEE6AB /* Model_Info.swift */,
+				E488CAC920E2AC0A00EEE6AB /* Model_Media.swift */,
+				E488CACB20E2AE7C00EEE6AB /* Model_Podpis.swift */,
+				E488CACD20E2AF9100EEE6AB /* Model_QuestVar.swift */,
+				E488CACF20E2B52500EEE6AB /* Model_Seeker.swift */,
+				E488CAD120E2CF7700EEE6AB /* Model_TextLarge.swift */,
+				E488CAD320E2CF9300EEE6AB /* Model_TextOneLine.swift */,
+				E488CAD520E2CFD200EEE6AB /* Model_Toggle.swift */,
+				E488CAD720E2D00400EEE6AB /* Model_Timer.swift */,
+				E4422FD320ED14E100E49E4A /* Skrepka_Data.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E4CBBDEF20E437430033349B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E4CBBDF020E437670033349B /* skachanniiElement.xib */,
+				E4FB917120E6FE3A00A1F428 /* audit_question.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +266,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E436AC7220DFE45200A80C02 /* Build configuration list for PBXNativeTarget "AuditorApp" */;
 			buildPhases = (
+				D883FD3E5FDCF2A7641004B7 /* [CP] Check Pods Manifest.lock */,
 				E436AC5920DFE45100A80C02 /* Sources */,
 				E436AC5A20DFE45100A80C02 /* Frameworks */,
 				E436AC5B20DFE45100A80C02 /* Resources */,
+				86A532913C262273801A63A4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -126,21 +320,128 @@
 			buildActionMask = 2147483647;
 			files = (
 				E436AC6E20DFE45200A80C02 /* LaunchScreen.storyboard in Resources */,
+				E4CBBDF120E437670033349B /* skachanniiElement.xib in Resources */,
+				E4C4F20220E051EA000CE6FF /* GoogleService-Info.plist in Resources */,
 				E436AC6B20DFE45200A80C02 /* Assets.xcassets in Resources */,
 				E436AC6620DFE45100A80C02 /* Main.storyboard in Resources */,
+				E4FB917220E6FE3A00A1F428 /* audit_question.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		86A532913C262273801A63A4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AuditorApp/Pods-AuditorApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AutoInsetter/AutoInsetter.framework",
+				"${BUILT_PRODUCTS_DIR}/BetterSegmentedControl/BetterSegmentedControl.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/M13Checkbox/M13Checkbox.framework",
+				"${BUILT_PRODUCTS_DIR}/Pageboy/Pageboy.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
+				"${BUILT_PRODUCTS_DIR}/SignaturePad/SignaturePad.framework",
+				"${BUILT_PRODUCTS_DIR}/StepSlider/StepSlider.framework",
+				"${BUILT_PRODUCTS_DIR}/Tabman/Tabman.framework",
+				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AutoInsetter.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BetterSegmentedControl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/M13Checkbox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pageboy.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SignaturePad.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StepSlider.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Tabman.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AuditorApp/Pods-AuditorApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D883FD3E5FDCF2A7641004B7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AuditorApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E436AC5920DFE45100A80C02 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E436AC6920DFE45100A80C02 /* AuditorApp.xcdatamodeld in Sources */,
-				E436AC6320DFE45100A80C02 /* ViewController.swift in Sources */,
+				E47795B720E55EA50041FE89 /* ViewController.swift in Sources */,
+				E488CAD220E2CF7700EEE6AB /* Model_TextLarge.swift in Sources */,
+				E488CAC420E29BF100EEE6AB /* Model_CheckBox.swift in Sources */,
+				E41EB25B20E7DFBA00362BCA /* MyViewController.swift in Sources */,
+				E488CADA20E2D51600EEE6AB /* MySqlite.swift in Sources */,
+				E4B8FDA220E02E6800A4C5E8 /* GlobalHelper.swift in Sources */,
+				E436AC6320DFE45100A80C02 /* FirstVC.swift in Sources */,
+				E488CAC220E2900300EEE6AB /* Model_Adress.swift in Sources */,
+				E41EB25D20E8395900362BCA /* myViews.swift in Sources */,
+				E441D8E920EB9A7500FDE959 /* myPodpisDialogVC.swift in Sources */,
+				E488CAD420E2CF9300EEE6AB /* Model_TextOneLine.swift in Sources */,
+				E464F94F20E15B0A00AF85EB /* DownloadAuditCell.swift in Sources */,
+				E488CACE20E2AF9100EEE6AB /* Model_QuestVar.swift in Sources */,
+				E488CACA20E2AC0A00EEE6AB /* Model_Media.swift in Sources */,
 				E436AC6120DFE45100A80C02 /* AppDelegate.swift in Sources */,
+				E4422FD620ED15CB00E49E4A /* mySkrepkaDialog.swift in Sources */,
+				E422303C20E19FF0009DC220 /* Model_Categ.swift in Sources */,
+				E488CAC820E2A1AB00EEE6AB /* Model_Info.swift in Sources */,
+				E436AC7720DFFFF200A80C02 /* UserLoginVC.swift in Sources */,
+				E48046E920EA3E65006CFAF0 /* auditHeaderView.swift in Sources */,
+				E4B8FDA020E0211800A4C5E8 /* UserMenu.swift in Sources */,
+				E47795B320E55BCA0041FE89 /* MyModel.swift in Sources */,
+				E422303820E19DA3009DC220 /* Audit_Element.swift in Sources */,
+				E4CBBDEE20E4348B0033349B /* SkachannieAudits.swift in Sources */,
+				E47795B520E55C3D0041FE89 /* MyNibClass.swift in Sources */,
+				E488CAD620E2CFD200EEE6AB /* Model_Toggle.swift in Sources */,
+				E488CACC20E2AE7C00EEE6AB /* Model_Podpis.swift in Sources */,
+				E4C4F20020E04F37000CE6FF /* Model_Shablon.swift in Sources */,
+				E4750BF220E7D65C00908250 /* auditCategVC.swift in Sources */,
+				E4CBBDF320E43F610033349B /* SkachannieCell.swift in Sources */,
+				E488CAC620E29D9600EEE6AB /* Model_Date.swift in Sources */,
+				E4750BF020E7C85D00908250 /* GlobalClass.swift in Sources */,
+				E488CAD020E2B52500EEE6AB /* Model_Seeker.swift in Sources */,
+				E4422FD420ED14E100E49E4A /* Skrepka_Data.swift in Sources */,
+				E4750BE220E794A700908250 /* auQuestionVC.swift in Sources */,
+				E436AC7A20E00C7900A80C02 /* myExtensions.swift in Sources */,
+				E488CAD820E2D00400EEE6AB /* Model_Timer.swift in Sources */,
+				E422303A20E19ECF009DC220 /* Model_Question.swift in Sources */,
+				E4750BE420E798F700908250 /* beginAuVC.swift in Sources */,
+				E4C4F1FD20E0482D000CE6FF /* DownloadAudits.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +583,7 @@
 		};
 		E436AC7320DFE45200A80C02 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C17FF285F32E16C6DC40D385 /* Pods-AuditorApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -299,6 +601,7 @@
 		};
 		E436AC7420DFE45200A80C02 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE21C8CEF71E46CC307E5567 /* Pods-AuditorApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -336,19 +639,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		E436AC6720DFE45100A80C02 /* AuditorApp.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				E436AC6820DFE45100A80C02 /* AuditorApp.xcdatamodel */,
-			);
-			currentVersion = E436AC6820DFE45100A80C02 /* AuditorApp.xcdatamodel */;
-			path = AuditorApp.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = E436AC5520DFE45100A80C02 /* Project object */;
 }
