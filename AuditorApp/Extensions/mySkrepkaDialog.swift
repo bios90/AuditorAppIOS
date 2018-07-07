@@ -1,10 +1,12 @@
 import UIKit
 import StepSlider
+import Tabman
 
 class mySkrepkaDialog: UIViewController , UITextViewDelegate , UITextFieldDelegate
 {
     let gh = GlobalHelper.sharedInstance
     let todoPlaceHolder = "Что вы хотите сделать?"
+    let gc = GlobalClass.sharedInstance
     
     var currentElement: Audit_Element!
     
@@ -223,6 +225,10 @@ class mySkrepkaDialog: UIViewController , UITextViewDelegate , UITextFieldDelega
         cancelButton.topAnchor.constraint(equalTo: viewForSrok.bottomAnchor, constant: 6).isActive = true
         cancelButton.leftAnchor.constraint(equalTo: viewForSrok.leftAnchor, constant: 0).isActive = true
         
+        
+        
+        
+        
         okButton.click =
             {
                 let todo = toDoTextView.text
@@ -282,7 +288,8 @@ class mySkrepkaDialog: UIViewController , UITextViewDelegate , UITextFieldDelega
                     NSLayoutConstraint.deactivate(cons)
                     
                     rootview.heightAnchor.constraint(equalToConstant: currentHeight + 172).isActive = true
-                    (rootview.superview as! UIScrollView).contentSize.height += 172
+                    rootview.layoutIfNeeded()
+                    //(rootview.superview as! UIScrollView).contentSize.height += 172
                 }
                 
                 else
@@ -298,6 +305,27 @@ class mySkrepkaDialog: UIViewController , UITextViewDelegate , UITextFieldDelega
                 skrepkaView.centerXAnchor.constraint(equalTo: rootview.centerXAnchor).isActive = true
                 skrepkaView.bottomAnchor.constraint(equalTo: rootview.bottomAnchor, constant: -6).isActive = true
                 
+                skrepkaView.removeClick =
+                    {
+                        let currentRootHeight = rootview.frame.size.height
+                        let currentSkrepkaHeight = skrepkaView.frame.size.height
+                        
+                        rootview.viewWithTag(self.gh.tagSkrepkaView)?.removeFromSuperview()
+                        
+                        let rootCons = rootview.constraints.filter
+                        {
+                            $0.firstAttribute == NSLayoutAttribute.height
+                        }
+                        NSLayoutConstraint.deactivate(rootCons)
+                        
+                        rootview.heightAnchor.constraint(equalToConstant: currentRootHeight - currentSkrepkaHeight - 6).isActive = true
+                        rootview.layoutIfNeeded()
+                        
+                        self.gc.shablonInWork.recountScrollSize()
+                        
+                        self.currentElement.skrepka = nil
+                    }
+                
                 let skrepkaData = Skrepka_Data()
                 
                 skrepkaData.strTodo = todo
@@ -307,6 +335,7 @@ class mySkrepkaDialog: UIViewController , UITextViewDelegate , UITextFieldDelega
                 
                 self.currentElement.skrepka = skrepkaData
                 
+                self.gc.shablonInWork.recountScrollSize()
                 self.dismiss(animated: true, completion: nil)
             }
         

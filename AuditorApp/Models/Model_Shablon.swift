@@ -23,6 +23,26 @@ class Model_Shablon: NSObject
     
     var allCategs : [Model_Categ] = []
     
+    var beginTime : String!
     
+    func recountScrollSize()
+    {
+        for categ in allCategs
+        {
+            var height : CGFloat = 0
+            let scroll = categ.categScroll!
+            
+            for element in categ.allElementsSorted
+            {
+                if element.auditView != nil
+                {
+                    element.auditView.layoutIfNeeded()
+                    print("open element")
+                    height += element.auditView!.frame.size.height+4
+                }
+            }
+            scroll.contentSize.height = height + 4
+        }
+    }
     
 }

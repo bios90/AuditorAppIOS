@@ -678,6 +678,11 @@ extension UIViewController
             }
         }
         
+        
+        
+        
+        
+        
         func getAllSkachannie() -> [Model_Shablon]
         {
             var allShablons : [Model_Shablon] = []
@@ -849,7 +854,10 @@ extension UIViewController
                         info.positionInLa = position
                         info.urlStr = urlStr
                         info.imgUrl = imgUrl
-                        info.localFileName = imgLocalName!
+                        if imgLocalName != nil
+                        {
+                            info.localFileName = imgLocalName!
+                        }
                         info.forAudit = forAudit
                         info.forOtchet = forOtchet
                         

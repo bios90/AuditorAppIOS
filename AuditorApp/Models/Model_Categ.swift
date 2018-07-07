@@ -10,6 +10,8 @@ import UIKit
 
 class Model_Categ: NSObject
 {
+    var categScroll : UIScrollView!
+    
     var name : String!
     var categPosition : Int!
     var fbId : String!

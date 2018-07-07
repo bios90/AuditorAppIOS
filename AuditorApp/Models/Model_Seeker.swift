@@ -15,4 +15,6 @@ class Model_Seeker: Audit_Element
     var step : Double!
     
     var lastSettedValue : Double!
+    
+    var lastSliderIndex : Int!
 }

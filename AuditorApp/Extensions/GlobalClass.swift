@@ -12,4 +12,7 @@ class GlobalClass: NSObject
 {
     var shablonToBegin : Model_Shablon!
     static let sharedInstance = GlobalClass()
+    var shablonInWork : Model_Shablon!
+    var currentBeginAuditVC : beginAuVC!
+    var shablonTomMakeOtchet : Model_Shablon!
 }

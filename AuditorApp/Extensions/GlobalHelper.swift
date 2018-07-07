@@ -24,6 +24,7 @@ struct GlobalHelper
     let tagMyScrollView = 9010
     let tagSkrepkaView = 9011
     let tagViewAsLabel = 9012
+    let tagQuestImages = 9014
     
     let typeQuestion = 0
     let typeAdress = 1
@@ -57,6 +58,9 @@ struct GlobalHelper
     let myRed : UIColor = UIColor(displayP3Red: 171/255, green: 26/255, blue: 47/255, alpha: 1)
     let myRedTrans = UIColor(displayP3Red: 171/255, green: 26/255, blue: 47/255, alpha: 0.5)
     let toastBG : UIColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 150/255)
+    
+    let otGreen = UIColor(displayP3Red: 79/255, green: 201/255, blue: 150/255, alpha: 1)
+    let otRed = UIColor(displayP3Red: 215/255, green: 91/255, blue: 95/255, alpha: 1)
     
     // MARK: - Segues
     let segueToUserMEnu : String = "toUserMenu"
@@ -271,6 +275,9 @@ struct DLShablon
     
     
 }
+
+
+
 
 func randomString() -> String
 {

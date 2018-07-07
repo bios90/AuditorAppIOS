@@ -17,4 +17,5 @@ class Model_Info: Audit_Element
     var forAudit : Int!
     
     var localFileName : String!
+    var auditImage : UIImage!
 }

@@ -6,9 +6,39 @@ let AvenirMedium : String = "Avenir-Medium"
 let segueToUserMEnu : String = "toUserMenu"
 
 
-extension String {
+
+extension UIResponder
+{
+    var parentViewController: UIViewController?
+    {
+        return (self.next as? UIViewController) ?? self.next?.parentViewController
+    }
+}
+
+extension Date
+{
+    func timeStrFromDate (date : Date) -> String
+    {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        let minutes = calendar.component(.minute, from: date)
+        
+        let hourStr = hour < 10 ? "0\(hour)" : String(hour)
+        let minStr = minutes < 10 ? "0\(minutes)" : String(minutes)
+        
+        let dateStr = "\(hourStr):\(minStr)"
+        return dateStr
+    }
+}
+
+extension String
+{
     
-    func isValidURL() -> Bool {
+    
+    
+    
+    func isValidURL() -> Bool
+    {
         
         if let url = URL(string: self) {
             
@@ -21,6 +51,19 @@ extension String {
 
 extension UIViewController : btnDownloadDelegate
 {
+    func timeStrFromDate (date : Date) -> String
+    {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        let minutes = calendar.component(.minute, from: date)
+        
+        let hourStr = hour < 10 ? "0\(hour)" : String(hour)
+        let minStr = minutes < 10 ? "0\(minutes)" : String(minutes)
+        
+        let dateStr = "\(hourStr):\(minStr)"
+        return dateStr
+    }
+    
     func addShadow( viewArray : [UIView])
     {
         for item in viewArray

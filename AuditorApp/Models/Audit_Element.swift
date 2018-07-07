@@ -18,4 +18,9 @@ class Audit_Element: NSObject
     
     var auditView : UIView!
     var skrepka : Skrepka_Data!
+    
+    var elementCateg : Model_Categ!
+    var elementScrollView : UIScrollView!
+    
+    var sdelan : Int = 0
 }

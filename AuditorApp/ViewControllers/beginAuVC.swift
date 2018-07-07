@@ -63,6 +63,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
         self.view.insertSubview(bgImg, at: 0)
         
         prepareVC()
+        prepareInfoVC()
         self.dataSource = self
         
         
@@ -93,6 +94,226 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
     }
     
 
+    func prepareInfoVC()
+    {
+        let infoVC = UIViewController()
+        let dateStr = timeStrFromDate(date: Date())
+        shablonToShow.beginTime = dateStr
+        
+        var allElementsCount = 0
+        var allObyazElement = 0
+        
+        for categ in shablonToShow.allCategs
+        {
+            let i = categ.allElementsSorted.count
+            allElementsCount += i
+            
+            for elem in categ.allElementsSorted
+            {
+                if elem.obyaz == 1
+                {
+                    allObyazElement += 1
+                }
+            }
+        }
+        
+        
+        let bgImg = UIImageView()
+        makeFullAsParent(parent: infoVC.view, child: bgImg)
+        bgImg.image = gh.mainBG
+        bgImg.contentMode = .scaleToFill
+        infoVC.view.addSubview(bgImg)
+        
+        let infoView = myAuditView()
+        infoVC.view.addSubview(infoView)
+        
+        infoView.widthAnchor.constraint(equalTo: infoVC.view.widthAnchor, multiplier: 1, constant: -12).isActive = true
+        //infoView.heightAnchor.constraint(equalToConstant: 240).isActive = true
+        infoView.centerXAnchor.constraint(equalTo: infoVC.view.centerXAnchor).isActive = true
+        infoView.topAnchor.constraint(equalTo: infoVC.view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+        infoView.layoutIfNeeded()
+        
+        let titleLabel = myLabelForText()
+        infoView.addSubview(titleLabel)
+        titleLabel.font = titleLabel.font.withSize(18)
+        titleLabel.text = shablonToShow.name
+        
+        titleLabel.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 1, constant: 0).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: infoView.topAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: infoView.centerXAnchor).isActive = true
+        titleLabel.layoutIfNeeded()
+        
+        let deviderView = UIView()
+        deviderView.translatesAutoresizingMaskIntoConstraints = false
+        deviderView.backgroundColor = gh.myRed
+        infoView.addSubview(deviderView)
+        
+        deviderView.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 1, constant: 0).isActive = true
+        deviderView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        deviderView.centerXAnchor.constraint(equalTo: infoView.centerXAnchor).isActive = true
+        deviderView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
+        deviderView.layoutIfNeeded()
+        
+        let categCountHeader = myLabelForText()
+        categCountHeader.textAlignment = .left
+        categCountHeader.font = UIFont.systemFont(ofSize: 16)
+        categCountHeader.text = "Общее колличество разделов :"
+        infoView.addSubview(categCountHeader)
+        
+        categCountHeader.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.7, constant: -10).isActive = true
+        //categCountHeader.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        categCountHeader.leftAnchor.constraint(equalTo: infoView.leftAnchor, constant: 8).isActive = true
+        categCountHeader.topAnchor.constraint(equalTo: deviderView.bottomAnchor, constant: 4).isActive = true
+        categCountHeader.layoutIfNeeded()
+        
+        let numCateg = myLabelForText()
+        numCateg.text = String(shablonToShow.allCategs.count)
+        infoView.addSubview(numCateg)
+        
+        numCateg.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.3, constant: -6).isActive = true
+        numCateg.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        numCateg.rightAnchor.constraint(equalTo: infoView.rightAnchor, constant: -4).isActive = true
+        numCateg.centerYAnchor.constraint(equalTo: categCountHeader.centerYAnchor).isActive = true
+        numCateg.layoutIfNeeded()
+        
+        
+        
+        
+        
+        let allElementsNumHeader = myLabelForText()
+        allElementsNumHeader.textAlignment = .left
+        allElementsNumHeader.font = UIFont.systemFont(ofSize: 16)
+        allElementsNumHeader.text = "Общее колличество элементов :"
+        infoView.addSubview(allElementsNumHeader)
+        
+        allElementsNumHeader.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.7, constant: -10).isActive = true
+        //allElementsNumHeader.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        allElementsNumHeader.leftAnchor.constraint(equalTo: infoView.leftAnchor, constant: 8).isActive = true
+        allElementsNumHeader.topAnchor.constraint(equalTo: categCountHeader.bottomAnchor, constant: 4).isActive = true
+        allElementsNumHeader.layoutIfNeeded()
+        
+        let elementNumCateg = myLabelForText()
+        elementNumCateg.text = String(allElementsCount)
+        infoView.addSubview(elementNumCateg)
+        
+        elementNumCateg.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.3, constant: -6).isActive = true
+        elementNumCateg.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        elementNumCateg.rightAnchor.constraint(equalTo: infoView.rightAnchor, constant: -4).isActive = true
+        elementNumCateg.centerYAnchor.constraint(equalTo: allElementsNumHeader.centerYAnchor).isActive = true
+        elementNumCateg.layoutIfNeeded()
+        
+        
+        
+        
+        let allObyazNumHeader = myLabelForText()
+        allObyazNumHeader.textAlignment = .left
+       // allObyazNumHeader.backgroundColor =
+        allObyazNumHeader.font = UIFont.systemFont(ofSize: 16)
+        allObyazNumHeader.text = "Из них обязательных :"
+        infoView.addSubview(allObyazNumHeader)
+        
+        allObyazNumHeader.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.7, constant: -10).isActive = true
+        //allObyazNumHeader.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        allObyazNumHeader.leftAnchor.constraint(equalTo: infoView.leftAnchor, constant: 8).isActive = true
+        allObyazNumHeader.topAnchor.constraint(equalTo: allElementsNumHeader.bottomAnchor, constant: 4).isActive = true
+        allObyazNumHeader.layoutIfNeeded()
+        
+        let elementObyaz = myLabelForText()
+        elementObyaz.text = String(allObyazElement)
+        infoView.addSubview(elementObyaz)
+        
+        elementObyaz.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.3, constant: -6).isActive = true
+        elementObyaz.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        elementObyaz.rightAnchor.constraint(equalTo: infoView.rightAnchor, constant: -4).isActive = true
+        elementObyaz.centerYAnchor.constraint(equalTo: allObyazNumHeader.centerYAnchor).isActive = true
+        elementObyaz.layoutIfNeeded()
+        
+        
+        let beginHeader = myLabelForText()
+        beginHeader.textAlignment = .left
+        beginHeader.font = UIFont.systemFont(ofSize: 16)
+        beginHeader.text = "Время начала аудита :"
+        infoView.addSubview(beginHeader)
+        
+        beginHeader.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.7, constant: -10).isActive = true
+        //beginHeader.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        beginHeader.leftAnchor.constraint(equalTo: infoView.leftAnchor, constant: 8).isActive = true
+        beginHeader.topAnchor.constraint(equalTo: allObyazNumHeader.bottomAnchor, constant: 4).isActive = true
+        beginHeader.layoutIfNeeded()
+        
+        let beginTime = myLabelForText()
+        beginTime.text = dateStr
+        infoView.addSubview(beginTime)
+        
+        beginTime.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.3, constant: -6).isActive = true
+        beginTime.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        beginTime.rightAnchor.constraint(equalTo: infoView.rightAnchor, constant: -4).isActive = true
+        beginTime.centerYAnchor.constraint(equalTo: beginHeader.centerYAnchor).isActive = true
+        beginTime.layoutIfNeeded()
+        
+        let auditLogo = infoImageView(frame: CGRect.zero)
+        auditLogo.contentMode = .scaleAspectFit
+        infoView.addSubview(auditLogo)
+        
+        auditLogo.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.85, constant: 0).isActive = true
+        auditLogo.centerXAnchor.constraint(equalTo: infoView.centerXAnchor).isActive = true
+        auditLogo.topAnchor.constraint(equalTo: beginTime.bottomAnchor, constant: 4).isActive = true
+        if shablonToShow.localImageName != nil
+        {
+            let fileName = "\(shablonToShow.localImageName!).jpg"
+            let fm = FileManager.default
+            let docDir = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let logoPath = docDir.appendingPathComponent("LocalShablonLogos")
+            let imageURL = URL(fileURLWithPath: logoPath.path).appendingPathComponent(fileName)
+            let image    = UIImage(contentsOfFile: imageURL.path)
+            auditLogo.image = image
+            
+            let viewHeight = self.view.frame.size.height
+            
+            auditLogo.heightAnchor.constraint(equalToConstant: viewHeight/3).isActive = true
+        }
+        else
+        {
+            auditLogo.heightAnchor.constraint(equalToConstant: 0).isActive = true
+        }
+        
+        
+        
+        let okButton = redButton()
+        okButton.setTitle("Завершить", for: .normal)
+        infoView.addSubview(okButton)
+        
+        okButton.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.5, constant: -9).isActive = true
+        okButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        okButton.topAnchor.constraint(equalTo: auditLogo.bottomAnchor, constant: 4).isActive = true
+        okButton.rightAnchor.constraint(equalTo: infoView.rightAnchor, constant: -6).isActive = true
+        okButton.layoutIfNeeded()
+        
+        let cancelButton = transButton()
+        cancelButton.setTitle("Выйти", for: .normal)
+        infoView.addSubview(cancelButton)
+        
+        cancelButton.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.5, constant: -9).isActive = true
+        cancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        cancelButton.topAnchor.constraint(equalTo: auditLogo.bottomAnchor, constant: 4).isActive = true
+        cancelButton.leftAnchor.constraint(equalTo: infoView.leftAnchor, constant: 6).isActive = true
+        cancelButton.layoutIfNeeded()
+        
+        infoView.bottomAnchor.constraint(equalTo: okButton.bottomAnchor, constant: 4).isActive = true
+        //infoView.heightAnchor.constraint(equalToConstant: 240).isActive = true
+        
+        listOfVC.append(infoVC)
+        listOfPageName.append("Общая информация")
+        
+        
+        okButton.click =
+            {
+                self.gc.shablonTomMakeOtchet = self.shablonToShow
+                let makeOtchet = MakeOtchet()
+                self.present(makeOtchet, animated: true, completion: nil)
+            }
+    }
     
     
     
@@ -104,7 +325,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
     func viewController(for pageboyViewController: PageboyViewController, at index: PageboyViewController.PageIndex) -> UIViewController?
     {
         currentPage = listOfVC[index]
-        currentScroll = listOfScrolls[index]
+        //currentScroll = listOfScrolls[index]
         return listOfVC[index]
     }
     
@@ -126,7 +347,6 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
 
             let categView = UIViewController()
             
-            
             let bgImg = UIImageView()
             makeFullAsParent(parent: categView.view, child: bgImg)
             bgImg.image = gh.mainBG
@@ -135,6 +355,12 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             
             let categScroll = UIScrollView()
             listOfScrolls.append(categScroll)
+           
+            /////
+            categ.categScroll = categScroll
+            ///////
+            
+            
             
             categScroll.translatesAutoresizingMaskIntoConstraints  = false
             categScroll.tag = gh.tagMyScrollView
@@ -251,6 +477,8 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     viewForText.heightAnchor.constraint(equalToConstant: height+textViewTopMargin8).isActive = true
                     viewForText.layoutIfNeeded()
                     
+                    
+                    
                     elementHeight += height+topMargin4
                     
                     if question.questionType != 2
@@ -261,7 +489,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                         togg0.widthAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: 1, constant: -buttonSideMargin).isActive = true
                         togg0.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
                         togg0.centerXAnchor.constraint(equalTo: rootView.centerXAnchor).isActive = true
-                        togg0.topAnchor.constraint(equalTo: viewForText.bottomAnchor, constant: topMargin4).isActive = true
+                        togg0.topAnchor.constraint(equalTo: viewForText.bottomAnchor, constant: 8).isActive = true
                         togg0.layoutIfNeeded()
                         togg0.layer.cornerRadius = togg0.frame.height / 6
                         
@@ -318,7 +546,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                             
                             if lastAddedButton == nil
                             {
-                                togg.topAnchor.constraint(equalTo: viewForText.bottomAnchor, constant: topMargin4).isActive = true
+                                togg.topAnchor.constraint(equalTo: viewForText.bottomAnchor, constant: 8).isActive = true
                             }
                             else
                             {
@@ -361,19 +589,60 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                             }
                     }
                     
-                    
-                    rootView.heightAnchor.constraint(equalToConstant: elementHeight+16).isActive = true
+                    ///////////
+                    rootView.heightAnchor.constraint(equalToConstant: elementHeight+28).isActive = true
                     lastAdded = rootView
                     rootView.layoutIfNeeded()
                     question.auditView = rootView
                     
-                    
+                    question.elementCateg = categ
+                    question.elementScrollView  = categScroll
+                    ////////////
                     
                     btnSkrepka.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
+                    
+                    btnAddPhoto.click =
+                        {
+                            self.gc.shablonInWork = self.shablonToShow!
+                            let skrepkaDialog = SkrepkaPhotoDialog(quest: question)
+                            self.present(skrepkaDialog, animated: true, completion: nil)
+                        }
+                    
+                    
+                    btnComment.click =
+                        {
+                            self.gc.shablonInWork = self.shablonToShow!
+                            let skrepkaDialog = SkrepkaCommentDialog(quest: question)
+                            self.present(skrepkaDialog, animated: true, completion: nil)
+                        }
+                    
+                    let photoView = myAuditView()
+                    rootView.addSubview(photoView)
+                   
+                    ///////////////
+                    photoView.widthAnchor.constraint(equalTo: rootView.widthAnchor, constant: -12).isActive = true
+                    photoView.heightAnchor.constraint(equalToConstant: 0).isActive = true
+                    photoView.topAnchor.constraint(equalTo: question.auditButtons.last!.bottomAnchor, constant: 4).isActive = true
+                    photoView.centerXAnchor.constraint(equalTo: rootView.centerXAnchor).isActive = true
+                    photoView.layoutIfNeeded()
+                    
+                    question.photoView = photoView
+                    
+                    let commentView = myAuditView()
+                    rootView.addSubview(commentView)
+                    commentView.widthAnchor.constraint(equalTo: rootView.widthAnchor, constant: -12).isActive = true
+                    commentView.heightAnchor.constraint(equalToConstant: 0).isActive = true
+                    commentView.topAnchor.constraint(equalTo: photoView.bottomAnchor, constant: 6).isActive = true
+                    commentView.centerXAnchor.constraint(equalTo: rootView.centerXAnchor).isActive = true
+                    commentView.layoutIfNeeded()
+                    
+                    question.commentView = commentView
+                    /////////////////
                 }
                 
                 
@@ -460,6 +729,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     btnSkrepka.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -550,6 +820,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     btnSkrepka.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -654,6 +925,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     btnSkrepka.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -716,7 +988,6 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     if info.localFileName != nil
                     {
-                        print(info.localFileName)
                         let fileName = "\(info.localFileName!).jpg"
                         let fm = FileManager.default
                         let docDir = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -856,13 +1127,49 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     elementHeight += height
                     
+                    /////////////
+                    let myInfoImgV = infoImageView(frame: CGRect(x: 8, y: 8, width: 8, height: 8))
+                    myInfoImgV.contentMode = .scaleAspectFit
+                    rootView.addSubview(myInfoImgV)
+                    
+                    myInfoImgV.widthAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: 1, constant: -48).isActive = true
+                    myInfoImgV.heightAnchor.constraint(equalToConstant: 1).isActive = true
+                    myInfoImgV.topAnchor.constraint(equalTo: lblText.bottomAnchor, constant: 0).isActive = true
+                    myInfoImgV.centerXAnchor.constraint(equalTo: rootView.centerXAnchor).isActive = true
+                    myInfoImgV.layoutIfNeeded()
+                    
+                    
+                    
+                    
+                    
                     let btnGallery = myGalleryButton()
                     rootView.addSubview(btnGallery)
                     
-                    btnGallery.bottomAnchor.constraint(equalTo: rootView.bottomAnchor, constant: -topMargin4).isActive = true
+                    btnGallery.topAnchor.constraint(equalTo: myInfoImgV.bottomAnchor, constant: topMargin4).isActive = true
                     btnGallery.widthAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: 0.5, constant: -16).isActive = true
                     btnGallery.leftAnchor.constraint(equalTo: rootView.leftAnchor, constant: 12).isActive = true
                     btnGallery.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                    btnGallery.layoutIfNeeded()
+                    
+                    
+                    let btnCamera = myCameraButton()
+                    rootView.addSubview(btnCamera)
+                    
+                    btnCamera.topAnchor.constraint(equalTo: myInfoImgV.bottomAnchor, constant: topMargin4).isActive = true
+                    btnCamera.widthAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: 0.5, constant: -16).isActive = true
+                    btnCamera.rightAnchor.constraint(equalTo: rootView.rightAnchor, constant: -12).isActive = true
+                    btnCamera.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                    btnCamera.layoutIfNeeded()
+                    
+                    if btnGallery.frame.size.width < 140
+                    {
+                        btnGallery.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 40)
+                    }
+                    
+                    if btnCamera.frame.size.width < 140
+                    {
+                        btnCamera.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 40)
+                    }
                     
                     
                     
@@ -879,13 +1186,13 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                             self.present(imagePicker, animated: false, completion: nil)
                         }
                     
-                    let btnCamera = myCameraButton()
-                    rootView.addSubview(btnCamera)
-                    
-                    btnCamera.bottomAnchor.constraint(equalTo: rootView.bottomAnchor, constant: -topMargin4).isActive = true
-                    btnCamera.widthAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: 0.5, constant: -16).isActive = true
-                    btnCamera.rightAnchor.constraint(equalTo: rootView.rightAnchor, constant: -12).isActive = true
-                    btnCamera.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+//                    let btnCamera = myCameraButton()
+//                    rootView.addSubview(btnCamera)
+//
+//                    btnCamera.bottomAnchor.constraint(equalTo: rootView.bottomAnchor, constant: -topMargin4).isActive = true
+//                    btnCamera.widthAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: 0.5, constant: -16).isActive = true
+//                    btnCamera.rightAnchor.constraint(equalTo: rootView.rightAnchor, constant: -12).isActive = true
+//                    btnCamera.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
                     
                     btnCamera.click =
                         {
@@ -909,6 +1216,12 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     media.auditView = rootView
                     media.defRootViewHeught = rootView.frame.size.height
                     
+                    headerView.click =
+                        {
+                            self.gc.shablonInWork = self.shablonToShow!
+                            let skrepkaDialog = mySkrepkaDialog(elem: element)
+                            self.present(skrepkaDialog, animated: true, completion: nil)
+                        }
                     
                 }
             
@@ -1016,6 +1329,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     headerView.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -1117,6 +1431,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     headerView.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -1215,6 +1530,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     sliderView.valChange =
                         {
+                            seeker.lastSliderIndex = Int(sliderView.slider.index)
                             seeker.lastSettedValue = sliderView.changedValue!
                             lblResult.text = String(sliderView.changedValue!)
                         }
@@ -1228,6 +1544,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     headerView.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -1324,6 +1641,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     headerView.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -1419,6 +1737,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     headerView.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -1525,6 +1844,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     headerView.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -1706,6 +2026,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     headerView.click =
                         {
+                            self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
@@ -1719,6 +2040,9 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             print("now will Be firs recount!!!")
             recountScrollSize(scrollV: categScroll,categ: categ)
             listOfVC.append(categView)
+            
+            
+            
             
         }
         
@@ -1749,29 +2073,45 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
         
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         {
-            let myInfoImgV = infoImageView(frame: CGRect(x: 8, y: 8, width: 8, height: 8))
+            //let myInfoImgV = infoImageView(frame: CGRect(x: 8, y: 8, width: 8, height: 8))
+            let myInfoImgV = lastMediaRootView.viewWithTag(gh.tagInfoImge) as! UIImageView
+            myInfoImgV.image = nil
             myInfoImgV.image = image
             myInfoImgV.contentMode = .scaleAspectFit
             
             
             var hasImageAlready = false
-            for v in lastMediaRootView.subviews
+            
+            if myInfoImgV.frame.size.height > 10
             {
-                if v.tag == gh.tagInfoImge
-                {
-                    hasImageAlready = true
-                    break
-                }
+                hasImageAlready = true
             }
+//            for v in lastMediaRootView.subviews
+//            {
+//                if v.tag == gh.tagInfoImge
+//                {
+//                    hasImageAlready = true
+//                    break
+//                }
+//            }
             
             if hasImageAlready == false
             {
-                lastMediaRootView.addSubview(myInfoImgV)
+//                lastMediaRootView.addSubview(myInfoImgV)
+//
+//                myInfoImgV.widthAnchor.constraint(equalTo: lastMediaRootView.widthAnchor, multiplier: 1, constant: -48).isActive = true
+//                myInfoImgV.heightAnchor.constraint(equalToConstant: 320).isActive = true
+//                myInfoImgV.bottomAnchor.constraint(equalTo: btnCamera.topAnchor, constant: -8).isActive = true
+//                myInfoImgV.centerXAnchor.constraint(equalTo: lastMediaRootView.centerXAnchor).isActive = true
+//                myInfoImgV.layoutIfNeeded()
                 
-                myInfoImgV.widthAnchor.constraint(equalTo: lastMediaRootView.widthAnchor, multiplier: 1, constant: -48).isActive = true
+                let imgvCons = myInfoImgV.constraints.filter
+                {
+                    $0.firstAttribute == NSLayoutAttribute.height
+                }
+                NSLayoutConstraint.deactivate(imgvCons)
+                
                 myInfoImgV.heightAnchor.constraint(equalToConstant: 320).isActive = true
-                myInfoImgV.bottomAnchor.constraint(equalTo: btnCamera.topAnchor, constant: -8).isActive = true
-                myInfoImgV.centerXAnchor.constraint(equalTo: lastMediaRootView.centerXAnchor).isActive = true
                 myInfoImgV.layoutIfNeeded()
                 
                 let cons = lastMediaRootView.constraints.filter
@@ -1779,20 +2119,31 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     $0.firstAttribute == NSLayoutAttribute.height
                 }
                 NSLayoutConstraint.deactivate(cons)
-                lastMediaRootView.heightAnchor.constraint(equalToConstant: defRootHeight + 320+4).isActive = true
+                var newHeight :CGFloat = 324
+                if lastModelMedia.skrepka != nil
+                {
+                    newHeight += 172
+                }
+                lastMediaRootView.heightAnchor.constraint(equalToConstant: defRootHeight + newHeight).isActive = true
+                lastMediaRootView.layoutIfNeeded()
             }
             else if hasImageAlready == true
             {
-                lastMediaRootView.viewWithTag(gh.tagInfoImge)?.removeFromSuperview()
+                print("hasImageAlready -   removing!!!!")
                 lastMediaRootView.viewWithTag(gh.tagBtnRemove)?.removeFromSuperview()
                 
-                lastMediaRootView.addSubview(myInfoImgV)
-                myInfoImgV.widthAnchor.constraint(equalTo: lastMediaRootView.widthAnchor, multiplier: 1, constant: -48).isActive = true
-                myInfoImgV.heightAnchor.constraint(equalToConstant: 320).isActive = true
-                myInfoImgV.bottomAnchor.constraint(equalTo: btnCamera.topAnchor, constant: -8).isActive = true
-                myInfoImgV.centerXAnchor.constraint(equalTo: lastMediaRootView.centerXAnchor).isActive = true
-                myInfoImgV.layoutIfNeeded()
+//                lastMediaRootView.viewWithTag(gh.tagInfoImge)?.removeFromSuperview()
+//                lastMediaRootView.viewWithTag(gh.tagBtnRemove)?.removeFromSuperview()
+//
+//                lastMediaRootView.addSubview(myInfoImgV)
+//                myInfoImgV.widthAnchor.constraint(equalTo: lastMediaRootView.widthAnchor, multiplier: 1, constant: -48).isActive = true
+//                myInfoImgV.heightAnchor.constraint(equalToConstant: 320).isActive = true
+//                myInfoImgV.bottomAnchor.constraint(equalTo: btnCamera.topAnchor, constant: -8).isActive = true
+//                myInfoImgV.centerXAnchor.constraint(equalTo: lastMediaRootView.centerXAnchor).isActive = true
+//                myInfoImgV.layoutIfNeeded()
             }
+            
+            myInfoImgV.layoutIfNeeded()
             
             
             let imageRect = imageCGRect(for: image, inImageViewAspectFit: myInfoImgV)
@@ -1810,8 +2161,17 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             
             removeButton.click =
                 {
-                    lastMediaRootView.viewWithTag(self.gh.tagInfoImge)?.removeFromSuperview()
+                    //lastMediaRootView.viewWithTag(self.gh.tagInfoImge)?.removeFromSuperview()
                     lastMediaRootView.viewWithTag(self.gh.tagBtnRemove)?.removeFromSuperview()
+                    
+                    let imgvCons = myInfoImgV.constraints.filter
+                    {
+                        $0.firstAttribute == NSLayoutAttribute.height
+                    }
+                    NSLayoutConstraint.deactivate(imgvCons)
+                    
+                    myInfoImgV.heightAnchor.constraint(equalToConstant: 1).isActive = true
+                    myInfoImgV.layoutIfNeeded()
                     
                     let cons = lastMediaRootView.constraints.filter
                     {
@@ -1819,7 +2179,14 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     }
                     NSLayoutConstraint.deactivate(cons)
                     print("setting New Height")
-                    lastMediaRootView.heightAnchor.constraint(equalToConstant: defRootHeight).isActive = true
+                    
+                    var newHeight :CGFloat = 0
+                    if lastModelMedia.skrepka != nil
+                    {
+                        newHeight += 172
+                    }
+                    
+                    lastMediaRootView.heightAnchor.constraint(equalToConstant: defRootHeight + newHeight).isActive = true
                     lastMediaRootView.layoutIfNeeded()
                     
                     lastModelMedia.lastAddedImage = nil
@@ -1913,6 +2280,11 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             return true
         }
         return true
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        gh.showToast(message: "appeared ", view: self.view)
     }
     
 }

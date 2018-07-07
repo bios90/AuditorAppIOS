@@ -101,6 +101,8 @@ class mySkrepkaButton : UIButton
 class myCommentButton : UIButton
 {
     let gh = GlobalHelper.sharedInstance
+    var click : (() -> Void)?
+    
     func customInit()
     {
         setImage(UIImage(named: "ic_comment"), for: .normal)
@@ -108,6 +110,8 @@ class myCommentButton : UIButton
         translatesAutoresizingMaskIntoConstraints = false
         //gh.addShadow(viewArray: [self])
         //gh.makeLittleCorners(viewArray: [self], radius: 4)
+        
+        addTarget(self, action: #selector(pressed), for: .touchUpInside)
     }
     
     override init(frame: CGRect)
@@ -120,18 +124,29 @@ class myCommentButton : UIButton
         super.init(coder: aDecoder)
         customInit()
     }
+    
+    @objc func pressed()
+    {
+        click?()
+    }
 }
 
 class myAddPhotoButton : UIButton
 {
     let gh = GlobalHelper.sharedInstance
+    var click : (() -> Void)?
+    
     func customInit()
     {
         setImage(UIImage(named: "ic_add_photo_red"), for: .normal)
-        //backgroundColor = UIColor.white
         translatesAutoresizingMaskIntoConstraints = false
-        //gh.addShadow(viewArray: [self])
-        //gh.makeLittleCorners(viewArray: [self], radius: 4)
+
+        addTarget(self, action: #selector(pressed), for: .touchUpInside)
+    }
+    
+    @objc func pressed()
+    {
+        click?()
     }
     
     override init(frame: CGRect)
@@ -708,9 +723,9 @@ class infoImageView : UIImageView
     
     func customInit()
     {
+        tag = gh.tagInfoImge
         translatesAutoresizingMaskIntoConstraints = false
         gh.addShadow(viewArray: [self])
-        tag = gh.tagInfoImge
     }
     
     override init(frame: CGRect)
@@ -824,6 +839,8 @@ class myRemoveButton : UIButton
     
     func customInit()
     {
+        tag = gh.tagBtnRemove
+        
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 14
         backgroundColor = gh.myRed
@@ -994,7 +1011,7 @@ class mySliderView : UIView
         maxLbl.layoutIfNeeded()
         
         slider.index = UInt(tickNum/2)
-        
+        thisSeeker.lastSliderIndex = Int(tickNum/2)
     }
     
     init (seeker : Model_Seeker)
@@ -1128,6 +1145,8 @@ class mySkrepkaView : UIView
     var lblPrioritet : myViewAsLabel!
     let recomendedHeight : CGFloat = 124
     
+    var removeClick : (()->Void)?
+    
     func customInit()
     {
         tag = gh.tagSkrepkaView
@@ -1223,8 +1242,23 @@ class mySkrepkaView : UIView
         lblPrioritet.topAnchor.constraint(equalTo: headerSrok.bottomAnchor, constant: 4).isActive = true
         lblPrioritet.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
         lblPrioritet.layoutIfNeeded()
+        
+        let removeBtn = myRemoveButton()
+        removeBtn.layer.cornerRadius = 12
+        addSubview(removeBtn)
+        
+        removeBtn.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        removeBtn.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        removeBtn.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
+        removeBtn.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
+        
+        removeBtn.addTarget(self, action: #selector(self.removePressed), for: .touchUpInside)
     }
     
+    @objc func removePressed()
+    {
+        removeClick?()
+    }
 
     override init(frame: CGRect)
     {
@@ -1275,6 +1309,85 @@ class myViewAsLabel : UIView
     {
         super.init(coder: aDecoder)
         customInit()
+    }
+}
+
+class myQuestionImagesView : myAuditView
+{
+    var lbl : UILabel!
+    
+    var imagesToShow : [UIImage] = []
+    var firstRow : UIStackView!
+    var secondRow : UIStackView!
+    var imgViewArray : [UIImageView] = []
+    
+    func customInit2()
+    {
+        tag = gh.tagQuestImages
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        let imgv1 = UIImageView()
+        imgv1.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        firstRow = UIStackView()
+        firstRow.backgroundColor = UIColor.red
+        firstRow.translatesAutoresizingMaskIntoConstraints = false
+        
+        firstRow.axis  = UILayoutConstraintAxis.horizontal
+        firstRow.distribution  = UIStackViewDistribution.equalSpacing
+        firstRow.alignment = UIStackViewAlignment.center
+        firstRow.spacing   = 4
+        
+        let width = self.frame.size.width
+        let rowHeight = (width / 2) * 1.78
+        
+        addSubview(firstRow)
+        firstRow.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+        firstRow.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 4).isActive = true
+        firstRow.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4).isActive = true
+        firstRow.heightAnchor.constraint(equalToConstant: rowHeight).isActive = true
+        firstRow.layoutIfNeeded()
+        
+        
+        for i in 0...3
+        {
+            let imgView = UIImageView()
+            imgView.translatesAutoresizingMaskIntoConstraints = false
+            firstRow.addArrangedSubview(imgView)
+            
+            imgView.image = UIImage(named: "defSrc")
+            imgView.widthAnchor.constraint(equalToConstant: (firstRow.frame.size.width - 12) / 4).isActive = true
+            imgView.heightAnchor.constraint(equalToConstant: rowHeight).isActive = true
+            imgView.centerYAnchor.constraint(equalTo: firstRow.centerYAnchor).isActive = true
+            imgView.layoutIfNeeded()
+            
+            firstRow.layoutIfNeeded()
+            imgViewArray.append(imgView)
+        }
+        
+      
+        
+    }
+    
+    init(imgAr : [UIImage])
+    {
+        super.init(frame: CGRect.zero)
+        imagesToShow  = imgAr
+        customInit2()
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit2()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit2()
     }
 }
 

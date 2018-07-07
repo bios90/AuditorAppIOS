@@ -18,4 +18,11 @@ class Model_Question: Audit_Element
     var plusMinus : [Int] = []
     
     var auditButtons : [myBtnTogg] = []
+    
+    var addedImages : [UIImage] = []
+    
+    var photoView : myAuditView!
+    var commentView : myAuditView!
+    
+    var commentStr : String!
 }
