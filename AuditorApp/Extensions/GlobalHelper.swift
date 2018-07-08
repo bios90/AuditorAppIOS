@@ -62,6 +62,10 @@ struct GlobalHelper
     let otGreen = UIColor(displayP3Red: 79/255, green: 201/255, blue: 150/255, alpha: 1)
     let otRed = UIColor(displayP3Red: 215/255, green: 91/255, blue: 95/255, alpha: 1)
     
+    let otLime = UIColor(displayP3Red: 50/255, green: 205/255, blue: 50/255, alpha: 1)
+    let otYellow = UIColor(displayP3Red: 253/255, green: 170/255, blue: 28/255, alpha: 1)
+
+    
     // MARK: - Segues
     let segueToUserMEnu : String = "toUserMenu"
     let segueToFirstScreen : String = "toFirstScreen"

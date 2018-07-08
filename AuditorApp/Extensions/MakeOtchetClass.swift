@@ -1,46 +1,46 @@
 import UIKit
 import PDFGenerator
 
-class MakeOtchet: UIViewController
+let gh = GlobalHelper.sharedInstance
+let gc = GlobalClass.sharedInstance
+
+var pageWidth : CGFloat!
+var pageHeight : CGFloat!
+
+let height26 : CGFloat = 26
+
+var shablon : Model_Shablon!
+
+var lastView : UIView!
+
+var currentPage : UIView!
+var listOfPages : [UIView] = []
+
+
+let widthMinus : CGFloat = 44
+let beginTopMargin : CGFloat = 20
+
+let bezOtvetaStr = "Без ответа"
+
+var listAddedSkrepka : [Skrepka_Data] = []
+var listAddedImagesGroup : [[UIImage]] = []
+
+class MakeOtchetClass
 {
-    let gh = GlobalHelper.sharedInstance
-    let gc = GlobalClass.sharedInstance
-    
-    var pageWidth : CGFloat!
-    var pageHeight : CGFloat!
-    
-    let height26 : CGFloat = 26
-    
-    var shablon : Model_Shablon!
-    
-    var lastView : UIView!
-    
-    var currentPage : UIView!
-    var listOfPages : [UIView] = []
 
-    
-    let widthMinus : CGFloat = 44
-    let beginTopMargin : CGFloat = 20
-    
-    let bezOtvetaStr = "Без ответа"
-    
-    var listAddedSkrepka : [Skrepka_Data] = []
-    var listAddedImagesGroup : [[UIImage]] = []
-    
-    override func viewDidLoad()
+    func makePdf(shablon : Model_Shablon)
     {
-        super.viewDidLoad()
-
-        shablon = gc.shablonTomMakeOtchet
         
-        let widtgh = view.frame.size.width * 4
-        let height = widtgh * 1.414
+        //shablon = gc.shablonTomMakeOtchet
+        
+//        let widtgh = view.frame.size.width * 4
+//        let height = widtgh * 1.414
         
         pageWidth = 595.2
         pageHeight = 841.8
         
         currentPage = UIView(frame: CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight))
-        currentPage.backgroundColor = UIColor.cyan
+        
         
         let shablonNameLbl = UILabel()
         shablonNameLbl.translatesAutoresizingMaskIntoConstraints = false
@@ -231,7 +231,7 @@ class MakeOtchet: UIViewController
                 if element is Model_Question
                 {
                     let quest = element as! Model_Question
-                   
+                    
                     var heightArray : [CGFloat] = []
                     
                     let viewForRow = UIView()
@@ -262,7 +262,7 @@ class MakeOtchet: UIViewController
                     cellAnswer.text = getAnswerFromQuestion(quest: quest)
                     if cellAnswer.text == bezOtvetaStr
                     {
-                        cellAnswer.textColor = gh.otRed
+                        cellAnswer.textColor = UIColor.red
                     }
                     cellAnswer.backgroundColor = getQuestionColor(quest: quest)
                     cellAnswer.textAlignment = .center
@@ -331,13 +331,13 @@ class MakeOtchet: UIViewController
                         {
                             let imgV = otImagePreview()
                             imgV.imgView.image = img
-
+                            
                             imagesRow.addSubview(imgV)
-
+                            
                             imgV.widthAnchor.constraint(equalTo: imagesRow.widthAnchor, multiplier: 0.125, constant: 0).isActive = true
                             imgV.heightAnchor.constraint(equalTo: imagesRow.heightAnchor, multiplier: 1, constant: 0).isActive = true
                             imgV.centerYAnchor.constraint(equalTo: imagesRow.centerYAnchor).isActive = true
-
+                            
                             if lastAddedImage == nil
                             {
                                 imgV.leftAnchor.constraint(equalTo: imagesRow.leftAnchor).isActive = true
@@ -356,7 +356,7 @@ class MakeOtchet: UIViewController
                     }
                     
                 }
-            
+                
                 
                 if element is Model_Adress
                 {
@@ -398,7 +398,7 @@ class MakeOtchet: UIViewController
                     if adress.auditTF.text == nil || adress.auditTF.text == ""
                     {
                         answerStr = bezOtvetaStr
-                        cellAnswer.textColor = gh.otRed
+                        cellAnswer.textColor = UIColor.red
                     }
                     else
                     {
@@ -491,7 +491,7 @@ class MakeOtchet: UIViewController
                     }
                     
                     
-
+                    
                     
                     viewForRow.addSubview(checkBoxAnswerCell)
                     
@@ -568,7 +568,7 @@ class MakeOtchet: UIViewController
                     cellAnswer.text = answerStr
                     if answerStr == bezOtvetaStr
                     {
-                        cellAnswer.textColor = gh.otRed
+                        cellAnswer.textColor = UIColor.red
                     }
                     cellAnswer.textAlignment = .center
                     cellAnswer.font = UIFont.systemFont(ofSize: 13)
@@ -700,10 +700,10 @@ class MakeOtchet: UIViewController
                             lastView = viewForRow
                             chechForPage(lastView: lastView)
                         }
-
+                        
                     }
                 }
-            
+                
                 if element is Model_Media
                 {
                     let media = element as! Model_Media
@@ -756,7 +756,7 @@ class MakeOtchet: UIViewController
                         answerCell = otTableLabeCell()
                         viewForRow.addSubview(answerCell)
                         (answerCell as! otTableLabeCell).text = bezOtvetaStr
-                        (answerCell as! otTableLabeCell).textColor = gh.otRed
+                        (answerCell as! otTableLabeCell).textColor = UIColor.red
                         (answerCell as! otTableLabeCell).font = UIFont.systemFont(ofSize: 13)
                         (answerCell as! otTableLabeCell).textAlignment = .center
                         
@@ -765,7 +765,7 @@ class MakeOtchet: UIViewController
                         answerCell.topAnchor.constraint(equalTo: viewForRow.topAnchor, constant: 0).isActive = true
                         answerCell.layoutIfNeeded()
                     }
-                
+                    
                     heightArray.append(answerCell.frame.size.height)
                     
                     let cellDop = otTableLabeCell()
@@ -850,7 +850,7 @@ class MakeOtchet: UIViewController
                         answerCell = otTableLabeCell()
                         viewForRow.addSubview(answerCell)
                         (answerCell as! otTableLabeCell).text = bezOtvetaStr
-                        (answerCell as! otTableLabeCell).textColor = gh.otRed
+                        (answerCell as! otTableLabeCell).textColor = UIColor.red
                         (answerCell as! otTableLabeCell).font = UIFont.systemFont(ofSize: 13)
                         (answerCell as! otTableLabeCell).textAlignment = .center
                         
@@ -890,7 +890,7 @@ class MakeOtchet: UIViewController
                     chechForPage(lastView: lastView)
                     
                 }
-            
+                
                 
                 if element is Model_QuestVar
                 {
@@ -927,7 +927,7 @@ class MakeOtchet: UIViewController
                     cellAnswer.text = answerStr
                     if answerStr == bezOtvetaStr
                     {
-                        cellAnswer.textColor = gh.otRed
+                        cellAnswer.textColor = UIColor.red
                     }
                     cellAnswer.textAlignment = .center
                     cellAnswer.font = UIFont.systemFont(ofSize: 13)
@@ -1004,7 +1004,7 @@ class MakeOtchet: UIViewController
                     cellAnswer.text = answerStr
                     if answerStr == bezOtvetaStr
                     {
-                        cellAnswer.textColor = gh.otRed
+                        cellAnswer.textColor = UIColor.red
                     }
                     cellAnswer.textAlignment = .center
                     cellAnswer.font = UIFont.systemFont(ofSize: 13)
@@ -1086,7 +1086,7 @@ class MakeOtchet: UIViewController
                     cellAnswer.textAlignment = .left
                     if answerStr == bezOtvetaStr
                     {
-                        cellAnswer.textColor = gh.otRed
+                        cellAnswer.textColor = UIColor.red
                         cellAnswer.textAlignment = .center
                     }
                     
@@ -1173,7 +1173,7 @@ class MakeOtchet: UIViewController
                     cellAnswer.textAlignment = .left
                     if answerStr == bezOtvetaStr
                     {
-                        cellAnswer.textColor = gh.otRed
+                        cellAnswer.textColor = UIColor.red
                         cellAnswer.textAlignment = .center
                     }
                     
@@ -1302,7 +1302,7 @@ class MakeOtchet: UIViewController
                     lastView = viewForRow
                     chechForPage(lastView: lastView)
                 }
-            
+                
                 if element is Model_Timer
                 {
                     let timer = element as! Model_Timer
@@ -1338,7 +1338,7 @@ class MakeOtchet: UIViewController
                     cellAnswer.text = answerStr
                     if answerStr == bezOtvetaStr
                     {
-                        cellAnswer.textColor = gh.otRed
+                        cellAnswer.textColor = UIColor.red
                     }
                     cellAnswer.textAlignment = .center
                     cellAnswer.font = UIFont.systemFont(ofSize: 13)
@@ -1378,30 +1378,351 @@ class MakeOtchet: UIViewController
                     lastView = viewForRow
                     chechForPage(lastView: lastView)
                 }
-            
+                
+              
             }
             
             
+         
+            
+        }
+        
+        
+        if listAddedImagesGroup.count > 0
+        {
+            let photoTitle = otTableTitle()
+            photoTitle.textAlignment = .center
+            photoTitle.text = "Добавленные фото"
+            photoTitle.font = UIFont.systemFont(ofSize: 20)
+            currentPage.addSubview(photoTitle)
+            
+            photoTitle.widthAnchor.constraint(equalTo: lastView.widthAnchor, multiplier: 1, constant: 0).isActive = true
+            photoTitle.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+            photoTitle.topAnchor.constraint(equalTo: lastView.bottomAnchor, constant: 80).isActive = true
+            photoTitle.layoutIfNeeded()
+            
+            lastView = photoTitle
+            chechForPage(lastView: lastView)
+        }
+        
+        
+        
+        for imgArray in listAddedImagesGroup
+        {
+            let num = listAddedImagesGroup.index(of: imgArray)! + 1
+            
+            let groupHeader = otTableLabeCell()
+            groupHeader.textAlignment = .center
+            groupHeader.font = UIFont.systemFont(ofSize: 16)
+            groupHeader.text = "Приложение №\(num)"
+            
+            currentPage.addSubview(groupHeader)
+            
+            groupHeader.widthAnchor.constraint(equalTo: lastView.widthAnchor, multiplier: 1, constant: 0).isActive = true
+            groupHeader.topAnchor.constraint(equalTo: lastView.bottomAnchor, constant: 40).isActive = true
+            groupHeader.centerXAnchor.constraint(equalTo: lastView.centerXAnchor, constant: 0).isActive = true
+            groupHeader.sizeToFit()
+            groupHeader.layoutIfNeeded()
+            
+            
+            
+            let width = groupHeader.frame.size.width
+            let height = width * 0.6
+            let rightAnchor = groupHeader.rightAnchor
+            let leftAnchor = groupHeader.leftAnchor
+            
+            lastView = groupHeader
+            chechForPage(lastView: lastView)
+            
+            
+            
+            let rowView1 = otImageRowView()
+            currentPage.addSubview(rowView1)
+            rowView1.imgLeft.imgView.image = imgArray[0]
+            if imgArray.count > 1
+            {
+                rowView1.imgRight.imgView.image = imgArray[1]
+            }
+
+            rowView1.widthAnchor.constraint(equalToConstant: width).isActive = true
+            rowView1.heightAnchor.constraint(equalToConstant: height).isActive = true
+            rowView1.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+            rowView1.topAnchor.constraint(equalTo: lastView.bottomAnchor).isActive = true
+            rowView1.layoutIfNeeded()
+
+            lastView = rowView1
+            chechForPage(lastView: lastView)
+
+
+
+
+            if imgArray.count > 2
+            {
+                let rowView2 = otImageRowView()
+                currentPage.addSubview(rowView2)
+                rowView2.imgLeft.imgView.image = imgArray[2]
+                if imgArray.count > 3
+                {
+                    rowView2.imgRight.imgView.image = imgArray[3]
+                }
+
+                rowView2.widthAnchor.constraint(equalToConstant: width).isActive = true
+                rowView2.heightAnchor.constraint(equalToConstant: height).isActive = true
+                rowView2.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+                rowView2.topAnchor.constraint(equalTo: lastView.bottomAnchor).isActive = true
+                rowView2.layoutIfNeeded()
+
+                lastView = rowView2
+                chechForPage(lastView: lastView)
+            }
+
+
+            if imgArray.count > 4
+            {
+                let rowView3 = otImageRowView()
+                currentPage.addSubview(rowView3)
+                rowView3.imgLeft.imgView.image = imgArray[4]
+                if imgArray.count > 5
+                {
+                    rowView3.imgRight.imgView.image = imgArray[5]
+                }
+
+                rowView3.widthAnchor.constraint(equalToConstant: width).isActive = true
+                rowView3.heightAnchor.constraint(equalToConstant: height).isActive = true
+                rowView3.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+                rowView3.topAnchor.constraint(equalTo: lastView.bottomAnchor).isActive = true
+                rowView3.layoutIfNeeded()
+
+                lastView = rowView3
+                chechForPage(lastView: lastView)
+            }
+
+            if imgArray.count > 6
+            {
+                let rowView4 = otImageRowView()
+                currentPage.addSubview(rowView4)
+                rowView4.imgLeft.imgView.image = imgArray[6]
+                if imgArray.count > 7
+                {
+                    rowView4.imgRight.imgView.image = imgArray[7]
+                }
+
+                rowView4.widthAnchor.constraint(equalToConstant: width).isActive = true
+                rowView4.heightAnchor.constraint(equalToConstant: height).isActive = true
+                rowView4.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+                rowView4.topAnchor.constraint(equalTo: lastView.bottomAnchor).isActive = true
+                rowView4.layoutIfNeeded()
+
+                lastView = rowView4
+                chechForPage(lastView: lastView)
+            }
+            
+        }
+        
+        
+        if listAddedSkrepka.count > 0
+        {
+            let skrepkaTitle = otTableTitle()
+            skrepkaTitle.textAlignment = .center
+            skrepkaTitle.text = "Назначенные действия"
+            skrepkaTitle.font = UIFont.systemFont(ofSize: 20)
+            currentPage.addSubview(skrepkaTitle)
+            
+            skrepkaTitle.widthAnchor.constraint(equalTo: lastView.widthAnchor, multiplier: 1, constant: 0).isActive = true
+            skrepkaTitle.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+            skrepkaTitle.topAnchor.constraint(equalTo: lastView.bottomAnchor, constant: 80).isActive = true
+            skrepkaTitle.layoutIfNeeded()
+            
+            lastView = skrepkaTitle
+            chechForPage(lastView: lastView)
+        
+        }
+        
+        for skrepka in listAddedSkrepka
+        {
+            
+            var labelHeights : [CGFloat] = []
+            let answers = getSkrepkaTextArray(skrepka: skrepka)
+            
+            let headerlbl = otTableLabeCell()
+            headerlbl.text = "Действие №\(listAddedSkrepka.index(of: skrepka)! + 1)"
+            headerlbl.textAlignment = .center
+            headerlbl.layer.borderWidth = 0
+            headerlbl.font = UIFont.systemFont(ofSize: 14)
+            currentPage.addSubview(headerlbl)
+            
+            headerlbl.widthAnchor.constraint(equalTo: lastView.widthAnchor, multiplier: 1, constant: 0).isActive = true
+            headerlbl.topAnchor.constraint(equalTo: lastView.bottomAnchor, constant: 40).isActive = true
+            headerlbl.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+            headerlbl.layoutIfNeeded()
+            
+            lastView = headerlbl
+            chechForPage(lastView: lastView)
+            
+            
+            
+            let row1 = UIView()
+            row1.translatesAutoresizingMaskIntoConstraints = false
+            currentPage.addSubview(row1)
+            
+            row1.widthAnchor.constraint(equalTo: lastView.widthAnchor, multiplier: 1, constant: 0).isActive = true
+            row1.topAnchor.constraint(equalTo: lastView.bottomAnchor, constant: 0).isActive = true
+            row1.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+            
+            ///
+            
+            let cellActionHeader = otTableLabeCell()
+            cellActionHeader.text = "Действие"
+            cellActionHeader.textAlignment = .center
+            row1.addSubview(cellActionHeader)
+            
+            cellActionHeader.widthAnchor.constraint(equalTo: row1.widthAnchor, multiplier: 0.4, constant: 0).isActive = true
+            cellActionHeader.topAnchor.constraint(equalTo: row1.topAnchor, constant: 0).isActive = true
+            cellActionHeader.leftAnchor.constraint(equalTo: row1.leftAnchor).isActive = true
+            cellActionHeader.layoutIfNeeded()
+            
+            let cellWhoHeader = otTableLabeCell()
+            cellWhoHeader.text = "Ответственный"
+            cellWhoHeader.textAlignment = .center
+            row1.addSubview(cellWhoHeader)
+            
+            cellWhoHeader.widthAnchor.constraint(equalTo: row1.widthAnchor, multiplier: 0.2, constant: 0).isActive = true
+            cellWhoHeader.topAnchor.constraint(equalTo: row1.topAnchor, constant: 0).isActive = true
+            cellWhoHeader.leftAnchor.constraint(equalTo: cellActionHeader.rightAnchor).isActive = true
+            cellWhoHeader.layoutIfNeeded()
+            
+            
+            let cellDateHeader = otTableLabeCell()
+            cellDateHeader.text = "Выполнить до"
+            cellDateHeader.textAlignment = .center
+            row1.addSubview(cellDateHeader)
+            
+            cellDateHeader.widthAnchor.constraint(equalTo: row1.widthAnchor, multiplier: 0.2, constant: 0).isActive = true
+            cellDateHeader.topAnchor.constraint(equalTo: row1.topAnchor, constant: 0).isActive = true
+            cellDateHeader.leftAnchor.constraint(equalTo: cellWhoHeader.rightAnchor).isActive = true
+            cellDateHeader.layoutIfNeeded()
+            
+            
+            
+            let cellPrioritetHeader = otTableLabeCell()
+            cellPrioritetHeader.text = "Приоритет"
+            cellPrioritetHeader.textAlignment = .center
+            row1.addSubview(cellPrioritetHeader)
+            
+            cellPrioritetHeader.widthAnchor.constraint(equalTo: row1.widthAnchor, multiplier: 0.2, constant: 0).isActive = true
+            cellPrioritetHeader.topAnchor.constraint(equalTo: row1.topAnchor, constant: 0).isActive = true
+            cellPrioritetHeader.leftAnchor.constraint(equalTo: cellDateHeader.rightAnchor).isActive = true
+            cellPrioritetHeader.layoutIfNeeded()
+            
+            row1.heightAnchor.constraint(equalTo: cellActionHeader.heightAnchor, multiplier: 1, constant: 0).isActive = true
+            row1.layoutIfNeeded()
+            
+            lastView = row1
+            chechForPage(lastView: lastView)
             
             
             
             
+            let row2 = UIView()
+            row2.translatesAutoresizingMaskIntoConstraints = false
+            currentPage.addSubview(row2)
             
+            row2.widthAnchor.constraint(equalTo: lastView.widthAnchor, multiplier: 1, constant: 0).isActive = true
+            row2.topAnchor.constraint(equalTo: lastView.bottomAnchor, constant: 0).isActive = true
+            row2.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
+            
+            
+            let lblAction = otTableLabeCell()
+            lblAction.text = answers[0]
+            row2.addSubview(lblAction)
+            
+            lblAction.widthAnchor.constraint(equalTo: row2.widthAnchor, multiplier: 0.4, constant: 0).isActive = true
+            lblAction.topAnchor.constraint(equalTo: row2.topAnchor, constant: 0).isActive = true
+            lblAction.leftAnchor.constraint(equalTo: row2.leftAnchor).isActive = true
+            lblAction.layoutIfNeeded()
+            
+            labelHeights.append(lblAction.frame.size.height)
+            
+            
+            let lblWho = otTableLabeCell()
+            lblWho.textAlignment = .center
+            lblWho.text = answers[1]
+            if answers[1] == bezOtvetaStr
+            {
+                lblWho.textColor = UIColor.red
+            }
+            row2.addSubview(lblWho)
+            
+            lblWho.widthAnchor.constraint(equalTo: row2.widthAnchor, multiplier: 0.2, constant: 0).isActive = true
+            lblWho.topAnchor.constraint(equalTo: row2.topAnchor, constant: 0).isActive = true
+            lblWho.leftAnchor.constraint(equalTo: lblAction.rightAnchor).isActive = true
+            lblWho.layoutIfNeeded()
+            
+            labelHeights.append(lblWho.frame.size.height)
+            
+            
+            let lblDate = otTableLabeCell()
+            lblDate.textAlignment = .center
+            lblDate.text = answers[2]
+
+            row2.addSubview(lblDate)
+            
+            lblDate.widthAnchor.constraint(equalTo: row2.widthAnchor, multiplier: 0.2, constant: 0).isActive = true
+            lblDate.topAnchor.constraint(equalTo: row2.topAnchor, constant: 0).isActive = true
+            lblDate.leftAnchor.constraint(equalTo: lblWho.rightAnchor).isActive = true
+            lblDate.layoutIfNeeded()
+            
+            labelHeights.append(lblDate.frame.size.height)
+            
+            
+            let lblPrioritet = otTableLabeCell()
+            lblPrioritet.textAlignment = .center
+            lblPrioritet.text = answers[3]
+            
+            row2.addSubview(lblPrioritet)
+            
+            lblPrioritet.widthAnchor.constraint(equalTo: row2.widthAnchor, multiplier: 0.2, constant: 0).isActive = true
+            lblPrioritet.topAnchor.constraint(equalTo: row2.topAnchor, constant: 0).isActive = true
+            lblPrioritet.leftAnchor.constraint(equalTo: lblDate.rightAnchor).isActive = true
+            lblPrioritet.layoutIfNeeded()
+            
+            
+            if skrepka.prioritet == 1
+            {
+                lblPrioritet.textColor = gh.otLime
+            }
+            
+            if skrepka.prioritet == 2
+            {
+                lblPrioritet.textColor = gh.otYellow
+            }
+            
+            if skrepka.prioritet == 3
+            {
+                lblPrioritet.textColor = UIColor.red
+            }
+        
+            
+            labelHeights.append(lblPrioritet.frame.size.height)
+            
+            let max = labelHeights.max()!
+            
+            row2.heightAnchor.constraint(equalToConstant: max).isActive = true
+            lblAction.heightAnchor.constraint(equalToConstant: max).isActive = true
+            lblWho.heightAnchor.constraint(equalToConstant: max).isActive = true
+            lblDate.heightAnchor.constraint(equalToConstant: max).isActive = true
+            lblPrioritet.heightAnchor.constraint(equalToConstant: max).isActive = true
+            
+            lastView = row1
+            chechForPage(lastView: lastView)
         }
         
         
         
         
         
-        
-        
-        
         listOfPages.append(currentPage)
-        
-        view.addSubview(currentPage)
-        
         currentPage.layoutIfNeeded()
-        view.layoutIfNeeded()
         
         let fileName = "testPdf2.pdf"
         
@@ -1419,394 +1740,456 @@ class MakeOtchet: UIViewController
             print(error ,"adsfasdfsdafas" )
         }
         
-    }
-
-    
-    func chechForPage(lastView : UIView)
-    {
-        currentPage.layoutIfNeeded()
-        let viewMinY = lastView.frame.origin.y + lastView.frame.size.height
         
-        if viewMinY > 830
-        {
-            let lastViewHeight = lastView.frame.size.height
-            
-            lastView.removeFromSuperview()
-            
-            let finishedPage = currentPage!
-            listOfPages.append(finishedPage)
-            
-            currentPage = UIView(frame: CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight))
-            currentPage.addSubview(lastView)
-            
-            lastView.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 1, constant: -widthMinus).isActive = true
-            lastView.heightAnchor.constraint(equalToConstant: lastViewHeight).isActive = true
-            lastView.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor, constant: 0).isActive = true
-            lastView.topAnchor.constraint(equalTo: currentPage.topAnchor, constant: beginTopMargin).isActive = true
-            lastView.layoutIfNeeded()
-        }
-       
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    func getAnswerFromQuestion (quest : Model_Question) -> String
-    {
-        var answerStr : String!
         
-        if quest.questionType != 2
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        func getAnswerFromQuestion (quest : Model_Question) -> String
         {
-            var selectedInt = 999
+            var answerStr : String!
             
-            for btn in quest.auditButtons
+            if quest.questionType != 2
             {
-                if btn.isOn
+                var selectedInt = 999
+                
+                for btn in quest.auditButtons
                 {
-                    selectedInt = quest.auditButtons.index(of: btn)!
-                    break
+                    if btn.isOn
+                    {
+                        selectedInt = quest.auditButtons.index(of: btn)!
+                        break
+                    }
                 }
+                
+                if quest.questionType == 0
+                {
+                    switch selectedInt
+                    {
+                    case 0 :
+                        answerStr = "Да"
+                    case 1 :
+                        answerStr = "Нет"
+                    case 2:
+                        answerStr = "Н/А"
+                    case 999:
+                        answerStr = bezOtvetaStr
+                    default:
+                        break
+                    }
+                }
+                
+                
+                if quest.questionType == 1
+                {
+                    switch selectedInt
+                    {
+                    case 0 :
+                        answerStr = "Безопасно"
+                    case 1 :
+                        answerStr = "Рискованно"
+                    case 2:
+                        answerStr = "Н/А"
+                    case 999:
+                        answerStr = bezOtvetaStr
+                    default:
+                        break
+                    }
+                }
+                
+                
             }
             
-            if quest.questionType == 0
+            if quest.questionType == 2
             {
-                switch selectedInt
+                var selectedInt = 999
+                
+                for btn in quest.auditButtons
                 {
-                case 0 :
-                    answerStr = "Да"
-                case 1 :
-                    answerStr = "Нет"
-                case 2:
-                    answerStr = "Н/А"
-                case 999:
+                    if btn.isOn
+                    {
+                        selectedInt = quest.auditButtons.index(of: btn)!
+                        break
+                    }
+                }
+                
+                if selectedInt == 999
+                {
                     answerStr = bezOtvetaStr
-                default:
-                    break
                 }
-            }
-            
-            
-            if quest.questionType == 1
-            {
-                switch selectedInt
+                else
                 {
-                case 0 :
-                    answerStr = "Безопасно"
-                case 1 :
-                    answerStr = "Рискованно"
-                case 2:
-                    answerStr = "Н/А"
-                case 999:
-                    answerStr = bezOtvetaStr
-                default:
-                    break
+                    answerStr = quest.answerVariants[selectedInt]
                 }
             }
             
-            
+            return answerStr
         }
         
-        if quest.questionType == 2
+        
+        
+        
+        
+        
+        func getQuestionColor(quest : Model_Question) -> UIColor
         {
-            var selectedInt = 999
             
-            for btn in quest.auditButtons
+            
+            let green = UIColor(displayP3Red: 79/255, green: 201/255, blue: 150/255, alpha: 1)
+            let red = UIColor(displayP3Red: 215/255, green: 91/255, blue: 95/255, alpha: 1)
+            
+            
+            var answerColor : UIColor!
+            
+            if quest.questionType != 2
             {
-                if btn.isOn
+                var selectedInt = 999
+                
+                for btn in quest.auditButtons
                 {
-                    selectedInt = quest.auditButtons.index(of: btn)!
-                    break
+                    if btn.isOn
+                    {
+                        selectedInt = quest.auditButtons.index(of: btn)!
+                        break
+                    }
                 }
-            }
-            
-            if selectedInt == 999
-            {
-                answerStr = bezOtvetaStr
-            }
-            else
-            {
-                answerStr = quest.answerVariants[selectedInt]
-            }
-        }
-        
-        return answerStr
-    }
-    
-    
-    
-    
-    
-    
-    func getQuestionColor(quest : Model_Question) -> UIColor
-    {
-        
-        
-        let green = UIColor(displayP3Red: 79/255, green: 201/255, blue: 150/255, alpha: 1)
-        let red = UIColor(displayP3Red: 215/255, green: 91/255, blue: 95/255, alpha: 1)
-        
-        
-        var answerColor : UIColor!
-        
-        if quest.questionType != 2
-        {
-            var selectedInt = 999
-            
-            for btn in quest.auditButtons
-            {
-                if btn.isOn
+                
+                if quest.questionType == 0
                 {
-                    selectedInt = quest.auditButtons.index(of: btn)!
-                    break
+                    switch selectedInt
+                    {
+                    case 0 :
+                        answerColor = green
+                    case 1 :
+                        answerColor = red
+                    case 2:
+                        answerColor = UIColor.clear
+                    case 999:
+                        answerColor = UIColor.clear
+                    default:
+                        answerColor = UIColor.clear
+                    }
                 }
-            }
-            
-            if quest.questionType == 0
-            {
-                switch selectedInt
+                
+                
+                if quest.questionType == 1
                 {
-                case 0 :
-                    answerColor = green
-                case 1 :
-                    answerColor = red
-                case 2:
-                    answerColor = UIColor.clear
-                case 999:
-                    answerColor = UIColor.clear
-                default:
-                    answerColor = UIColor.clear
+                    switch selectedInt
+                    {
+                    case 0 :
+                        answerColor = green
+                    case 1 :
+                        answerColor = red
+                    case 2:
+                        answerColor = UIColor.clear
+                    case 999:
+                        answerColor = UIColor.clear
+                    default:
+                        answerColor = UIColor.clear
+                    }
                 }
+                
+                
             }
             
-            
-            if quest.questionType == 1
+            if quest.questionType == 2
             {
-                switch selectedInt
-                {
-                case 0 :
-                    answerColor = green
-                case 1 :
-                    answerColor = red
-                case 2:
-                    answerColor = UIColor.clear
-                case 999:
-                    answerColor = UIColor.clear
-                default:
-                    answerColor = UIColor.clear
-                }
+                answerColor = UIColor.clear
             }
             
+            return answerColor
+        }
+        
+        
+        
+        
+        func getQuestionDopStr (quest : Model_Question) -> String
+        {
+            var dopString = ""
             
-        }
-        
-        if quest.questionType == 2
-        {
-            answerColor = UIColor.clear
-        }
-        
-        return answerColor
-    }
-    
-    
-    
-    
-    func getQuestionDopStr (quest : Model_Question) -> String
-    {
-        var dopString = ""
-        
-        if quest.skrepka != nil
-        {
-            listAddedSkrepka.append(quest.skrepka!)
-            dopString = "Назначено действие : действие №\(listAddedSkrepka.count)"
-        }
-        
-        if quest.addedImages.count > 0
-        {
-            listAddedImagesGroup.append(quest.addedImages)
+            if quest.skrepka != nil
+            {
+                listAddedSkrepka.append(quest.skrepka!)
+                dopString = "Назначено действие : действие №\(listAddedSkrepka.count)"
+            }
             
-            if  quest.skrepka != nil
+            if quest.addedImages.count > 0
             {
-                dopString += "\n"
-            }
-            dopString += "Добавлены фотографии : приложение №\(listAddedImagesGroup.count)"
-        }
-        
-        if quest.commentStr != nil
-        {
-            if quest.skrepka != nil || quest.addedImages.count > 0
-            {
-                dopString += "\n"
-            }
-            dopString += "Заметка аудитора : \(quest.commentStr!)"
-        }
-        
-        return dopString
-    }
-    
-    
-    
-    func getElementDopStr(element : Audit_Element) -> String
-    {
-        var dopString = ""
-        if element.skrepka != nil
-        {
-            listAddedSkrepka.append(element.skrepka!)
-            dopString = "Назначено действие : действие №\(listAddedSkrepka.count)"
-        }
-        
-        if element is Model_Media
-        {
-            if (element as! Model_Media).addedPhoto != nil
-            {
-                if element.skrepka != nil
+                listAddedImagesGroup.append(quest.addedImages)
+                
+                if  quest.skrepka != nil
                 {
                     dopString += "\n"
                 }
-                
-                listAddedImagesGroup.append([(element as! Model_Media).addedPhoto])
                 dopString += "Добавлены фотографии : приложение №\(listAddedImagesGroup.count)"
             }
+            
+            if quest.commentStr != nil
+            {
+                if quest.skrepka != nil || quest.addedImages.count > 0
+                {
+                    dopString += "\n"
+                }
+                dopString += "Заметка аудитора : \(quest.commentStr!)"
+            }
+            
+            return dopString
         }
         
-        return dopString
-    }
-    
-    
-    func getDateStr (modelDate : Model_Date) -> String
-    {
-        var dateStr = ""
-        if modelDate.selectedDate != nil
+        
+        
+        func getElementDopStr(element : Audit_Element) -> String
         {
-            let formatter = DateFormatter()
-            formatter.locale = NSLocale(localeIdentifier: "ru_RU") as Locale?
-            if modelDate.showDate == 1 && modelDate.showTime == 1
+            var dopString = ""
+            if element.skrepka != nil
             {
-                formatter.dateFormat = "yyyy-MMMM-dd HH:mm"
+                listAddedSkrepka.append(element.skrepka!)
+                dopString = "Назначено действие : действие №\(listAddedSkrepka.count)"
             }
-            else
+            
+            if element is Model_Media
             {
-                if modelDate.showTime == 1
+                if (element as! Model_Media).addedPhoto != nil
                 {
-                    formatter.dateFormat = "HH:mm"
-                }
-                
-                if modelDate.showDate == 1
-                {
-                    formatter.dateFormat = "yyyy-MMMM-dd"
+                    if element.skrepka != nil
+                    {
+                        dopString += "\n"
+                    }
+                    
+                    listAddedImagesGroup.append([(element as! Model_Media).addedPhoto])
+                    dopString += "Добавлены фотографии : приложение №\(listAddedImagesGroup.count)"
                 }
             }
             
-            dateStr = formatter.string(from: modelDate.selectedDate!)
-        }
-        else
-        {
-            dateStr = bezOtvetaStr
+            return dopString
         }
         
+        
+        func getDateStr (modelDate : Model_Date) -> String
+        {
+            var dateStr = ""
+            if modelDate.selectedDate != nil
+            {
+                let formatter = DateFormatter()
+                formatter.locale = NSLocale(localeIdentifier: "ru_RU") as Locale?
+                if modelDate.showDate == 1 && modelDate.showTime == 1
+                {
+                    formatter.dateFormat = "yyyy-MMMM-dd HH:mm"
+                }
+                else
+                {
+                    if modelDate.showTime == 1
+                    {
+                        formatter.dateFormat = "HH:mm"
+                    }
+                    
+                    if modelDate.showDate == 1
+                    {
+                        formatter.dateFormat = "yyyy-MMMM-dd"
+                    }
+                }
+                
+                dateStr = formatter.string(from: modelDate.selectedDate!)
+            }
+            else
+            {
+                dateStr = bezOtvetaStr
+            }
+            
+            return dateStr
+        }
+        
+        
+        func getInfoStr(modelInfo : Model_Info) -> String
+        {
+            var answerStr = ""
+            if modelInfo.text != nil
+            {
+                answerStr += modelInfo.text!
+            }
+            if modelInfo.urlStr != nil
+            {
+                if modelInfo.text != nil
+                {
+                    answerStr += "\n"
+                }
+                answerStr += modelInfo.urlStr
+            }
+            
+            return answerStr
+        }
+        
+        
+        
+        func getQuestVarAnswer(qVar : Model_QuestVar) -> String
+        {
+            var answerStr = ""
+            
+            for btn in qVar.auditToggButtons
+            {
+                if btn.isOn
+                {
+                    let index = qVar.auditToggButtons.index(of: btn)
+                    
+                    if answerStr != ""
+                    {
+                        answerStr += "\n"
+                    }
+                    
+                    answerStr += qVar.answers[index!]
+                }
+            }
+            
+            if answerStr == ""
+            {
+                answerStr = bezOtvetaStr
+            }
+            
+            return answerStr
+        }
+        
+        
+        func getSliderStr(seek : Model_Seeker) -> String
+        {
+            var answerStr = ""
+            
+            let min = seek.min!
+            let step = seek.step!
+            let val = Double(seek.lastSliderIndex)
+            let valueToShow = min + (step * val)
+            
+            answerStr = String(valueToShow)
+            return answerStr
+        }
+        
+        func getTimerString(timer : Model_Timer) -> String
+        {
+            let seconds = timer.timerSeconds
+            var minutes = Int(seconds / 60)
+            
+            minutes = Int(seconds / 60)
+            
+            var secStr : String
+            
+            var minStr : String
+            
+            if minutes < 10
+            {
+                minStr = String(minutes)
+            }
+            else
+            {
+                minStr = String(minutes)
+            }
+            
+            if (seconds % 60) < 10
+            {
+                secStr = "0\(seconds % 60)"
+            }
+            else
+            {
+                secStr = String(seconds % 60)
+            }
+            
+            let finalStr = "\(minStr):\(secStr)"
+            
+            return finalStr
+        }
+        
+        
+        func chechForPage(lastView : UIView)
+        {
+            currentPage.layoutIfNeeded()
+            let viewMinY = lastView.frame.origin.y + lastView.frame.size.height
+            
+            if viewMinY > 830
+            {
+                let lastViewHeight = lastView.frame.size.height
+                let lastViewWidth = lastView.frame.size.width
+                
+                lastView.removeFromSuperview()
+                
+                let finishedPage = currentPage!
+                listOfPages.append(finishedPage)
+                
+                currentPage = UIView(frame: CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight))
+                currentPage.addSubview(lastView)
+                
+                lastView.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 1, constant: -widthMinus).isActive = true
+                lastView.heightAnchor.constraint(equalToConstant: lastViewHeight).isActive = true
+                lastView.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor, constant: 0).isActive = true
+                lastView.topAnchor.constraint(equalTo: currentPage.topAnchor, constant: beginTopMargin).isActive = true
+                lastView.layoutIfNeeded()
+            }
+            
+        }
+    
+    func timeStrFromDate (date : Date) -> String
+    {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        let minutes = calendar.component(.minute, from: date)
+        
+        let hourStr = hour < 10 ? "0\(hour)" : String(hour)
+        let minStr = minutes < 10 ? "0\(minutes)" : String(minutes)
+        
+        let dateStr = "\(hourStr):\(minStr)"
         return dateStr
     }
     
     
-    func getInfoStr(modelInfo : Model_Info) -> String
+    func getSkrepkaTextArray (skrepka : Skrepka_Data) -> [String]
     {
-        var answerStr = ""
-        if modelInfo.text != nil
+        var answers : [String] = []
+        
+        answers.append(skrepka.strTodo!)
+        if skrepka.whoTodo != nil && skrepka.whoTodo! != ""
         {
-            answerStr += modelInfo.text!
-        }
-        if modelInfo.urlStr != nil
-        {
-            if modelInfo.text != nil
-            {
-                answerStr += "\n"
-            }
-            answerStr += modelInfo.urlStr
-        }
-        
-        return answerStr
-    }
-    
-    
-    
-    func getQuestVarAnswer(qVar : Model_QuestVar) -> String
-    {
-        var answerStr = ""
-        
-        for btn in qVar.auditToggButtons
-        {
-            if btn.isOn
-            {
-                let index = qVar.auditToggButtons.index(of: btn)
-                
-                if answerStr != ""
-                {
-                    answerStr += "\n"
-                }
-                
-                answerStr += qVar.answers[index!]
-            }
-        }
-        
-        if answerStr == ""
-        {
-            answerStr = bezOtvetaStr
-        }
-        
-        return answerStr
-    }
-    
-    
-    func getSliderStr(seek : Model_Seeker) -> String
-    {
-        var answerStr = ""
-        
-        let min = seek.min!
-        let step = seek.step!
-        let val = Double(seek.lastSliderIndex)
-        let valueToShow = min + (step * val)
-        
-        answerStr = String(valueToShow)
-        return answerStr
-    }
-    
-    func getTimerString(timer : Model_Timer) -> String
-    {
-        let seconds = timer.timerSeconds
-        var minutes = Int(seconds / 60)
-        
-        minutes = Int(seconds / 60)
-        
-        var secStr : String
-        
-        var minStr : String
-        
-        if minutes < 10
-        {
-            minStr = "0\(minutes)"
+            answers.append(skrepka.whoTodo!)
         }
         else
         {
-            minStr = String(minutes)
+            answers.append(bezOtvetaStr)
         }
         
-        if (seconds % 60) < 10
-        {
-            secStr = "0\(seconds % 60)"
-        }
-        else
-        {
-            secStr = String(seconds % 60)
-        }
-        
-        let finalStr = "\(minStr):\(secStr)"
-        
-        return finalStr
-    }
-    
+        let formatter = DateFormatter()
+        formatter.locale = NSLocale(localeIdentifier: "ru_RU") as Locale?
 
+        formatter.dateFormat = "yyyy-MMMM-dd"
+        
+        answers.append(formatter.string(from: skrepka.dateToDo!))
+        
+        switch skrepka.prioritet
+        {
+            case 0:
+                answers.append("Без приоритета")
+            case 1:
+                answers.append("Низкий")
+            case 2:
+                answers.append("Средний")
+            case 3:
+                answers.append("Высокий")
+            default:
+                break
+        }
+        
+        return answers
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
+

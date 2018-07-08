@@ -322,6 +322,55 @@ class otTableLabeCell : UILabel
 }
 
 
+
+
+class otTableTextViewCell : UITextView
+{
+    let gh = GlobalHelper.sharedInstance
+    let padding = UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 4)
+    
+    
+    func customInit()
+    {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.font = UIFont.systemFont(ofSize: 11)
+        self.isScrollEnabled = false
+        self.sizeToFit()
+        self.layer.borderWidth = 0.4
+        self.textContainerInset = padding
+        self.textAlignment = .left
+        self.layoutIfNeeded()
+    }
+    
+    
+    
+    
+//    override var intrinsicContentSize : CGSize
+//    {
+//        let superContentSize = super.intrinsicContentSize
+//        let width = superContentSize.width + padding.left + padding.right
+//        let heigth = superContentSize.height + padding.top + padding.bottom
+//        return CGSize(width: width, height: heigth)
+//    }
+    
+    
+    override init(frame: CGRect, textContainer: NSTextContainer?)
+    {
+        super.init(frame: frame, textContainer: textContainer)
+        customInit()
+    }
+    
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
+
+
+
+
 class otImagePreview : UIView
 {
     let gh = GlobalHelper.sharedInstance
@@ -429,7 +478,52 @@ class otCheckBoxNo : UIView
     }
 }
 
-
+class otImageRowView : UIView
+{
+    let gh = GlobalHelper.sharedInstance
+    var imgLeft : otImagePreview!
+    var imgRight: otImagePreview!
+    
+    func customInit()
+    {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.layer.borderWidth = 0.4
+        
+        self.imgLeft = otImagePreview()
+        self.imgLeft.imgView.contentMode = .scaleAspectFit
+        self.imgLeft.layer.borderWidth = 0.4
+        self.addSubview(imgLeft)
+        
+        self.imgLeft.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5, constant: 0).isActive = true
+        self.imgLeft.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.imgLeft.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        self.imgLeft.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        self.imgLeft.layoutIfNeeded()
+        
+        
+        self.imgRight = otImagePreview()
+        self.imgRight.imgView.contentMode = .scaleAspectFit
+        self.imgRight.layer.borderWidth = 0.4
+        self.addSubview(imgRight)
+        
+        self.imgRight.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5, constant: 0).isActive = true
+        self.imgRight.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.imgRight.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        self.imgRight.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        self.imgRight.layoutIfNeeded()
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
 
 
 

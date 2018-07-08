@@ -24,6 +24,7 @@
 		E436AC7720DFFFF200A80C02 /* UserLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E436AC7620DFFFF200A80C02 /* UserLoginVC.swift */; };
 		E436AC7A20E00C7900A80C02 /* myExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E436AC7920E00C7900A80C02 /* myExtensions.swift */; };
 		E43D6DB520EED1E9001B8DD4 /* SkrepkaCommentDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43D6DB420EED1E9001B8DD4 /* SkrepkaCommentDialog.swift */; };
+		E43DEEA220F12BBB00F9B2B0 /* MakeOtchetClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43DEEA120F12BBB00F9B2B0 /* MakeOtchetClass.swift */; };
 		E441D8E920EB9A7500FDE959 /* myPodpisDialogVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E441D8E820EB9A7500FDE959 /* myPodpisDialogVC.swift */; };
 		E4422FD420ED14E100E49E4A /* Skrepka_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4422FD320ED14E100E49E4A /* Skrepka_Data.swift */; };
 		E4422FD620ED15CB00E49E4A /* mySkrepkaDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4422FD520ED15CB00E49E4A /* mySkrepkaDialog.swift */; };
@@ -82,6 +83,7 @@
 		E436AC7620DFFFF200A80C02 /* UserLoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginVC.swift; sourceTree = "<group>"; };
 		E436AC7920E00C7900A80C02 /* myExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myExtensions.swift; sourceTree = "<group>"; };
 		E43D6DB420EED1E9001B8DD4 /* SkrepkaCommentDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkrepkaCommentDialog.swift; sourceTree = "<group>"; };
+		E43DEEA120F12BBB00F9B2B0 /* MakeOtchetClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeOtchetClass.swift; sourceTree = "<group>"; };
 		E441D8E820EB9A7500FDE959 /* myPodpisDialogVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myPodpisDialogVC.swift; sourceTree = "<group>"; };
 		E4422FD320ED14E100E49E4A /* Skrepka_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skrepka_Data.swift; sourceTree = "<group>"; };
 		E4422FD520ED15CB00E49E4A /* mySkrepkaDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mySkrepkaDialog.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				E43D6DB420EED1E9001B8DD4 /* SkrepkaCommentDialog.swift */,
 				E435E94120EFB74E008626A2 /* MakeOtchet.swift */,
 				E435E94320EFCB52008626A2 /* myOtchetViews.swift */,
+				E43DEEA120F12BBB00F9B2B0 /* MakeOtchetClass.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				E488CAD220E2CF7700EEE6AB /* Model_TextLarge.swift in Sources */,
 				E488CAC420E29BF100EEE6AB /* Model_CheckBox.swift in Sources */,
 				E435E94220EFB74E008626A2 /* MakeOtchet.swift in Sources */,
+				E43DEEA220F12BBB00F9B2B0 /* MakeOtchetClass.swift in Sources */,
 				E41EB25B20E7DFBA00362BCA /* MyViewController.swift in Sources */,
 				E488CADA20E2D51600EEE6AB /* MySqlite.swift in Sources */,
 				E4B8FDA220E02E6800A4C5E8 /* GlobalHelper.swift in Sources */,

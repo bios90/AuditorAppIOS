@@ -309,9 +309,8 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
         
         okButton.click =
             {
-                self.gc.shablonTomMakeOtchet = self.shablonToShow
-                let makeOtchet = MakeOtchet()
-                self.present(makeOtchet, animated: true, completion: nil)
+                let mkc = MakeOtchetClass()
+                mkc.makePdf(shablon: self.shablonToShow)
             }
     }
     
@@ -1991,6 +1990,18 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                                     minutes = Int(seconds / 60)
                                     
                                     var secStr : String
+                                    
+                                    var minStr : String
+                                    
+                                    if minutes < 10
+                                    {
+                                        minStr = "0\(minutes)"
+                                    }
+                                    else
+                                    {
+                                        minStr = String(minutes)
+                                    }
+                                    
                                     if (seconds % 60) < 10
                                     {
                                         secStr = "0\(seconds % 60)"
@@ -2000,7 +2011,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                                         secStr = String(seconds % 60)
                                     }
                                     
-                                    let finalStr = "0\(minutes):\(secStr)"
+                                    let finalStr = "\(minStr):\(secStr)"
                                     
                                     lblForCount.text = finalStr
                                     
