@@ -281,37 +281,64 @@ class otchetQuestion : UIView
 class otTableLabeCell : UILabel
 {
     let gh = GlobalHelper.sharedInstance
-    let padding = UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 4)
+    let padding = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
     
+    
+    @IBInspectable var topInset: CGFloat = 2
+    @IBInspectable var bottomInset: CGFloat = 2
+    @IBInspectable var leftInset: CGFloat = 4
+    @IBInspectable var rightInset: CGFloat = 4
     
     func customInit()
     {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.font = UIFont.systemFont(ofSize: 11)
         self.numberOfLines = 0
-        self.sizeToFit()
+        self.adjustsFontSizeToFitWidth = true
         self.layer.borderWidth = 0.4
         
+        
+        self.sizeToFit()
         self.layoutIfNeeded()
     }
     
     
+    
+    
     override func drawText(in rect: CGRect)
     {
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, padding))
+        print("draw text called")
+        let insets = UIEdgeInsets.init(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+         super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
     }
     
-    override var intrinsicContentSize : CGSize
+    
+    
+    override var intrinsicContentSize: CGSize
     {
-        let superContentSize = super.intrinsicContentSize
-        let width = superContentSize.width + padding.left + padding.right
-        let heigth = superContentSize.height + padding.top + padding.bottom
-        return CGSize(width: width, height: heigth)
+        print("draw insioin")
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + leftInset + rightInset,
+                      height: size.height + topInset + bottomInset)
     }
+//
+//    override func drawText(in rect: CGRect)
+//    {
+//        super.drawText(in: UIEdgeInsetsInsetRect(rect, padding))
+//    }
+//
+//    override var intrinsicContentSize : CGSize
+//    {
+//        let superContentSize = super.intrinsicContentSize
+//        let width = superContentSize.width + padding.left + padding.right
+//        let heigth = superContentSize.height + padding.top + padding.bottom
+//        return CGSize(width: width, height: heigth)
+//    }
     
     override init(frame: CGRect)
     {
         super.init(frame: frame)
+        drawText(in: frame)
         customInit()
     }
     required init?(coder aDecoder: NSCoder)
@@ -342,16 +369,6 @@ class otTableTextViewCell : UITextView
         self.layoutIfNeeded()
     }
     
-    
-    
-    
-//    override var intrinsicContentSize : CGSize
-//    {
-//        let superContentSize = super.intrinsicContentSize
-//        let width = superContentSize.width + padding.left + padding.right
-//        let heigth = superContentSize.height + padding.top + padding.bottom
-//        return CGSize(width: width, height: heigth)
-//    }
     
     
     override init(frame: CGRect, textContainer: NSTextContainer?)

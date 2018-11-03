@@ -13,4 +13,11 @@ class Model_CheckBox: Audit_Element
 {
     var weight : Int!
     var auditCheckBox : M13Checkbox!
+    
+    var commentStr : String!
+    var neOzenivaetsyz : Int = 0
+    
+    var neOzenBtn : myBtnTogg!
+    
+    var commentView : myAuditView!
 }

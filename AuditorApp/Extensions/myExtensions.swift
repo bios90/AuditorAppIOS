@@ -1,10 +1,79 @@
 import UIKit
 import Foundation
 import Firebase
+import CoreData
 
 let AvenirMedium : String = "Avenir-Medium"
 let segueToUserMEnu : String = "toUserMenu"
 
+
+
+
+
+
+extension UIView
+{
+    func visiblity(gone: Bool, dimension: CGFloat = 0.0, attribute: NSLayoutAttribute = .height) -> Void {
+        if let constraint = (self.constraints.filter{$0.firstAttribute == attribute}.first) {
+            constraint.constant = gone ? 0.0 : dimension
+            //self.layoutIfNeeded()
+            self.isHidden = gone
+        }
+    }
+}
+
+extension String
+{
+    func trim() -> String
+    {
+        return self.trimmingCharacters(in: CharacterSet.whitespaces)
+    }
+}
+
+extension UIImage
+{
+    enum JPEGQuality: CGFloat
+    {
+        case lowest  = 0
+        case low     = 0.25
+        case medium  = 0.5
+        case high    = 0.75
+        case highest = 1
+    }
+    
+    func jpeg(_ quality: JPEGQuality) -> Data?
+    {
+        return UIImageJPEGRepresentation(self, quality.rawValue)
+    }
+}
+
+extension UIView
+{
+    
+    func asImage() -> UIImage
+    {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image
+            {
+                rendererContext in
+                layer.render(in: rendererContext.cgContext)
+            }
+    }
+}
+
+extension UIImage
+{
+    
+    func resizeByByte(maxByte: Int) {
+        var compressQuality: CGFloat = 1
+        var imageByte = UIImageJPEGRepresentation(self, 1)?.count
+        
+        while imageByte! > maxByte {
+            imageByte = UIImageJPEGRepresentation(self, compressQuality)?.count
+            compressQuality -= 0.1
+        }
+    }
+}
 
 
 extension UIResponder
@@ -33,9 +102,6 @@ extension Date
 
 extension String
 {
-    
-    
-    
     
     func isValidURL() -> Bool
     {
@@ -118,10 +184,17 @@ extension UIViewController : btnDownloadDelegate
     
     func downloadAudit(fbId : String)
     {
+        let dialog = myDialog()
+        let currentVc = UIApplication.topViewController()
+        
+        dialog.show(message: "Загрузка", view: (currentVc?.view!)!)
         
         let shablon = Model_Shablon()
-        GlobalHelper.sharedInstance.dbShablonRef.child(fbId).observe(.value)
-        { (snapshot) in
+
+        //GlobalHelper.sharedInstance.dbShablonRef.child(fbId).observe(.value)
+        GlobalHelper.sharedInstance.dbShablonRef.child(fbId).observeSingleEvent(of: .value)
+        {
+            (snapshot) in
             
             let fbId = snapshot.key
             let name = snapshot.childSnapshot(forPath: FBNames.shIn.SHABLON_NAME).value as! String
@@ -166,6 +239,14 @@ extension UIViewController : btnDownloadDelegate
                     let questID = questSnap.childSnapshot(forPath: FBNames.shIn.QUESTION_ID).value as! String
                     let questType = questSnap.childSnapshot(forPath: FBNames.shIn.QUESTION_TYPE).value as! Int
                     
+                    var fatalNum = 0;
+                    
+                    if questSnap.hasChild(FBNames.shIn.IS_FATAL)
+                    {
+                        fatalNum = questSnap.childSnapshot(forPath: FBNames.shIn.IS_FATAL).value as! Int
+                    }
+
+                    
                     question.text = text
                     question.obyaz = obyaz
                     question.positionInLa = position
@@ -176,6 +257,8 @@ extension UIViewController : btnDownloadDelegate
                     
                     question.categNum = categNum
                     question.fbId = fbId
+                    
+                    question.isFatal = fatalNum;
                     
                     if questType == 2
                     {
@@ -501,7 +584,8 @@ extension UIViewController : btnDownloadDelegate
             
             DLShablon.downloadingShablon = shablon
             let saveTSQL = MySqlite()
-            saveTSQL.saveShablon(shablon: shablon)
+            saveTSQL.saveShablon(shablon: shablon,dialog: dialog)
+            
             //saveToSQLite.saveShablon(shablon: shablon)
             
         }
@@ -516,17 +600,5 @@ extension UIViewController : btnDownloadDelegate
         child.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         parent.addSubview(child)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

@@ -18,4 +18,13 @@ class Model_Info: Audit_Element
     
     var localFileName : String!
     var auditImage : UIImage!
+    
+    var smallHeight : CGFloat = 44
+    var fullHeight : CGFloat!
+   
+    var heightAnchor : NSLayoutConstraint!
+    
+    var auditViews : [UIView] = []
+
+    var expanded = true
 }

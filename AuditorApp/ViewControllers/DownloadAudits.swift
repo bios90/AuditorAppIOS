@@ -14,21 +14,99 @@ class DownloadAudits: UIViewController, UITableViewDelegate , UITableViewDataSou
         super.viewDidLoad()
         self.tbvAllAudits.backgroundColor = UIColor.clear
         
+        //lblAllAudits.isHidden = true
+        
+//
+//        let headerRed = UIView()
+//        headerRed.translatesAutoresizingMaskIntoConstraints = false
+//        headerRed.backgroundColor = gh.myRed
+//        view.addSubview(headerRed)
+//
+//        headerRed.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+//        headerRed.heightAnchor.constraint(equalToConstant: 38).isActive = true
+//        headerRed.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+//        headerRed.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        headerRed.layoutIfNeeded()
+//
+        
+        
+        
         tbvAllAudits.delegate = self
         tbvAllAudits.dataSource = self
         tbvAllAudits.separatorColor = UIColor.clear
         tbvAllAudits.allowsSelection = false
         
         
-        GlobalHelper.sharedInstance.setFont(viewArray: [lblAllAudits], size: 18)
-        GlobalHelper.sharedInstance.setTextColor(viewArray: [lblAllAudits], col: GlobalHelper.sharedInstance.myBejColor)
+        //GlobalHelper.sharedInstance.setFont(viewArray: [lblAllAudits], size: 18)
+        //GlobalHelper.sharedInstance.setTextColor(viewArray: [lblAllAudits], col: GlobalHelper.sharedInstance.myBejColor)
         
-        GlobalHelper.sharedInstance.addShadow(viewArray: [lblAllAudits])
+        //GlobalHelper.sharedInstance.addShadow(viewArray: [lblAllAudits])
         
         loadShablons()
         print(self.listOfAllShablons.count)
         
+        lblAllAudits.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        lblAllAudits.backgroundColor = UIColor.clear
         
+        let status = UIView()
+        view.insertSubview(status, at: 1)
+        status.backgroundColor = gh.myRed
+        status.translatesAutoresizingMaskIntoConstraints = false
+        
+        status.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        status.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        status.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        status.bottomAnchor.constraint(equalTo: lblAllAudits.bottomAnchor).isActive = true
+        status.layoutIfNeeded()
+        
+        tbvAllAudits.backgroundColor = UIColor.clear
+        tbvAllAudits.translatesAutoresizingMaskIntoConstraints = false
+        
+        tbvAllAudits.topAnchor.constraint(equalTo: status.bottomAnchor).isActive = true
+        tbvAllAudits.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tbvAllAudits.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tbvAllAudits.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tbvAllAudits.layoutIfNeeded()
+        
+        
+        
+        lblAllAudits.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(lblAllAudits)
+        lblAllAudits.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1, constant : -78).isActive = true
+        lblAllAudits.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        lblAllAudits.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        lblAllAudits.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        lblAllAudits.layoutIfNeeded()
+        
+        
+        
+        let backButtom = myBackArrowButton()
+        view.addSubview(backButtom)
+        
+        backButtom.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        backButtom.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        backButtom.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        backButtom.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        backButtom.layoutIfNeeded()
+        
+        
+        backButtom.click =
+            {
+                self.dismiss(animated: true, completion: nil)
+            }
+        
+        
+        let statusView = UIView()
+        statusView.translatesAutoresizingMaskIntoConstraints = false
+        statusView.backgroundColor = gh.myRed
+        self.view.addSubview(statusView)
+        
+        statusView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        statusView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        statusView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        statusView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        statusView.layoutIfNeeded()
     }
         
 
@@ -36,8 +114,8 @@ class DownloadAudits: UIViewController, UITableViewDelegate , UITableViewDataSou
     func loadShablons()
     {
         Dialog.shIn.show(message: "Загрузка", view: view)
-        
-        GlobalHelper.sharedInstance.dbShablonRef.observe(DataEventType.value)
+        //GlobalHelper.sharedInstance.dbShablonRef.observe(DataEventType.value)
+            gh.dbShablonRef.observeSingleEvent(of: .value)
         { (snapshot) in
             print(snapshot.childrenCount)
             
@@ -67,11 +145,13 @@ class DownloadAudits: UIViewController, UITableViewDelegate , UITableViewDataSou
                 self.listOfAllShablons.append(shablon)
                 
             }
+            Dialog.shIn.hide(afterTime: 0.2)
             self.tbvAllAudits.reloadData()
         }
         
         
-        Dialog.shIn.hide(afterTime: 1)
+        
+
         
         
 
@@ -184,36 +264,51 @@ class DownloadAudits: UIViewController, UITableViewDelegate , UITableViewDataSou
         return self.listOfAllShablons.count
     }
     
+    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+//    {
+//        let shablon = listOfAllShablons[indexPath.row]
+//
+//        let cell = DownloadAuditCell()
+//
+//        return cell
+//    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let shablon = listOfAllShablons[indexPath.row]
-        
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "downAuditCell", for: indexPath) as! DownloadAuditCell
-        
+        //let cell = DownloadAuditCell()
+
         cell.shablon = shablon
-        
+
         cell.viewRoot.backgroundColor = UIColor.clear
         cell.backgroundColor = UIColor.clear
         cell.viewLogoImg.backgroundColor = UIColor.clear
         cell.viewDownLoadBtn.backgroundColor = UIColor.clear
-        
-        
+
+
         cell.lblAuditName.text = shablon.name!
         cell.lblAuditPlace.text = String ("Место : \(shablon.place!)")
         cell.lblAuditAuthor.text = String("Автор : \(shablon.author!)")
-        
+
         GlobalHelper.sharedInstance.addShadow(viewArray: [cell.btnDownloadAudit,cell.customRootView,cell.imgAuditLogo])
-        
+
         GlobalHelper.sharedInstance.makeLittleCorners(viewArray: [cell.customRootView], radius: 6)
         GlobalHelper.sharedInstance.makeLittleCorners(viewArray: [cell.imgAuditLogo], radius: 4)
-        
+
         if(shablon.logoUrl != nil)
         {
             ImgHelper.shIn.loadImageFromURL(urlStr: shablon.logoUrl!, imgView: cell.imgAuditLogo)
         }
-        
-        cell.downloadDelegate = self
-        
+        else
+        {
+            cell.imgAuditLogo.image = UIImage(named: "defSrc")
+        }
+
+        //cell.downloadDelegate = self
+
         return cell
     }
     

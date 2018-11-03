@@ -6,4 +6,6 @@ class Model_Media: Audit_Element
     var defRootViewHeught : CGFloat!
     
     var addedPhoto : UIImage!
+    
+
 }

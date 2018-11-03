@@ -15,4 +15,10 @@ class GlobalClass: NSObject
     var shablonInWork : Model_Shablon!
     var currentBeginAuditVC : beginAuVC!
     var shablonTomMakeOtchet : Model_Shablon!
+    
+    var auditorName : String!
+    
+    var writeBigPhotos : Bool = true
+    
+    var otchetToUpload : Model_Otchet!
 }

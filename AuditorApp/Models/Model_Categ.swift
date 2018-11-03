@@ -12,6 +12,10 @@ class Model_Categ: NSObject
 {
     var categScroll : UIScrollView!
     
+    var weightSum : Int!
+    var weightGet : Int!
+    var weightPercent : Int!
+    
     var name : String!
     var categPosition : Int!
     var fbId : String!

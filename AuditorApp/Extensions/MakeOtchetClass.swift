@@ -1,4 +1,5 @@
 import UIKit
+import PDFKit
 import PDFGenerator
 
 let gh = GlobalHelper.sharedInstance
@@ -9,7 +10,7 @@ var pageHeight : CGFloat!
 
 let height26 : CGFloat = 26
 
-var shablon : Model_Shablon!
+var currentShablon : Model_Shablon!
 
 var lastView : UIView!
 
@@ -25,21 +26,27 @@ let bezOtvetaStr = "Без ответа"
 var listAddedSkrepka : [Skrepka_Data] = []
 var listAddedImagesGroup : [[UIImage]] = []
 
+
+var lblProcent : UILabel!
+
+
+let green = UIColor(displayP3Red: 79/255, green: 201/255, blue: 150/255, alpha: 1)
+let red = UIColor(displayP3Red: 215/255, green: 91/255, blue: 95/255, alpha: 1)
+
 class MakeOtchetClass
 {
-
     func makePdf(shablon : Model_Shablon)
     {
-        
-        //shablon = gc.shablonTomMakeOtchet
-        
-//        let widtgh = view.frame.size.width * 4
-//        let height = widtgh * 1.414
+        listAddedImagesGroup.removeAll()
+        listAddedSkrepka.removeAll()
+        currentShablon = shablon
+        countWeight()
         
         pageWidth = 595.2
         pageHeight = 841.8
         
         currentPage = UIView(frame: CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight))
+        currentPage.backgroundColor = UIColor.white
         
         
         let shablonNameLbl = UILabel()
@@ -52,19 +59,19 @@ class MakeOtchetClass
         shablonNameLbl.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 1, constant: 0).isActive = true
         shablonNameLbl.heightAnchor.constraint(equalToConstant: height26).isActive = true
         shablonNameLbl.centerXAnchor.constraint(equalTo: currentPage.centerXAnchor).isActive = true
-        shablonNameLbl.topAnchor.constraint(equalTo: currentPage.topAnchor, constant: 26).isActive = true
+        shablonNameLbl.topAnchor.constraint(equalTo: currentPage.topAnchor, constant: 48).isActive = true
         shablonNameLbl.layoutIfNeeded()
         
         let whoLbl = UILabel()
         whoLbl.translatesAutoresizingMaskIntoConstraints = false
-        whoLbl.text = "Проверяющий : Василий Пупкин"
+        whoLbl.text = "Проверяющий : \(gh.currentUser()[0]!) \(gh.currentUser()[1]!)"
         whoLbl.textAlignment = .left
         whoLbl.font = UIFont.systemFont(ofSize: 13)
         currentPage.addSubview(whoLbl)
         
-        whoLbl.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -20).isActive = true
+        whoLbl.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -22).isActive = true
         whoLbl.heightAnchor.constraint(equalToConstant: height26).isActive = true
-        whoLbl.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 10).isActive = true
+        whoLbl.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 22).isActive = true
         whoLbl.topAnchor.constraint(equalTo: shablonNameLbl.bottomAnchor, constant : 20).isActive = true
         whoLbl.layoutIfNeeded()
         
@@ -75,9 +82,9 @@ class MakeOtchetClass
         lblBeginTime.font = UIFont.systemFont(ofSize: 13)
         currentPage.addSubview(lblBeginTime)
         
-        lblBeginTime.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -20).isActive = true
+        lblBeginTime.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -22).isActive = true
         lblBeginTime.heightAnchor.constraint(equalToConstant: height26).isActive = true
-        lblBeginTime.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 10).isActive = true
+        lblBeginTime.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 22).isActive = true
         lblBeginTime.topAnchor.constraint(equalTo: whoLbl.bottomAnchor).isActive = true
         lblBeginTime.layoutIfNeeded()
         
@@ -88,9 +95,9 @@ class MakeOtchetClass
         lblEndTime.font = UIFont.systemFont(ofSize: 13)
         currentPage.addSubview(lblEndTime)
         
-        lblEndTime.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -20).isActive = true
+        lblEndTime.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -22).isActive = true
         lblEndTime.heightAnchor.constraint(equalToConstant: height26).isActive = true
-        lblEndTime.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 10).isActive = true
+        lblEndTime.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 22).isActive = true
         lblEndTime.topAnchor.constraint(equalTo: lblBeginTime.bottomAnchor).isActive = true
         lblEndTime.layoutIfNeeded()
         
@@ -101,9 +108,9 @@ class MakeOtchetClass
         lblPlace.font = UIFont.systemFont(ofSize: 13)
         currentPage.addSubview(lblPlace)
         
-        lblPlace.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -20).isActive = true
+        lblPlace.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -22).isActive = true
         lblPlace.heightAnchor.constraint(equalToConstant: height26).isActive = true
-        lblPlace.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 10).isActive = true
+        lblPlace.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 22).isActive = true
         lblPlace.topAnchor.constraint(equalTo: lblEndTime.bottomAnchor).isActive = true
         lblPlace.layoutIfNeeded()
         
@@ -116,23 +123,23 @@ class MakeOtchetClass
         lblCategNum.font = UIFont.systemFont(ofSize: 13)
         currentPage.addSubview(lblCategNum)
         
-        lblCategNum.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -20).isActive = true
+        lblCategNum.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -22).isActive = true
         lblCategNum.heightAnchor.constraint(equalToConstant: height26).isActive = true
-        lblCategNum.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 10).isActive = true
+        lblCategNum.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 22).isActive = true
         lblCategNum.topAnchor.constraint(equalTo: lblPlace.bottomAnchor).isActive = true
         lblCategNum.layoutIfNeeded()
         
         
         let lblAllBallsNum = UILabel()
         lblAllBallsNum.translatesAutoresizingMaskIntoConstraints = false
-        lblAllBallsNum.text = "Общее колличество баллов - \(99)"
+        lblAllBallsNum.text = "Общее колличество баллов - \(shablon.weightSum)"
         lblAllBallsNum.textAlignment = .left
         lblAllBallsNum.font = UIFont.systemFont(ofSize: 13)
         currentPage.addSubview(lblAllBallsNum)
         
-        lblAllBallsNum.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -20).isActive = true
+        lblAllBallsNum.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -22).isActive = true
         lblAllBallsNum.heightAnchor.constraint(equalToConstant: height26).isActive = true
-        lblAllBallsNum.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 10).isActive = true
+        lblAllBallsNum.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 22).isActive = true
         lblAllBallsNum.topAnchor.constraint(equalTo: lblCategNum.bottomAnchor).isActive = true
         lblAllBallsNum.layoutIfNeeded()
         
@@ -141,14 +148,14 @@ class MakeOtchetClass
         
         let lblGetBalls = UILabel()
         lblGetBalls.translatesAutoresizingMaskIntoConstraints = false
-        lblGetBalls.text = "Колличество набранных баллов - \(99)"
+        lblGetBalls.text = "Колличество набранных баллов - \(shablon.weightGet)"
         lblGetBalls.textAlignment = .left
         lblGetBalls.font = UIFont.systemFont(ofSize: 13)
         currentPage.addSubview(lblGetBalls)
         
-        lblGetBalls.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -20).isActive = true
+        lblGetBalls.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -22).isActive = true
         lblGetBalls.heightAnchor.constraint(equalToConstant: height26).isActive = true
-        lblGetBalls.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 10).isActive = true
+        lblGetBalls.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 22).isActive = true
         lblGetBalls.topAnchor.constraint(equalTo: lblAllBallsNum.bottomAnchor).isActive = true
         lblGetBalls.layoutIfNeeded()
         
@@ -156,16 +163,16 @@ class MakeOtchetClass
         
         
         
-        let lblProcent = UILabel()
+        lblProcent = UILabel()
         lblProcent.translatesAutoresizingMaskIntoConstraints = false
-        lblProcent.text = "Успех в процентах - \(99)%"
+        lblProcent.text = "Успех в процентах - \(shablon.weightPercent)%"
         lblProcent.textAlignment = .left
         lblProcent.font = UIFont.systemFont(ofSize: 13)
         currentPage.addSubview(lblProcent)
         
-        lblProcent.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -20).isActive = true
+        lblProcent.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 0.5, constant: -22).isActive = true
         lblProcent.heightAnchor.constraint(equalToConstant: height26).isActive = true
-        lblProcent.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 10).isActive = true
+        lblProcent.leftAnchor.constraint(equalTo: currentPage.leftAnchor, constant: 22).isActive = true
         lblProcent.topAnchor.constraint(equalTo: lblGetBalls.bottomAnchor).isActive = true
         lblProcent.layoutIfNeeded()
         
@@ -197,7 +204,7 @@ class MakeOtchetClass
         
         for categ in shablon.allCategs
         {
-            let headerStr = "\(categ.name!) - Оценка(\(19)/\(30)) \(63)%"
+            let headerStr = "\(categ.name!) - Оценка(\(categ.weightGet!)/\(categ.weightSum!)) \(categ.weightPercent!)%"
             let lblTitle = otTableTitle()
             lblTitle.text = headerStr
             
@@ -232,6 +239,7 @@ class MakeOtchetClass
                 {
                     let quest = element as! Model_Question
                     
+                    print("Fatal is \(quest.isFatal!)")
                     var heightArray : [CGFloat] = []
                     
                     let viewForRow = UIView()
@@ -351,10 +359,50 @@ class MakeOtchetClass
                             lastAddedImage = imgV
                         }
                         
+                        
+                        
+                        
                         lastView = imagesRow
                         chechForPage(lastView: lastView)
                     }
                     
+                    if quest.isFatal == 1
+                    {
+                        print("entered fatal check!")
+                        if quest.questionType == 0 || quest.questionType == 1
+                        {
+                            if quest.auditButtons[1].isOn
+                            {
+                                cellQuest.backgroundColor = red
+                                cellAnswer.backgroundColor = red
+                                cellDop.backgroundColor = red
+                                currentShablon.failed = true;
+                            }
+                        }
+                        else if quest.questionType == 2
+                        {
+                            var selectedIndex : Int!
+                            for btn in quest.auditButtons
+                            {
+                                if btn.isOn
+                                {
+                                    selectedIndex = quest.auditButtons.index(of: btn)
+                                }
+                            }
+                            
+                            if selectedIndex != nil
+                            {
+                                let pm = quest.plusMinus[selectedIndex]
+                                if pm == 0
+                                {
+                                    cellQuest.backgroundColor = red
+                                    cellAnswer.backgroundColor = red
+                                    cellDop.backgroundColor = red
+                                    currentShablon.failed = true;
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 
@@ -481,13 +529,25 @@ class MakeOtchetClass
                     
                     var checkBoxAnswerCell : UIView!
                     
-                    if checkBox.auditCheckBox!.checkState == .checked
+                    if checkBox.neOzenBtn.isOn == false
                     {
-                        checkBoxAnswerCell = otCheckBoxYes()
+                        if checkBox.auditCheckBox!.checkState == .checked
+                        {
+                            checkBoxAnswerCell = otCheckBoxYes()
+                        }
+                        else
+                        {
+                            checkBoxAnswerCell = otCheckBoxNo()
+                        }
+                    
                     }
                     else
                     {
-                        checkBoxAnswerCell = otCheckBoxNo()
+                        checkBoxAnswerCell = otTableLabeCell()
+                        (checkBoxAnswerCell as! otTableLabeCell).text = "Не оценивается"
+                        (checkBoxAnswerCell as! otTableLabeCell).textColor = UIColor.red
+                        (checkBoxAnswerCell as! otTableLabeCell).textAlignment = .center
+                        (checkBoxAnswerCell as! otTableLabeCell).font = UIFont.systemFont(ofSize: 13)
                     }
                     
                     
@@ -498,6 +558,10 @@ class MakeOtchetClass
                     checkBoxAnswerCell.widthAnchor.constraint(equalTo: viewForRow.widthAnchor, multiplier: 0.3, constant: 0).isActive = true
                     checkBoxAnswerCell.topAnchor.constraint(equalTo: viewForRow.topAnchor).isActive = true
                     checkBoxAnswerCell.leftAnchor.constraint(equalTo: cellQuest.rightAnchor).isActive = true
+                    if checkBox.neOzenBtn.isOn == true
+                    {
+                        checkBoxAnswerCell.heightAnchor.constraint(equalToConstant: 36).isActive = true
+                    }
                     checkBoxAnswerCell.layoutIfNeeded()
                     
                     heightArray.append(checkBoxAnswerCell.frame.size.height)
@@ -1387,9 +1451,18 @@ class MakeOtchetClass
             
         }
         
-        
-        if listAddedImagesGroup.count > 0
+        if currentShablon.failed == true
         {
+            lblProcent.text = "Underperforming"
+            lblProcent.textColor = UIColor.red
+            lblProcent.font = UIFont.systemFont(ofSize: 15)
+            currentShablon.weightPercent = 0;
+        }
+        
+        if listAddedImagesGroup.count > 0 && (gc.writeBigPhotos == true)
+        {
+            print("Added images group more than 0 wil add now. Groupcount is \(listAddedImagesGroup.count)")
+            
             let photoTitle = otTableTitle()
             photoTitle.textAlignment = .center
             photoTitle.text = "Добавленные фото"
@@ -1406,10 +1479,14 @@ class MakeOtchetClass
         }
         
         
+        if listAddedImagesGroup.count > 0 && (gc.writeBigPhotos == true)
+        {
         
         for imgArray in listAddedImagesGroup
         {
+            
             let num = listAddedImagesGroup.index(of: imgArray)! + 1
+            print("Adding big images group number \(num)")
             
             let groupHeader = otTableLabeCell()
             groupHeader.textAlignment = .center
@@ -1434,7 +1511,14 @@ class MakeOtchetClass
             lastView = groupHeader
             chechForPage(lastView: lastView)
             
+//            var resizedImages : [UIImage] = []
             
+//            for img in imgArray
+//            {
+////                let data = UIImageJPEGRepresentation(img, 0.1)!
+////                resizedImages.append(UIImage(data: data)!)
+//                resizedImages.append(img);
+//            }
             
             let rowView1 = otImageRowView()
             currentPage.addSubview(rowView1)
@@ -1519,7 +1603,8 @@ class MakeOtchetClass
             
         }
         
-        
+        }
+            
         if listAddedSkrepka.count > 0
         {
             let skrepkaTitle = otTableTitle()
@@ -1724,27 +1809,246 @@ class MakeOtchetClass
         listOfPages.append(currentPage)
         currentPage.layoutIfNeeded()
         
-        let fileName = "testPdf2.pdf"
+        print(listOfPages.count,"pagesss counttt")
         
-        let fm = FileManager.default
-        let docDir = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let url = URL(fileURLWithPath: docDir.path).appendingPathComponent(fileName)
-        
-        
-        do
+        if listOfPages.count != 0
         {
-            try PDFGenerator.generate(listOfPages, to: url)
-        }
-        catch
-        {
-            print(error ,"adsfasdfsdafas" )
-        }
+            
+            var viewsAsImages : [UIImage] = []
+
+            for view in listOfPages
+            {
+                let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
+                let image = renderer.image
+                {
+                    ctx in
+                    //CGRect(x: 0, y: 0, width: view.bounds.width / 2, height: view.bounds.height/2)
+                    print("converting view to image")
+                    view.drawHierarchy(in: view.bounds , afterScreenUpdates: true)
+                }
+                viewsAsImages.append( image)
+            }
+    
+            
+            
+            let fileName = randomString()
+            
+            let fm = FileManager.default
+            let docDir = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
+            
+            let dataPath = docDir.appendingPathComponent("Otchets")
+            do
+            {
+                try FileManager.default.createDirectory(atPath: dataPath.path, withIntermediateDirectories: true, attributes: nil)
+            }
+            catch
+            {
+                print("Otchet dir Already Exists")
+            }
+            
+            var testImages : [UIImage] = []
+            //Resizing Final pages as Images!!
+            for img in viewsAsImages
+            {
+                let newImg = UIImageJPEGRepresentation(img, 0.7);
+                testImages.append(UIImage(data: newImg!)!)
+            }
+            
+            ///////////////////////////
+            
+            
+            let url = URL(fileURLWithPath: dataPath.path).appendingPathComponent("\(fileName).pdf")
+            do
+            {
+                //try PDFGenerator.generate(listOfPages, to: url)
+//                try PDFGenerator.generate(viewsAsImages, to: url)
+                try PDFGenerator.generate(testImages, to: url)
+            }
+            catch
+            {
+                print("Exception on creating")
+            }
+            
+            
+            
+            
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let filePath = documentsURL.appendingPathComponent("pathLocation").path
+
+            
+            let otchet = Model_Otchet()
+            
+            otchet.name = shablon.name!
+            otchet.date = Date()
+            if currentShablon.localImageName != nil
+            {
+                otchet.logoFileName = currentShablon.localImageName!
+            }
+            otchet.percent = currentShablon.weightPercent
+            otchet.pdfFileName = fileName
+            otchet.fbId = shablon.fbId!
+            otchet.Id = fileName
+            
+            for cat in shablon.allCategs
+            {
+                otchet.categNames.append(cat.name!)
+                otchet.catagPercents.append(cat.weightPercent!)
+            }
+            
+            let sql = MySqlite()
+            sql.saveOtchet(otchet: otchet)
+            
+            let currentView = UIApplication.topViewController()?.view!
+            
+            gh.showToastWithDuration(message: "Отчёт успешно сохранен, вы можете продолжить аудит и сохранить несколько отчетов", view: currentView!, duration: 4.0)
         
+            listOfPages.removeAll()
+        }
+        else
+        {
+            print("now nilll 00")
+        }
         
     }
         
         
+    func countWeight()
+    {
+        for categ in currentShablon.allCategs
+        {
+            var categSum : Int = 0
+            var categGet : Int = 0
+            
+            for element in categ.allElementsSorted
+            {
+                if element is Model_Question
+                {
+                    let question = element as! Model_Question
+                    categSum += question.weight
+                    
+                    if question.questionType == 0 || question.questionType == 1
+                    {
+                        for btn in question.auditButtons
+                        {
+                            if btn.isOn
+                            {
+                                let index = question.auditButtons.index(of: btn)
+                                
+                                if index == 0
+                                {
+                                    categGet += question.weight
+                                }
+                                
+                                if index == 2
+                                {
+                                    categSum -= question.weight
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                    if question.questionType == 2
+                    {
+                        for btn in question.auditButtons
+                        {
+                            if btn.isOn
+                            {
+                                let index = question.auditButtons.index(of: btn)!
+                                
+                                let pm = question.plusMinus[index]
+                                
+                                if pm == 1
+                                {
+                                    categGet += question.weight
+                                }
+                            }
+                        }
+                    }
+                }
+            
+                if element is Model_CheckBox
+                {
+                    
+                    let checkBox = element as! Model_CheckBox
+                    
+                    if checkBox.neOzenBtn.isOn == false
+                    {
+                        let weight = checkBox.weight!
+                        
+                        if checkBox.neOzenBtn.isOn == false
+                        {
+                            categSum += weight
+                            
+                            if checkBox.auditCheckBox.checkState == .checked
+                            {
+                                categGet += weight
+                            }
+                        }
+                    }
+                }
+            
+                if element is Model_QuestVar
+                {
+                    let questVar = element as! Model_QuestVar
+                    
+                    for weight in questVar.weights
+                    {
+                        categSum += weight
+                    }
+                    
+                    for btn in questVar.auditToggButtons
+                    {
+                        if btn.isOn
+                        {
+                            let index = questVar.auditToggButtons.index(of: btn)!
+                            
+                            let weit = questVar.weights[index]
+                            
+                            categGet += weit
+                        }
+                    }
+                }
+            
+                
+                if element is Model_Toggle
+                {
+                    let toggle = element as! Model_Toggle
+                    
+                    let weight = toggle.weight!
+                    
+                    categSum += weight
+                    
+                    if toggle.auditToggle.index == 1
+                    {
+                        categGet += weight
+                    }
+                }
+            
+            }
         
+            categ.weightSum = categSum
+            categ.weightGet = categGet
+            
+            let max = Double(categ.weightSum)
+            let get = Double(categ.weightGet)
+            var percent = 0
+            if max != 0
+            {
+                percent = Int((get/max) * 100)
+            }
+            
+            categ.weightPercent = percent
+            
+            currentShablon.weightSum += categSum
+            currentShablon.weightGet += categGet
+        }
+        
+        let max : Double = Double(currentShablon.weightSum)
+        let get : Double = Double(currentShablon.weightGet)
+
+        currentShablon.weightPercent = Int((get/max) * 100)
+    }
         
         
         
@@ -1842,8 +2146,7 @@ class MakeOtchetClass
         {
             
             
-            let green = UIColor(displayP3Red: 79/255, green: 201/255, blue: 150/255, alpha: 1)
-            let red = UIColor(displayP3Red: 215/255, green: 91/255, blue: 95/255, alpha: 1)
+            
             
             
             var answerColor : UIColor!
@@ -1922,6 +2225,7 @@ class MakeOtchetClass
             
             if quest.addedImages.count > 0
             {
+                print("quest has images will add to ImagesArray")
                 listAddedImagesGroup.append(quest.addedImages)
                 
                 if  quest.skrepka != nil
@@ -1965,6 +2269,19 @@ class MakeOtchetClass
                     
                     listAddedImagesGroup.append([(element as! Model_Media).addedPhoto])
                     dopString += "Добавлены фотографии : приложение №\(listAddedImagesGroup.count)"
+                }
+            }
+            
+            if element is Model_CheckBox
+            {
+                let cheb = element as! Model_CheckBox
+                if cheb.commentStr != nil
+                {
+                    if element.skrepka != nil
+                    {
+                        dopString += "\n"
+                        dopString += "Заметка аудитора : \(cheb.commentStr)"
+                    }
                 }
             }
             
@@ -2120,6 +2437,7 @@ class MakeOtchetClass
                 listOfPages.append(finishedPage)
                 
                 currentPage = UIView(frame: CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight))
+                currentPage.backgroundColor = UIColor.white
                 currentPage.addSubview(lastView)
                 
                 lastView.widthAnchor.constraint(equalTo: currentPage.widthAnchor, multiplier: 1, constant: -widthMinus).isActive = true
@@ -2183,13 +2501,12 @@ class MakeOtchetClass
         return answers
     }
     
-    
-    
-    
-    
-    
+
     
     
     
 }
+
+
+
 

@@ -25,4 +25,6 @@ class Model_Question: Audit_Element
     var commentView : myAuditView!
     
     var commentStr : String!
+    
+    var isFatal : Int!
 }

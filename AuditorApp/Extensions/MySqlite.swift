@@ -2,9 +2,10 @@ import Foundation
 import UIKit
 import SQLite
 import Kingfisher
+import JGProgressHUD
 
-extension UIViewController
-{
+//extension UIViewController
+//{
     class MySqlite
     {
         let background = DispatchQueue.global()
@@ -15,6 +16,8 @@ extension UIViewController
         let DBFileName = "AuditAppDB"
         var db : Connection!
         var fm : FileManager!
+        
+        var currentDialog : myDialog!
         
         
         
@@ -40,6 +43,7 @@ extension UIViewController
          let tableQVarAnswers = Table("QVarAnswers")
         
          let tableOtchet = Table("Otchets")
+         let tableOtchetCategs = Table("OtchetCategs")
         //----------------------------------------------------
         
         
@@ -64,6 +68,7 @@ extension UIViewController
         
          let colQuestionId = Expression<String?>(FBNames.shIn.QUESTION_ID)
          let colQuestionType = Expression<Int?>(FBNames.shIn.QUESTION_TYPE)
+         let colIsFatal = Expression<Int?>(FBNames.shIn.IS_FATAL);
         
          let colAnswerPM = Expression<Int?>(FBNames.shIn.ANSWERS_PM)
  
@@ -92,12 +97,15 @@ extension UIViewController
          let colOtchetPercent = Expression<Int?>("OtchetPercent")
          let colOtchetLogoFileName = Expression<String?>("OtchetLogoFileName")
          let colOtchetPdfFileName = Expression<String?>("OtchetPdfFileName")
+        
+        let colCategPercent = Expression<Int?>("CategPercent")
         //----------------------------------------
         
-        func saveShablon(shablon : Model_Shablon)
+        func saveShablon(shablon : Model_Shablon, dialog : myDialog)
         {
             print("BEgin to SAvEEEEEEE")
             self.shablonToSave = shablon
+            self.currentDialog = dialog
             
             saveShabLogo()
             checkForInfoImages()
@@ -106,7 +114,7 @@ extension UIViewController
             
             createTables()
             
-            //deleteIfExists()
+            deleteIfExists()
         
             savingAllElements()
         }
@@ -121,7 +129,16 @@ extension UIViewController
                 let dbDirUrl = documentDir.appendingPathComponent(DBDirName)
                 let dbFile = dbDirUrl.appendingPathComponent(DBFileName).appendingPathExtension("sqlite3")
                 
-                let exists = fm.fileExists(atPath: dbFile.path)
+                var exists = false
+                
+                if(fm.fileExists(atPath: dbFile.path))
+                {
+                    exists = true
+                }
+                else
+                {
+                    exists = false
+                }
                 
                 if exists == false
                 {
@@ -250,7 +267,6 @@ extension UIViewController
                                 
                             }
                             
-
                             let url = URL(string:urlStr)
                             if let data = try? Data(contentsOf: url!)
                             {
@@ -277,9 +293,19 @@ extension UIViewController
                                 }
                             }
                     
+                            
+                            self.currentDialog.hide(afterTime: 0.2)
+                            let currentView = UIApplication.topViewController()
+                            gh.showToast(message: "Шаблон успешно загружен", view: (currentView?.view)!)
                     
                 }
                 }
+            }
+            else
+            {
+                self.currentDialog.hide(afterTime: 0.2)
+                let currentView = UIApplication.topViewController()
+                gh.showToast(message: "Шаблон успешно загружен", view: (currentView?.view)!)
             }
         }
         
@@ -309,6 +335,7 @@ extension UIViewController
                 table.column(colText)
                 table.column(colObyaz)
                 table.column(colWeight)
+                table.column(colIsFatal)
             }
             
             let createQuestAnswerTB = tableQuestAnswers.create { (table) in
@@ -449,6 +476,13 @@ extension UIViewController
                 table.column(colOtchetPercent)
                 table.column(colOtchetLogoFileName)
                 table.column(colOtchetPdfFileName)
+                table.column(colFbId)
+            }
+            
+            let createOtchetCategsTB = tableOtchetCategs.create {(table) in
+                table.column(colOtchetId)
+                table.column(colCategName)
+                table.column(colCategPercent)
             }
             
             do
@@ -473,6 +507,8 @@ extension UIViewController
                 try db.run(createTimerTB)
 
                 try db.run(createOthcetTB)
+                
+                try db.run(createOtchetCategsTB)
 
                 print("Tables Created Succesfully")
             }
@@ -561,7 +597,7 @@ extension UIViewController
                                                          colCategNum <- categNum, colPosition <- question.positionInLa,
                                                          colQuestionType <- question.questionType,
                                                          colText <- question.text,colObyaz <- question.obyaz,
-                                                         colWeight <- question.weight))
+                                                         colWeight <- question.weight, colIsFatal <- question.isFatal))
                         
                         if question.questionType == 2
                         {
@@ -679,7 +715,156 @@ extension UIViewController
         }
         
         
+        func saveOtchet(otchet : Model_Otchet)
+        {
+            prepareDB()
+            do
+            {
+                try db.run(tableOtchet.insert(colOtchetId <- otchet.Id!,colOtchetName <- otchet.name!,
+                                              colOtchetDate <- dateToInt(date: otchet.date), colOtchetPercent <- otchet.percent!, colOtchetPdfFileName <- otchet.pdfFileName!,
+                                              colOtchetLogoFileName <- otchet.logoFileName!, colFbId <- otchet.fbId!))
+            
+                for i in 0..<otchet.categNames.count
+                {
+                    let name = otchet.categNames[i]
+                    let percent = otchet.catagPercents[i]
+
+                    try db.run(tableOtchetCategs.insert(colOtchetId <- otchet.Id!, colCategName <- name, colCategPercent <- percent ))
+                }
+            }
+            catch
+            {
+                print("Error on saving Otchet To local SQL")
+            }
+        }
         
+        
+        
+        func deleteOthcet(id : String)
+        {
+            do
+            {
+                prepareDB()
+                let deleteOtchet = tableOtchet.filter(colOtchetId == id)
+                try db.run(deleteOtchet.delete())
+            }
+            catch
+            {
+                
+            }
+        }
+        
+        
+        
+        
+        func deleteShablon(shab : Model_Shablon)
+        {
+            prepareDB()
+            
+            let fbId = shab.fbId!
+            
+            do
+            {
+                let deleteShablons = tableShablons.filter(colFbId == fbId)
+                let deleteCategs = tableCategs.filter(colFbId == fbId)
+                let deleteQuestions = tableQuestions.filter(colFbId == fbId)
+                let deleteQuestAnswers = tableQuestAnswers.filter(colFbId == fbId)
+                let deleteQuestVarAnswers = tableQVarAnswers.filter(colFbId == fbId)
+                let deleteAdresses = tableAdresses.filter(colFbId == fbId)
+                let deleteCheckBoxes = tableCheckBoxes.filter(colFbId == fbId)
+                let deleteDates = tableDates.filter(colFbId == fbId)
+                let deleteInfos = tableInfos.filter(colFbId == fbId)
+                let deleteMedia = tableMedias.filter(colFbId == fbId)
+                let deletePodpis = tablePodpises.filter(colFbId == fbId)
+                let deleteQuestVars = tableQuestVars.filter(colFbId == fbId)
+                let deleteSeekers = tableSeekers.filter(colFbId == fbId)
+                let deleteTextLarge = tableTextsLarge.filter(colFbId == fbId)
+                let deleteTextOneLine = tableTextOneLine.filter(colFbId == fbId)
+                let deleteToggle = tableToggles.filter(colFbId == fbId)
+                let deleteTimer  = tableTimers.filter(colFbId == fbId)
+                
+                try db.run(deleteShablons.delete())
+                try db.run(deleteCategs.delete())
+                try db.run(deleteQuestions.delete())
+                try db.run(deleteQuestAnswers.delete())
+                try db.run(deleteQuestVarAnswers.delete())
+                try db.run(deleteAdresses.delete())
+                try db.run(deleteCheckBoxes.delete())
+                try db.run(deleteDates.delete())
+                try db.run(deleteInfos.delete())
+                try db.run(deleteMedia.delete())
+                try db.run(deletePodpis.delete())
+                try db.run(deleteQuestVars.delete())
+                try db.run(deleteSeekers.delete())
+                try db.run(deleteTextLarge.delete())
+                try db.run(deleteTextOneLine.delete())
+                try db.run(deleteToggle.delete())
+                try db.run(deleteTimer.delete())
+                
+                print("Delete if Exists Completed!!!")
+            }
+            catch
+            {
+                
+            }
+        }
+        
+        
+        
+        
+        
+        func getOtchets() ->[Model_Otchet]
+        {
+            var allOtchets : [Model_Otchet] = []
+            
+            prepareDB()
+            
+            do
+            {
+                let otchets = try self.db.prepare(self.tableOtchet)
+                
+                for row in otchets
+                {
+                    let otchet = Model_Otchet()
+                    
+                    let id = row[colOtchetId]
+                    let name = row[colOtchetName]
+                    let date = row[colOtchetDate]
+                    let percent = row[colOtchetPercent]
+                    let pdfName = row[colOtchetPdfFileName]
+                    let logoName = row[colOtchetLogoFileName]
+                    let fbId = row[colFbId]
+                    
+                    otchet.Id = id
+                    otchet.name = name
+                    otchet.date = intToDate(intDate: date!)
+                    otchet.percent = percent
+                    otchet.pdfFileName = pdfName
+                    otchet.logoFileName = logoName
+                    otchet.fbId = fbId
+                    
+                    
+                    for categRow in try db.prepare(tableOtchetCategs.filter(colOtchetId == id))
+                        {
+                            let categName = categRow[colCategName]
+                            let categPercent = categRow[colCategPercent]
+                            
+                            otchet.catagPercents.append(categPercent!)
+                            otchet.categNames.append(categName!)
+                        }
+                    
+                    
+                    
+                    allOtchets.append(otchet)
+                }
+            }
+            catch
+            {
+                
+            }
+            
+            return allOtchets
+        }
         
         
         
@@ -711,6 +896,31 @@ extension UIViewController
             }
             return allShablons
         }
+        
+        
+        
+        func dateToInt(date : Date) -> Int
+        {
+            let timeInterval = date.timeIntervalSince1970
+            let myInt = Int(timeInterval)
+            return myInt
+        }
+        
+        func intToDate( intDate : Int) -> Date
+        {
+            let timeInterval = Double(intDate)
+            let date = Date(timeIntervalSince1970: timeInterval)
+            return date
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         func getFullShablon(notFullShablon : Model_Shablon) -> Model_Shablon
         {
@@ -744,6 +954,8 @@ extension UIViewController
                         let questRandId = questRow[colQuestionId]!
                         let questType = questRow[colQuestionType]!
                         
+                        let fatalNum = questRow[colIsFatal]!
+                        
                         let question = Model_Question()
 
                         question.categNum = categNum
@@ -756,6 +968,8 @@ extension UIViewController
                         
                         question.questionRandomID = questRandId
                         question.questionType = questType
+                        
+                        question.isFatal = fatalNum
                         
                         if questType == 2
                         {
@@ -1051,16 +1265,6 @@ extension UIViewController
             {
                 print(error)
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             return fullShablon
         }
         
@@ -1083,4 +1287,4 @@ extension UIViewController
         
     }
 
-}
+//}

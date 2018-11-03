@@ -5,12 +5,48 @@ import FirebaseDatabase
 import JGProgressHUD
 import Kingfisher
 import BetterSegmentedControl
+import SystemConfiguration
+import FontAwesome_swift
 
 
 
 
 struct GlobalHelper
 {
+    let INSERT_NEW_USER_URL = "http://www.eikei.ru/alisadb/insertNewUser.php"
+    let GET_ALL_RESTARAUNTS_URL = "http://www.eikei.ru/alisadb/getAllRestoraunts.php"
+    let GET_OTHCET_BY_ID = "http://www.eikei.ru/alisadb/getOtchetById.php"
+    let GET_USER_ID_URL = "http://www.eikei.ru/alisadb/getUserId.php"
+    let URL_TO_UPLOAD_OTHCETS = "http://www.eikei.ru/alisafiles/savefile.php"
+    let INSERT_OTCHET_URL = "http://www.eikei.ru/alisadb/insertOtchet.php"
+    let INSERT_CATEG_URL = "http://www.eikei.ru/alisadb/insertCateg.php"
+    let GET_USER_BY_FB_ID = "http://www.eikei.ru/alisadb/getUserByFbID.php"
+    
+    let userName = "UserName"
+    let userSurname = "UserSurname"
+    let userId = "UserId"
+    
+    
+    let uFbId = "Fb_Id"
+    let uLocal_Id = "Local_Id"
+    let uName = "Name"
+    let uUser_Id = "User_Id"
+    let uRestarauntId = "Restaraunt_Id"
+    let uPercent = "Percent"
+    let uLogoUrl = "Logo_Url"
+    let uDate = "Date"
+
+    
+    
+    let fawRegular = UIFont(name: "FontAwesome5FreeRegular", size: 20)
+    let fawSolid = UIFont(name: "FontAwesome5FreeSolid", size: 20)
+    let fawBrands = UIFont(name : "FontAwesome5BrandsRegular", size: 20)
+    
+    
+    
+    
+    
+    
     let tagHeader = 9000
     let tagInfoImge = 9001
     let tagMyLabel = 9002
@@ -57,7 +93,7 @@ struct GlobalHelper
     let myBejColor : UIColor = UIColor(displayP3Red: 255/1, green: 248/1, blue: 242/1, alpha: 1)
     let myRed : UIColor = UIColor(displayP3Red: 171/255, green: 26/255, blue: 47/255, alpha: 1)
     let myRedTrans = UIColor(displayP3Red: 171/255, green: 26/255, blue: 47/255, alpha: 0.5)
-    let toastBG : UIColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 150/255)
+    let toastBG : UIColor = UIColor(displayP3Red: 105/255, green: 105/255, blue: 105/255, alpha: 230/255)
     
     let otGreen = UIColor(displayP3Red: 79/255, green: 201/255, blue: 150/255, alpha: 1)
     let otRed = UIColor(displayP3Red: 215/255, green: 91/255, blue: 95/255, alpha: 1)
@@ -80,7 +116,61 @@ struct GlobalHelper
     let avenirLight = UIFont(name: "Avenir-Light", size: 12)
     
     static let sharedInstance = GlobalHelper()
+    
+    func isConnectedToNetwork() -> Bool
+    {
+        var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress)
+        {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1)
+            {
+                zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        }
+        
+        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
+        if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false
+        {
+            return false
+        }
+        
+        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
+        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
+        let ret = (isReachable && !needsConnection)
+        
+        return ret
+    }
+    
+    
+    func dateToInt(date : Date) -> Int
+    {
+        let timeInterval = date.timeIntervalSince1970
+        let myInt = Int(timeInterval)
+        return myInt
+    }
+    
+    func intToDate( intDate : Int) -> Date
+    {
+        let timeInterval = Double(intDate)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        return date
+    }
 
+    
+    func currentUser() -> [String?]
+    {
+        let defaults = UserDefaults.standard
+        let name = defaults.string(forKey: userName)
+        let surname = defaults.string(forKey: userSurname)
+        let id = defaults.string(forKey: userId)
+        let answer = [name,surname,id]
+        return answer
+    }
+    
     func addShadow( viewArray : [UIView])
     {
         for item in viewArray
@@ -97,6 +187,14 @@ struct GlobalHelper
         {
             
         }
+    }
+    
+    func isValidEmail(testStr:String) -> Bool
+    {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
     }
    
     
@@ -166,14 +264,42 @@ struct GlobalHelper
         }
     }
     
+    
+    func showToastWithDuration(message : String , view : UIView, duration : Double)
+    {
+        var ts = ToastStyle()
+        ts.backgroundColor = GlobalHelper.sharedInstance.toastBG
+        ts.messageFont = UIFont.systemFont(ofSize: 16)
+        ts.verticalPadding = CGFloat(8)
+        ts.horizontalPadding = CGFloat(8)
+        view.makeToast(message, duration : duration, style : ts)
+    }
+    
+    
+    
+    
     func showToast(message : String , view : UIView)
     {
         var ts = ToastStyle()
         ts.backgroundColor = GlobalHelper.sharedInstance.toastBG
-        ts.verticalPadding = CGFloat(16)
-        ts.horizontalPadding = CGFloat(16)
-        view.makeToast(message, duration : 2.0, style : ts)
+        ts.messageFont = UIFont.systemFont(ofSize: 16)
+        ts.verticalPadding = CGFloat(8)
+        ts.horizontalPadding = CGFloat(8)
+        view.makeToast(message, duration : 3.0, style : ts)
     }
+    
+//    func showImageToast(message : String , view :UIView)
+//    {
+//        var ts = ToastStyle()
+//        ts.backgroundColor = GlobalHelper.sharedInstance.toastBG
+//        ts.verticalPadding = CGFloat(8)
+//        ts.horizontalPadding = CGFloat(16)
+//        let imgWarn = UIImage(named: "ic_warning")
+//        view.makeToast("message", duration: 3.0, position: .bottom, title: nil, image: imgWarn, style : ts)
+//    }
+    
+    
+    
 }
 
 struct FBNames
@@ -202,6 +328,7 @@ struct FBNames
     let QUESTION_TYPE : String = "Question_Type"
     let ANSWERS : String = "Answers"
     let ANSWERS_PM : String = "Answers_Pm"
+    let IS_FATAL : String = "Is_Fatal";
     
     let ADRESSES : String = "Adresses"
     
@@ -273,12 +400,22 @@ struct ImgHelper
 struct DLShablon
 {
     static let shIn = DLShablon()
-    
     static var downloadingShablon : Model_Shablon = Model_Shablon()
-    
-    
-    
 }
+
+
+
+func dateToStr(date : Date) -> String
+{
+    let formatter = DateFormatter()
+    formatter.locale = NSLocale(localeIdentifier: "ru_RU") as Locale?
+    
+    formatter.dateFormat = "yyyy-MMMM-dd"
+    
+    let str = formatter.string(from: date)
+    return str
+}
+
 
 
 
@@ -299,7 +436,38 @@ func randomString() -> String
 
 
 
-
+extension UIApplication
+{
+    class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController?
+    {
+        
+        if let nav = base as? UINavigationController
+        {
+            return topViewController(base: nav.visibleViewController)
+        }
+        
+        if let tab = base as? UITabBarController
+        {
+            let moreNavigationController = tab.moreNavigationController
+            
+            if let top = moreNavigationController.topViewController, top.view.window != nil
+            {
+                return topViewController(base: top)
+            }
+            else if let selected = tab.selectedViewController
+            {
+                return topViewController(base: selected)
+            }
+        }
+        
+        if let presented = base?.presentedViewController {
+            
+            return topViewController(base: presented)
+        }
+        
+        return base
+    }
+}
 
 
 

@@ -3,6 +3,219 @@ import M13Checkbox
 import StepSlider
 import BetterSegmentedControl
 import Tabman
+import JGProgressHUD
+import Font_Awesome_Swift
+import FontAwesome_swift
+
+
+
+
+class fawLabel : UILabel
+{
+    let gh = GlobalHelper.sharedInstance
+    var click : (() -> Void)?
+    
+    func customInit()
+    {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.textColor = gh.myBejColor
+        self.font = gh.fawSolid
+        self.font = self.font.withSize(26)
+        self.textAlignment = .center
+        
+        let tg = UITapGestureRecognizer(target: self, action: #selector(self.pressed))
+        self.isUserInteractionEnabled = false
+        self.addGestureRecognizer(tg)
+    }
+    
+    
+    @objc func pressed()
+    {
+        click?()
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
+
+
+class userNameView : UIView
+{
+    let gh = GlobalHelper.sharedInstance
+    var exitClick : (() -> Void)?
+    
+    func customInit()
+    {
+        self.backgroundColor = gh.myRedTrans
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        let lblIcon = UILabel()
+        lblIcon.textColor = gh.myRed
+        lblIcon.textAlignment = .center
+        lblIcon.translatesAutoresizingMaskIntoConstraints = false
+        lblIcon.backgroundColor = gh.myBejColor
+        lblIcon.layer.masksToBounds = true
+        lblIcon.layer.cornerRadius = 4
+        lblIcon.setFAIcon(icon: .FAUser, iconSize: 36)
+        
+        self.addSubview(lblIcon)
+        
+        lblIcon.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        lblIcon.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        lblIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 6).isActive = true
+        lblIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        lblIcon.layoutIfNeeded()
+        
+        let btnExit = UIButton()
+        btnExit.translatesAutoresizingMaskIntoConstraints = false
+        btnExit.setTitle("Выйти", for: .normal)
+        btnExit.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        btnExit.layer.cornerRadius = 16
+        btnExit.backgroundColor = gh.myRed
+        btnExit.setTitleColor(UIColor.white, for: .normal)
+        self.addSubview(btnExit)
+        
+        btnExit.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        btnExit.widthAnchor.constraint(equalToConstant: 96).isActive = true
+        btnExit.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
+        btnExit.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        btnExit.layoutIfNeeded()
+        
+        btnExit.addTarget(self, action: #selector(self.exitPressed), for: .touchUpInside)
+        
+        let nameLabel = UILabel()
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.text = "\(gh.currentUser()[0]!) \(gh.currentUser()[1]!)"
+        nameLabel.textColor = gh.myBejColor
+        nameLabel.font = UIFont.systemFont(ofSize: 16)
+        self.addSubview(nameLabel)
+        
+        nameLabel.leftAnchor.constraint(equalTo: lblIcon.rightAnchor, constant: 4).isActive = true
+        nameLabel.rightAnchor.constraint(equalTo: btnExit.leftAnchor, constant: -4).isActive = true
+        nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+        nameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+        nameLabel.layoutIfNeeded()
+        
+        
+    
+    }
+    
+    @objc func exitPressed()
+    {
+        exitClick?()
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+    
+}
+
+class pdfHeader : UIView
+{
+    let gh = GlobalHelper.sharedInstance
+    var backClick : (() -> Void)?
+    var titleView : UILabel!
+    
+    func customInit()
+    {
+        self.backgroundColor = gh.myRed
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        let btnArrow = UIButton()
+        let arrowImage = UIImage(named: "ic_leftArrow")
+        btnArrow.setImage(arrowImage, for: .normal)
+        btnArrow.translatesAutoresizingMaskIntoConstraints = false
+        btnArrow.addTarget(self, action: #selector(self.arrowPressed), for: .touchUpInside)
+        
+        self.addSubview(btnArrow)
+        btnArrow.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        btnArrow.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        btnArrow.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 4).isActive = true
+        btnArrow.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        btnArrow.layoutIfNeeded()
+        
+        titleView = UILabel()
+        titleView.translatesAutoresizingMaskIntoConstraints = false
+        titleView.textColor = gh.myBejColor
+        titleView.textAlignment = .center
+        titleView.font = UIFont.systemFont(ofSize: 18)
+        titleView.text = "Руководство по приложению"
+        
+        self.addSubview(titleView)
+        titleView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -80).isActive = true
+        titleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        titleView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        titleView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        titleView.layoutIfNeeded()
+    }
+    
+    @objc func arrowPressed()
+    {
+        backClick?()
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
+
+class myRotateImg : UIImageView
+{
+    let gh = GlobalHelper.sharedInstance
+    var click : (() -> Void)?
+    
+    func customInit()
+    {
+        self.image = UIImage(named: "ic_arrowUp")
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.layer.backgroundColor = gh.myRed.cgColor
+        self.layer.cornerRadius = 36 / 2
+        self.isUserInteractionEnabled = true
+        
+        let gesture = UITapGestureRecognizer(target: self, action:  #selector(self.taped))
+        self.addGestureRecognizer(gesture)
+    }
+    
+    @objc func taped(sender : UITapGestureRecognizer)
+    {
+        click?()
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
 
 class myObyazImage : UIImageView
 {
@@ -630,6 +843,223 @@ class transButton : UIButton
         click?()
     }
 }
+
+class myInfoButton : UIButton
+{
+    let gh = GlobalHelper.sharedInstance
+    var click : (() -> Void)?
+    var lblTitle : UILabel!
+    var imgV : UIImageView!
+    
+    func customInit()
+    {
+        layer.cornerRadius = 6
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = gh.myRed
+        setTitleColor(UIColor(cgColor: gh.myBejColor.cgColor), for: .normal)
+//        self.setTitle("Как работать с приложением", for: .normal)
+        
+        addTarget(self, action: #selector(redButton.btnPressed), for: .touchUpInside)
+
+    
+        lblTitle = UILabel()
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        lblTitle.textColor = UIColor.white
+        lblTitle.textAlignment = .center
+        lblTitle.numberOfLines = 0
+        lblTitle.text = "А.Л.И.С.А. Информация"
+        lblTitle.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        lblTitle.sizeToFit()
+        addSubview(lblTitle)
+        
+        lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: -72).isActive = true
+        lblTitle.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        lblTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        lblTitle.layoutIfNeeded()
+        
+        
+        imgV = UIImageView(image: UIImage(named: "ic_info_bej"))
+        imgV.backgroundColor = gh.myRed
+        imgV.layer.cornerRadius = 16
+        imgV.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(imgV)
+        
+        imgV.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        imgV.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        imgV.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        imgV.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4).isActive = true
+        imgV.layoutIfNeeded()
+    }
+    
+    @objc func btnPressed()
+    {
+        click?()
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
+
+class myNewTextField : UITextField
+{
+    let gh = GlobalHelper.sharedInstance
+    
+    var click : (()->Void)?
+    
+    func customInit()
+    {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = UIColor.white
+        self.textAlignment = .center
+        self.font = UIFont.systemFont(ofSize: 18)
+        self.textColor = gh.myRed
+        self.returnKeyType = .done
+        
+        gh.makeLittleCorners(viewArray: [self], radius: 8)
+        gh.addShadow(viewArray: [self])
+    }
+
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
+
+class fawButton : UIView
+{
+    let gh = GlobalHelper.sharedInstance
+    var lblIcon : UILabel!
+    var lbl : UILabel!
+    
+    var click : (()->Void)?
+    
+    func customInit()
+    {
+        tag = gh.tagViewAsLabel
+        translatesAutoresizingMaskIntoConstraints = false
+        self.layer.cornerRadius = 8
+        backgroundColor = gh.myRed
+        
+        lbl = myLabelForText()
+        lbl.text = "Войти"
+        lbl.textColor = UIColor.white
+        self.addSubview(lbl)
+        
+        lbl.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -86).isActive = true
+        lbl.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1, constant: 0).isActive = true
+        lbl.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        lbl.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        lbl.layoutIfNeeded()
+        
+        
+        self.lblIcon = fawLabel()
+        self.lblIcon.textColor = gh.myBejColor
+        self.lblIcon.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(lblIcon)
+        
+        lblIcon.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        lblIcon.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        lblIcon.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
+        lblIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        lblIcon.layoutIfNeeded()
+        
+        let gr = UITapGestureRecognizer(target: self, action: #selector(recognize))
+        self.addGestureRecognizer(gr)
+        
+        
+        gh.addShadow(viewArray: [self])
+    }
+    
+    
+    @objc func recognize()
+    {
+        click?()
+    }
+    
+    
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
+
+
+//class fawRedButton : UIButton
+//{
+//    let gh = GlobalHelper.sharedInstance
+//    var lblIcon : UILabel!
+//    var click : (() -> Void)?
+//
+//    func customInit()
+//    {
+//        self.layer.cornerRadius = 6
+//
+//        self.translatesAutoresizingMaskIntoConstraints = false
+//        self.backgroundColor = gh.myRed
+//        self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+//        self.setTitleColor(UIColor(cgColor: gh.myBejColor.cgColor), for: .normal)
+//        self.setTitle("Ок", for: .normal)
+//
+//        self.lblIcon = UILabel()
+//        self.lblIcon.textColor = gh.myBejColor
+//        self.lblIcon.translatesAutoresizingMaskIntoConstraints = false
+//        self.lblIcon.setFAIcon(icon: .FAGithub, iconSize: 26)
+//
+//        self.addSubview(lblIcon)
+//
+//        lblIcon.widthAnchor.constraint(equalToConstant: 36).isActive = true
+//        lblIcon.heightAnchor.constraint(equalToConstant: 36).isActive = true
+//        lblIcon.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
+//        lblIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+//        lblIcon.layoutIfNeeded()
+//
+//        addTarget(self, action: #selector(redButton.btnPressed), for: .touchUpInside)
+//    }
+//
+//    @objc func btnPressed()
+//    {
+//        click?()
+//    }
+//
+//    override init(frame: CGRect)
+//    {
+//        super.init(frame: frame)
+//        customInit()
+//    }
+//
+//    required init?(coder aDecoder: NSCoder)
+//    {
+//        super.init(coder: aDecoder)
+//        customInit()
+//    }
+//}
 
 class redButton : UIButton
 {
@@ -1394,7 +1824,658 @@ class myQuestionImagesView : myAuditView
 }
 
 
+class mySkachannieCell : UIView
+{
+    let gh = GlobalHelper.sharedInstance
+    var lbl : UILabel!
+    var logoView : UIImageView!
+    var lblTitle : UILabel!
+    var lblAuthor : UILabel!
+    var lblPlace : UILabel!
+    var btnBegin : myShareButton!
+    var btnDelete : UIButton!
+    
+    var begin : (()->Void)!
+    var delete : (()->Void)!
+    
+    func customInit()
+    {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.layer.cornerRadius = 6
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 2, height: 2)
+        self.backgroundColor = UIColor.white
+        
+        
+        
+        let viewForLogo = UIView()
+        viewForLogo.translatesAutoresizingMaskIntoConstraints = false
+        viewForLogo.layer.cornerRadius = 6
+        viewForLogo.layer.shadowColor = UIColor.black.cgColor
+        viewForLogo.layer.shadowOpacity = 0.5
+        viewForLogo.layer.shadowOffset = CGSize(width: 2, height: 2)
+        viewForLogo.backgroundColor = UIColor.white
+        self.addSubview(viewForLogo)
+        
+        viewForLogo.widthAnchor.constraint(equalToConstant: 64).isActive = true
+        viewForLogo.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        viewForLogo.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        viewForLogo.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 6).isActive = true
+        viewForLogo.layoutIfNeeded()
+        
+        
+        
+        self.logoView = UIImageView()
+        self.logoView.translatesAutoresizingMaskIntoConstraints = false
+        self.logoView.contentMode = .scaleAspectFit
+        viewForLogo.addSubview(logoView)
+        
+        self.logoView.widthAnchor.constraint(equalTo: viewForLogo.widthAnchor, multiplier: 0.95, constant: 0).isActive = true
+        self.logoView.heightAnchor.constraint(equalTo: viewForLogo.heightAnchor, multiplier: 0.95, constant: 0).isActive = true
+        self.logoView.centerXAnchor.constraint(equalTo: viewForLogo.centerXAnchor).isActive = true
+        self.logoView.centerYAnchor.constraint(equalTo: viewForLogo.centerYAnchor).isActive = true
+        self.logoView.layoutIfNeeded()
+        
+        
+        
+        self.lblTitle = UILabel()
+        self.lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        self.lblTitle.textColor = gh.myRed
+        self.lblTitle.textAlignment = .center
+        self.lblTitle.numberOfLines = 0
+        self.lblTitle.text = "sdfasdfsd "
+        self.lblTitle.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        self.lblTitle.sizeToFit()
+        self.addSubview(lblTitle)
+        
+        self.lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: -152).isActive = true
+        self.lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 6).isActive = true
+        self.lblTitle.layoutIfNeeded()
+        
+        
+        self.lblAuthor = UILabel()
+        self.lblAuthor.translatesAutoresizingMaskIntoConstraints = false
+        self.lblAuthor.textColor = gh.myRed
+        self.lblAuthor.textAlignment = .left
+        self.lblAuthor.numberOfLines = 0
+        self.lblAuthor.font = UIFont.systemFont(ofSize: 15)
+        self.lblAuthor.text = "Дата : 25 июля 2018"
+        self.lblAuthor.sizeToFit()
+        self.addSubview(lblAuthor)
+        
+        
+        self.lblAuthor.leftAnchor.constraint(equalTo: viewForLogo.rightAnchor, constant: 6).isActive = true
+        self.lblAuthor.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -46).isActive = true
+        self.lblAuthor.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 6).isActive = true
+        self.lblAuthor.layoutIfNeeded()
+        
+        
+        
+        
+        self.lblPlace = UILabel()
+        self.lblPlace.translatesAutoresizingMaskIntoConstraints = false
+        self.lblPlace.textColor = gh.myRed
+        self.lblPlace.textAlignment = .left
+        self.lblPlace.numberOfLines = 0
+        self.lblPlace.text = "Набранные баллы : 68%"
+        self.lblPlace.font = UIFont.systemFont(ofSize: 15)
+        self.lblPlace.sizeToFit()
+        self.addSubview(lblPlace)
+        
+        self.lblPlace.leftAnchor.constraint(equalTo: viewForLogo.rightAnchor, constant: 6).isActive = true
+        self.lblPlace.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -46).isActive = true
+        self.lblPlace.topAnchor.constraint(equalTo: lblAuthor.bottomAnchor, constant: 6).isActive = true
+        self.lblPlace.layoutIfNeeded()
+        
+        
+        
+        
+        
+        self.btnDelete = myDeleteButton()
+        self.addSubview(btnDelete)
+        
+        self.btnDelete.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        self.btnDelete.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.btnDelete.topAnchor.constraint(equalTo: self.topAnchor, constant: 13).isActive = true
+        self.btnDelete.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12).isActive = true
+        self.btnDelete.layoutIfNeeded()
+        
+        
+        self.btnBegin = myShareButton()
+        self.btnBegin.imgV.image = UIImage(named: "ic_rightarrow_red")
+        self.addSubview(btnBegin)
+        
+        self.btnBegin.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.btnBegin.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.btnBegin.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -13).isActive = true
+        self.btnBegin.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12).isActive = true
+        self.btnBegin.layoutIfNeeded()
+        
+        
+        self.btnBegin.addTarget(self, action: #selector(self.beginPressed), for: .touchUpInside)
+        self.btnDelete.addTarget(self, action: #selector(self.deletePressed), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.beginPressed))
+        self.addGestureRecognizer(tap)
+    }
+    
+    @objc func beginPressed()
+    {
+        begin?()
+    }
+    
+    
+    @objc func deletePressed()
+    {
+        delete?()
+    }
+    
+    
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
 
 
+
+
+
+
+class downloadCell : UIView
+{
+    let gh = GlobalHelper.sharedInstance
+    var lbl : UILabel!
+    var logoView : UIImageView!
+    var lblTitle : UILabel!
+    var lblAuthor : UILabel!
+    var lblPlace : UILabel!
+    var btnDownload : myShareButton!
+    
+    var download : (()->Void)!
+    
+    func customInit()
+    {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.layer.cornerRadius = 6
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 2, height: 2)
+        self.backgroundColor = UIColor.white
+        
+        
+        
+        let viewForLogo = UIView()
+        viewForLogo.translatesAutoresizingMaskIntoConstraints = false
+        viewForLogo.layer.cornerRadius = 6
+        viewForLogo.layer.shadowColor = UIColor.black.cgColor
+        viewForLogo.layer.shadowOpacity = 0.5
+        viewForLogo.layer.shadowOffset = CGSize(width: 2, height: 2)
+        viewForLogo.backgroundColor = UIColor.white
+        self.addSubview(viewForLogo)
+        
+        viewForLogo.widthAnchor.constraint(equalToConstant: 64).isActive = true
+        viewForLogo.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        viewForLogo.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        viewForLogo.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 6).isActive = true
+        viewForLogo.layoutIfNeeded()
+        
+        
+        
+        self.logoView = UIImageView()
+        self.logoView.translatesAutoresizingMaskIntoConstraints = false
+        self.logoView.contentMode = .scaleAspectFit
+        viewForLogo.addSubview(logoView)
+        
+        self.logoView.widthAnchor.constraint(equalTo: viewForLogo.widthAnchor, multiplier: 0.95, constant: 0).isActive = true
+        self.logoView.heightAnchor.constraint(equalTo: viewForLogo.heightAnchor, multiplier: 0.95, constant: 0).isActive = true
+        self.logoView.centerXAnchor.constraint(equalTo: viewForLogo.centerXAnchor).isActive = true
+        self.logoView.centerYAnchor.constraint(equalTo: viewForLogo.centerYAnchor).isActive = true
+        self.logoView.layoutIfNeeded()
+        
+        
+        
+        self.lblTitle = UILabel()
+        self.lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        self.lblTitle.textColor = gh.myRed
+        self.lblTitle.textAlignment = .center
+        self.lblTitle.numberOfLines = 0
+        self.lblTitle.text = "sdfasdfsd "
+        self.lblTitle.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        self.lblTitle.sizeToFit()
+        self.addSubview(lblTitle)
+        
+        self.lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: -152).isActive = true
+        self.lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 6).isActive = true
+        self.lblTitle.layoutIfNeeded()
+        
+        
+        self.lblAuthor = UILabel()
+        self.lblAuthor.translatesAutoresizingMaskIntoConstraints = false
+        self.lblAuthor.textColor = gh.myRed
+        self.lblAuthor.textAlignment = .left
+        self.lblAuthor.numberOfLines = 0
+        self.lblAuthor.font = UIFont.systemFont(ofSize: 15)
+        self.lblAuthor.text = "Дата : 25 июля 2018"
+        self.lblAuthor.sizeToFit()
+        self.addSubview(lblAuthor)
+        
+        
+        self.lblAuthor.leftAnchor.constraint(equalTo: viewForLogo.rightAnchor, constant: 6).isActive = true
+        self.lblAuthor.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -46).isActive = true
+        self.lblAuthor.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 6).isActive = true
+        self.lblAuthor.layoutIfNeeded()
+        
+        
+        
+        
+        self.lblPlace = UILabel()
+        self.lblPlace.translatesAutoresizingMaskIntoConstraints = false
+        self.lblPlace.textColor = gh.myRed
+        self.lblPlace.textAlignment = .left
+        self.lblPlace.numberOfLines = 0
+        self.lblPlace.text = "Набранные баллы : 68%"
+        self.lblPlace.font = UIFont.systemFont(ofSize: 15)
+        self.lblPlace.sizeToFit()
+        self.addSubview(lblPlace)
+        
+        self.lblPlace.leftAnchor.constraint(equalTo: viewForLogo.rightAnchor, constant: 6).isActive = true
+        self.lblPlace.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -46).isActive = true
+        self.lblPlace.topAnchor.constraint(equalTo: lblAuthor.bottomAnchor, constant: 6).isActive = true
+        self.lblPlace.layoutIfNeeded()
+        
+        
+        
+    
+        
+        
+        
+        self.btnDownload = myShareButton()
+        self.btnDownload.imgV.image = UIImage(named: "ic_download_red")
+        self.addSubview(btnDownload)
+        
+        self.btnDownload.widthAnchor.constraint(equalToConstant: 38).isActive = true
+        self.btnDownload.heightAnchor.constraint(equalToConstant: 38).isActive = true
+        self.btnDownload.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.btnDownload.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12).isActive = true
+        self.btnDownload.layoutIfNeeded()
+        
+        
+        self.btnDownload.addTarget(self, action: #selector(self.downloadPressed), for: .touchUpInside)
+       }
+    
+    @objc func downloadPressed()
+    {
+        download?()
+    }
+
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class otchetCell : UIView
+{
+    let gh = GlobalHelper.sharedInstance
+    var lbl : UILabel!
+    var logoView : UIImageView!
+    var lblTitle : UILabel!
+    var lblDate : UILabel!
+    var lblPercent : UILabel!
+    var btnShare : UIButton!
+    var btnDelete : UIButton!
+    
+    var share : (()->Void)!
+    var delete : (()->Void)!
+    
+    var cellClick : (()->Void)!
+    
+    func customInit()
+    {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.layer.cornerRadius = 6
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 2, height: 2)
+        self.backgroundColor = UIColor.white
+        
+        
+        
+        let viewForLogo = UIView()
+        viewForLogo.translatesAutoresizingMaskIntoConstraints = false
+        viewForLogo.layer.cornerRadius = 6
+        viewForLogo.layer.shadowColor = UIColor.black.cgColor
+        viewForLogo.layer.shadowOpacity = 0.5
+        viewForLogo.layer.shadowOffset = CGSize(width: 2, height: 2)
+        viewForLogo.backgroundColor = UIColor.white
+        self.addSubview(viewForLogo)
+        
+        viewForLogo.widthAnchor.constraint(equalToConstant: 64).isActive = true
+        viewForLogo.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        viewForLogo.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        viewForLogo.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 6).isActive = true
+        viewForLogo.layoutIfNeeded()
+        
+        
+        
+        self.logoView = UIImageView()
+        self.logoView.translatesAutoresizingMaskIntoConstraints = false
+        self.logoView.contentMode = .scaleAspectFit
+        viewForLogo.addSubview(logoView)
+        
+        self.logoView.widthAnchor.constraint(equalTo: viewForLogo.widthAnchor, multiplier: 0.95, constant: 0).isActive = true
+        self.logoView.heightAnchor.constraint(equalTo: viewForLogo.heightAnchor, multiplier: 0.95, constant: 0).isActive = true
+        self.logoView.centerXAnchor.constraint(equalTo: viewForLogo.centerXAnchor).isActive = true
+        self.logoView.centerYAnchor.constraint(equalTo: viewForLogo.centerYAnchor).isActive = true
+        self.logoView.layoutIfNeeded()
+        
+        
+        
+        self.lblTitle = UILabel()
+        self.lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        self.lblTitle.textColor = gh.myRed
+        self.lblTitle.textAlignment = .center
+        self.lblTitle.numberOfLines = 0
+        self.lblTitle.text = "sdfasdfsd "
+        self.lblTitle.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        self.lblTitle.sizeToFit()
+        self.addSubview(lblTitle)
+
+        self.lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: -152).isActive = true
+        self.lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 6).isActive = true
+        self.lblTitle.layoutIfNeeded()
+
+
+        self.lblDate = UILabel()
+        self.lblDate.translatesAutoresizingMaskIntoConstraints = false
+        self.lblDate.textColor = gh.myRed
+        self.lblDate.textAlignment = .left
+        self.lblDate.numberOfLines = 0
+        self.lblDate.font = UIFont.systemFont(ofSize: 15)
+        self.lblDate.text = "Дата : 25 июля 2018"
+        self.lblDate.sizeToFit()
+        self.addSubview(lblDate)
+
+        
+        self.lblDate.leftAnchor.constraint(equalTo: viewForLogo.rightAnchor, constant: 6).isActive = true
+        self.lblDate.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -46).isActive = true
+        self.lblDate.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 6).isActive = true
+        self.lblDate.layoutIfNeeded()
+
+        
+        
+        
+        self.lblPercent = UILabel()
+        self.lblPercent.translatesAutoresizingMaskIntoConstraints = false
+        self.lblPercent.textColor = gh.myRed
+        self.lblPercent.textAlignment = .left
+        self.lblPercent.numberOfLines = 0
+        self.lblPercent.text = "Набранные баллы : 68%"
+        self.lblPercent.font = UIFont.systemFont(ofSize: 15)
+        self.lblPercent.sizeToFit()
+        self.addSubview(lblPercent)
+
+        self.lblPercent.leftAnchor.constraint(equalTo: viewForLogo.rightAnchor, constant: 6).isActive = true
+        self.lblPercent.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -46).isActive = true
+        self.lblPercent.topAnchor.constraint(equalTo: lblDate.bottomAnchor, constant: 6).isActive = true
+        self.lblPercent.layoutIfNeeded()
+
+        
+        
+        
+        
+        self.btnDelete = myDeleteButton()
+        self.addSubview(btnDelete)
+        
+        self.btnDelete.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        self.btnDelete.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.btnDelete.topAnchor.constraint(equalTo: self.topAnchor, constant: 13).isActive = true
+        self.btnDelete.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12).isActive = true
+        self.btnDelete.layoutIfNeeded()
+        
+        
+        
+        
+        self.btnShare = myShareButton()
+        self.addSubview(btnShare)
+        
+        self.btnShare.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.btnShare.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.btnShare.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -13).isActive = true
+        self.btnShare.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12).isActive = true
+        self.btnShare.layoutIfNeeded()
+        
+        
+        self.btnShare.addTarget(self, action: #selector(self.sharePressed), for: .touchUpInside)
+        self.btnDelete.addTarget(self, action: #selector(self.deletePressed), for: .touchUpInside)
+        
+        
+        let gestRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.cellTaped))
+        self.addGestureRecognizer(gestRecognizer)
+    }
+    
+    @objc func cellTaped()
+    {
+        cellClick?()
+    }
+    
+    @objc func sharePressed()
+    {
+        share?()
+    }
+    
+    
+    @objc func deletePressed()
+    {
+        delete?()
+    }
+    
+    
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+}
+
+
+
+
+
+
+
+class myShareButton : UIButton
+{
+    let gh  = GlobalHelper.sharedInstance
+    var click : (() -> Void)?
+    var imgV : UIImageView!
+    
+    func customInit()
+    {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        imgV = UIImageView(image: UIImage(named: "ic_share_red"))
+        imgV.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imgV)
+        
+        imgV.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1).isActive = true
+        imgV.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1).isActive = true
+        imgV.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        imgV.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        addTarget(self, action:#selector(myRemoveButton.removePressed), for: .touchUpInside)
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+    
+    @objc func removePressed()
+    {
+        click?()
+    }
+}
+
+
+
+
+
+
+class myDeleteButton : UIButton
+{
+    let gh  = GlobalHelper.sharedInstance
+    var click : (() -> Void)?
+    
+    func customInit()
+    {
+        translatesAutoresizingMaskIntoConstraints = false
+
+        let imgV = UIImageView(image: UIImage(named: "ic_delete_red"))
+        imgV.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imgV)
+        
+        imgV.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        imgV.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        imgV.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        imgV.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        addTarget(self, action:#selector(myRemoveButton.removePressed), for: .touchUpInside)
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+    
+    @objc func removePressed()
+    {
+        click?()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+class myBackArrowButton : UIButton
+{
+    let gh  = GlobalHelper.sharedInstance
+    var click : (() -> Void)?
+    
+    func customInit()
+    {
+        translatesAutoresizingMaskIntoConstraints = false
+        layer.cornerRadius = 6
+        
+        
+        let imgV = UIImageView(image: UIImage(named: "ic_leftArrow"))
+        imgV.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imgV)
+        
+        imgV.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        imgV.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        imgV.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        imgV.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        addTarget(self, action:#selector(myRemoveButton.removePressed), for: .touchUpInside)
+    }
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        customInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+    
+    @objc func removePressed()
+    {
+        click?()
+    }
+}
+
+
+class myDialog
+{
+    //static let shIn = Dialog()
+    
+    let hud = JGProgressHUD(style: .dark)
+    
+    func show(message:String, view : UIView)
+    {
+        hud.textLabel.text = message
+        hud.show(in: view)
+    }
+    
+    func hide(afterTime : Double)
+    {
+        hud.dismiss(afterDelay: afterTime, animated: true)
+    }
+}
 
 

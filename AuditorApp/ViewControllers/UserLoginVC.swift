@@ -8,6 +8,7 @@ class UserLoginVC: UIViewController
     @IBOutlet weak var btnEnterView: UIView!
     @IBOutlet weak var btnBackView: UIView!
     
+    @IBOutlet weak var imgInfo: UIImageView!
     
     
     var viewArray = [UIView]()
@@ -23,6 +24,29 @@ class UserLoginVC: UIViewController
         
         tfPassword.isSecureTextEntry = true
         tfPassword.returnKeyType = UIReturnKeyType.done
+        tfPassword.addTarget(self, action: #selector(self.tfChanged), for: .editingChanged)
+        
+        
+        
+        let statusView = UIView()
+        statusView.translatesAutoresizingMaskIntoConstraints = false
+        statusView.backgroundColor = gh.myRed
+        self.view.addSubview(statusView)
+        
+        statusView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        statusView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        statusView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        statusView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        statusView.layoutIfNeeded()
+    }
+    
+    @objc func tfChanged()
+    {
+        let text = tfPassword.text!
+        if(text == "337321")
+        {
+            self.performSegue(withIdentifier: GlobalHelper.sharedInstance.segueToUserMEnu, sender: self)
+        }
     }
 
     override func didReceiveMemoryWarning()
@@ -46,7 +70,7 @@ class UserLoginVC: UIViewController
     
     @objc func performUserMenu()
     {
-        if(tfPassword.text == "123")
+        if(tfPassword.text == "337321")
         {
             self.performSegue(withIdentifier: GlobalHelper.sharedInstance.segueToUserMEnu, sender: self)
         }

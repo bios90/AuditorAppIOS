@@ -13,7 +13,8 @@ protocol btnDownloadDelegate
     func btnPressed(shablon : Model_Shablon)
 }
 
-class DownloadAuditCell: UITableViewCell {
+class DownloadAuditCell: UITableViewCell
+{
     
     
 
@@ -30,13 +31,28 @@ class DownloadAuditCell: UITableViewCell {
     @IBOutlet weak var customRootView: UIView!
     @IBOutlet weak var btnDownloadAudit: UIButton!
     
-    var downloadDelegate : btnDownloadDelegate?
+    //var downloadDelegate : btnDownloadDelegate?
     var shablon : Model_Shablon?
+    
+    var click : (()->Void)!
+    
+    
+    
     
     override func awakeFromNib()
     {
         super.awakeFromNib()
-
+        lblAuditName.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        lblAuditPlace.font = UIFont.systemFont(ofSize: 15)
+        lblAuditAuthor.font = UIFont.systemFont(ofSize: 15)
+        
+        let gr = UITapGestureRecognizer(target: self, action: #selector(self.tapped))
+        viewDownLoadBtn.addGestureRecognizer(gr)
+    }
+    
+    @objc func tapped()
+    {
+        print("tapped")
     }
 
     override func setSelected(_ selected: Bool, animated: Bool)
@@ -45,10 +61,10 @@ class DownloadAuditCell: UITableViewCell {
 
     }
     
-    @IBAction func actDownLoadPressed(_ sender: Any)
-    {
-        downloadDelegate?.btnPressed(shablon: shablon!)
-    }
+//    @IBAction func actDownLoadPressed(_ sender: Any)
+//    {
+//        downloadDelegate?.btnPressed(shablon: shablon!)
+//    }
     
 
 }

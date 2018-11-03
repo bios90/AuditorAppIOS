@@ -5,6 +5,8 @@ class SkrepkaCommentDialog: UIViewController , UITextViewDelegate
 {
 
     var currentQuestion : Model_Question!
+
+    
     let gh  = GlobalHelper.sharedInstance
     let gc = GlobalClass.sharedInstance
     let placeHolder = "Введите текст заметки"
@@ -17,13 +19,15 @@ class SkrepkaCommentDialog: UIViewController , UITextViewDelegate
     {
         self.modalPresentationStyle = .overCurrentContext
 
-    
-        previousString = currentQuestion.commentStr
         
-        let commentV = currentQuestion.commentView!
-        let rootView = currentQuestion.auditView!
-        let rootHeight = rootView.frame.size.height
-        let commentHeight = commentV.frame.size.height
+
+            previousString = currentQuestion.commentStr
+            
+            let commentV = currentQuestion.commentView!
+            let rootView = currentQuestion.auditView!
+            let rootHeight = rootView.frame.size.height
+            let commentHeight = commentV.frame.size.height
+
         
         print(rootHeight," root height at the begin")
         print(commentHeight, " comment height after begin")
@@ -134,6 +138,7 @@ class SkrepkaCommentDialog: UIViewController , UITextViewDelegate
         cancelButton.leftAnchor.constraint(equalTo: dialogView.leftAnchor, constant: 6).isActive = true
         cancelButton.layoutIfNeeded()
         
+    
         okButton.click =
             {
                 let currentRootHeight = rootView.frame.size.height

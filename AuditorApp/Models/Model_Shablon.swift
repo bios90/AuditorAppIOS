@@ -1,11 +1,3 @@
-//
-//  Model_Shablon.swift
-//  AuditorApp
-//
-//  Created by Филипп Бесядовский on 25.06.2018.
-//  Copyright © 2018 dimFcompany. All rights reserved.
-//
-
 import UIKit
 
 class Model_Shablon: NSObject
@@ -24,6 +16,14 @@ class Model_Shablon: NSObject
     var allCategs : [Model_Categ] = []
     
     var beginTime : String!
+    
+    var obyazNum : Int = 0
+    
+    var weightSum : Int = 0
+    var weightGet : Int = 0
+    var weightPercent : Int = 0
+    
+    var failed = false;
     
     func recountScrollSize()
     {

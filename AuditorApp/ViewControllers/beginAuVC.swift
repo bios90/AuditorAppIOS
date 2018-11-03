@@ -10,6 +10,10 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
     var shablonToShow : Model_Shablon!
     var listOfScrolls : [UIScrollView] = []
     
+    let background = DispatchQueue.global()
+    
+    var pageIndex = 0
+    
     var currentPage : UIViewController!
     var currentScroll : UIScrollView!
     
@@ -56,6 +60,18 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
         view.backgroundColor = UIColor.purple
         
         
+        let statusView = UIView()
+        statusView.translatesAutoresizingMaskIntoConstraints = false
+        statusView.backgroundColor = gh.myRed
+        self.view.addSubview(statusView)
+        
+        statusView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        statusView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        statusView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        statusView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        statusView.layoutIfNeeded()
+        
+        
         let bgImg = UIImageView()
         makeFullAsParent(parent: view, child: bgImg)
         bgImg.image = gh.mainBG
@@ -76,11 +92,12 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             appearance.state.selectedColor = gh.myBejColor
             appearance.style.background = TabmanBar.BackgroundView.Style.solid(color: gh.myRed)
             appearance.indicator.color = gh.myBejColor
-            appearance.text.font = gh.globalFont18?.withSize(16)
-            appearance.text.selectedFont = gh.globalFont20
+            appearance.text.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            appearance.text.selectedFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
         })
 
         self.bar.style = .scrollingButtonBar
+    
         var listOfItems : [Item] = []
 
         for str in listOfPageName
@@ -116,6 +133,8 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                 }
             }
         }
+        
+        
         
         
         let bgImg = UIImageView()
@@ -266,7 +285,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             let docDir = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
             let logoPath = docDir.appendingPathComponent("LocalShablonLogos")
             let imageURL = URL(fileURLWithPath: logoPath.path).appendingPathComponent(fileName)
-            let image    = UIImage(contentsOfFile: imageURL.path)
+            let image  = UIImage(contentsOfFile: imageURL.path)
             auditLogo.image = image
             
             let viewHeight = self.view.frame.size.height
@@ -278,6 +297,48 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             auditLogo.heightAnchor.constraint(equalToConstant: 0).isActive = true
         }
         
+        let infoButton = myInfoButton()
+        infoView.addSubview(infoButton)
+        
+        infoButton.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 1, constant: -12).isActive = true
+        infoButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        infoButton.centerXAnchor.constraint(equalTo: infoView.centerXAnchor).isActive = true
+        infoButton.topAnchor.constraint(equalTo: auditLogo.bottomAnchor, constant: 4).isActive = true
+        infoButton.layoutIfNeeded()
+        infoButton.lblTitle.sizeToFit()
+        
+        
+        let viewForCheckBox = myAuditView()
+        infoView.addSubview(viewForCheckBox)
+        
+        viewForCheckBox.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 1, constant: -12).isActive = true
+        viewForCheckBox.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        viewForCheckBox.topAnchor.constraint(equalTo: infoButton.bottomAnchor, constant: 4).isActive = true
+        viewForCheckBox.rightAnchor.constraint(equalTo: infoView.rightAnchor, constant: -6).isActive = true
+        viewForCheckBox.layoutIfNeeded()
+        
+        let cheb = myCheckBox()
+        cheb.setCheckState(.checked, animated: false)
+        infoView.addSubview(cheb)
+        
+        cheb.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        cheb.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        cheb.centerYAnchor.constraint(equalTo: viewForCheckBox.centerYAnchor).isActive = true
+        cheb.rightAnchor.constraint(equalTo: viewForCheckBox.rightAnchor, constant: -8).isActive = true
+        cheb.layoutIfNeeded()
+        
+        
+        let lblBigFotos = myLabelForText()
+        lblBigFotos.text="Добавить большие фото в отчет"
+        lblBigFotos.font = UIFont.systemFont(ofSize: 18)
+        viewForCheckBox.addSubview(lblBigFotos)
+        
+        lblBigFotos.widthAnchor.constraint(equalTo: viewForCheckBox.widthAnchor, multiplier: 1, constant: -48).isActive = true
+        lblBigFotos.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        lblBigFotos.centerYAnchor.constraint(equalTo: viewForCheckBox.centerYAnchor, constant: 0).isActive = true
+        lblBigFotos.leftAnchor.constraint(equalTo: viewForCheckBox.leftAnchor, constant: 6).isActive = true
+        lblBigFotos.layoutIfNeeded()
+        
         
         
         let okButton = redButton()
@@ -286,7 +347,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
         
         okButton.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.5, constant: -9).isActive = true
         okButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        okButton.topAnchor.constraint(equalTo: auditLogo.bottomAnchor, constant: 4).isActive = true
+        okButton.topAnchor.constraint(equalTo: viewForCheckBox.bottomAnchor, constant: 4).isActive = true
         okButton.rightAnchor.constraint(equalTo: infoView.rightAnchor, constant: -6).isActive = true
         okButton.layoutIfNeeded()
         
@@ -296,7 +357,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
         
         cancelButton.widthAnchor.constraint(equalTo: infoView.widthAnchor, multiplier: 0.5, constant: -9).isActive = true
         cancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        cancelButton.topAnchor.constraint(equalTo: auditLogo.bottomAnchor, constant: 4).isActive = true
+        cancelButton.topAnchor.constraint(equalTo: viewForCheckBox.bottomAnchor, constant: 4).isActive = true
         cancelButton.leftAnchor.constraint(equalTo: infoView.leftAnchor, constant: 6).isActive = true
         cancelButton.layoutIfNeeded()
         
@@ -307,13 +368,233 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
         listOfPageName.append("Общая информация")
         
         
+       
+        
+        
         okButton.click =
             {
-                let mkc = MakeOtchetClass()
-                mkc.makePdf(shablon: self.shablonToShow)
+                for categ in self.shablonToShow.allCategs
+                {
+                    for quest in categ.questions
+                    {
+                        print("This quest has \(quest.addedImages.count) images")
+                    }
+                }
+                
+                okButton.isEnabled = false
+                let obyazArray =  self.checkForObyaz()
+                
+                if obyazArray[0] < obyazArray[1]
+                {
+                    self.gh.showToast(message: "Заполните все обязательные элементы", view: self.currentPage!.view)
+                    okButton.isEnabled = true
+                    return
+                }
+                
+                if cheb.checkState == .checked
+                {
+                    self.gc.writeBigPhotos = true
+                }
+                else
+                {
+                    self.gc.writeBigPhotos = false
+                }
+                
+                Dialog.shIn.show(message: "Сохранение отчета", view: (UIApplication.topViewController()?.view)!)
+                
+                DispatchQueue.main.async{
+                        var mkc = MakeOtchetClass()
+                        mkc.makePdf(shablon: self.shablonToShow)
+                        okButton.isEnabled = true
+                        Dialog.shIn.hide(afterTime : 0.2)
+                    }
+               
+                
+            }
+        
+        cancelButton.click =
+            {
+                self.present(FinishAuditDialogVC(), animated: true, completion: nil)
+            }
+        
+        infoButton.click = 
+            {
+                self.present(howToWorkVC(), animated: true, completion: nil)
             }
     }
     
+    
+    func checkForObyaz() -> [Int]
+    {
+        var obyazSdelanie : Int = 0
+        var obyazNedded : Int = 0
+        
+        for categ in shablonToShow.allCategs
+        {
+            for element in categ.allElementsSorted
+            {
+                if element is Model_Question
+                {
+                    let quest = element as! Model_Question
+                    
+                    if quest.obyaz == 1
+                    {
+                        obyazNedded += 1
+                        for btn in quest.auditButtons
+                        {
+                            if btn.isOn
+                            {
+                                quest.sdelan = 1
+                                obyazSdelanie += 1
+                                break
+                            }
+                        }
+                    }
+                }
+                
+                
+                
+                
+                if element is Model_Adress
+                {
+                    let adress = element as! Model_Adress
+                    
+                    if adress.obyaz == 1
+                    {
+                        obyazNedded += 1
+                        
+                        if adress.auditTF.text != nil && adress.auditTF.text != ""
+                        {
+                            adress.sdelan = 1
+                            obyazSdelanie += 1
+                        }
+                    }
+                }
+                
+                
+                
+                if element is Model_Date
+                {
+                    let date = element as! Model_Date
+                    
+                    if date.obyaz == 1
+                    {
+                        obyazNedded += 1
+                        
+                        if date.selectedDate != nil
+                        {
+                            date.sdelan = 1
+                            obyazSdelanie += 1
+                        }
+                    }
+                }
+                
+                
+                
+                if element is Model_Media
+                {
+                    let media = element as! Model_Media
+                    
+                    if media.obyaz == 1
+                    {
+                        obyazNedded += 1
+                        
+                        if media.addedPhoto != nil
+                        {
+                            media.sdelan = 1
+                            obyazSdelanie += 1
+                        }
+                    }
+                }
+                
+                
+                
+                
+                
+                
+                if element is Model_Podpis
+                {
+                    let podpis = element as! Model_Podpis
+                    
+                    if podpis.obyaz == 1
+                    {
+                        obyazNedded += 1
+                        
+                        if podpis.addSign != nil
+                        {
+                            podpis.sdelan = 1
+                            obyazSdelanie += 1
+                        }
+                    }
+                }
+                
+                
+                
+                
+                if element is Model_QuestVar
+                {
+                    let questVar = element as! Model_QuestVar
+                    
+                    if questVar.obyaz == 1
+                    {
+                        obyazNedded += 1
+                        
+                        for btn in questVar.auditToggButtons
+                        {
+                            if btn.isOn
+                            {
+                                questVar.sdelan = 1
+                                obyazSdelanie += 1
+                                break
+                            }
+                        }
+                    }
+                }
+                
+                
+                if element is Model_TextLarge
+                {
+                    let textLarge = element as! Model_TextLarge
+                    
+                    if textLarge.obyaz == 1
+                    {
+                        obyazNedded += 1
+                        
+                        if textLarge.auditTextView.text != nil && textLarge.auditTextView.text != ""
+                        {
+                            textLarge.sdelan = 1
+                            obyazSdelanie += 1
+                        }
+                    }
+                }
+                
+                if element is Model_TextOneLine
+                {
+                    let textOneLine = element as! Model_TextOneLine
+                    
+                    if textOneLine.obyaz == 1
+                    {
+                        obyazNedded += 1
+                        
+                        if textOneLine.auditTextField.text != nil && textOneLine.auditTextField.text != ""
+                        {
+                            textOneLine.sdelan = 1
+                            obyazSdelanie += 1
+                        }
+                    }
+                }
+                
+            }
+        }
+    
+        
+        
+    
+        
+        print(obyazNedded, "All Obyaz")
+        print(obyazSdelanie , "   Sdelannie")
+        return [obyazSdelanie,obyazNedded]
+    }
     
     
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int
@@ -324,12 +605,17 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
     func viewController(for pageboyViewController: PageboyViewController, at index: PageboyViewController.PageIndex) -> UIViewController?
     {
         currentPage = listOfVC[index]
-        //currentScroll = listOfScrolls[index]
+        pageIndex = index
+//        if index < listOfPages.count
+//        {
+//            currentScroll = listOfScrolls[index]
+//        }
         return listOfVC[index]
     }
     
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page?
     {
+        pageIndex = 0
         return nil
     }
     
@@ -353,7 +639,8 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             categView.view.addSubview(bgImg)
             
             let categScroll = UIScrollView()
-            listOfScrolls.append(categScroll)
+            //listOfScrolls.append(categScroll)
+        
            
             /////
             categ.categScroll = categScroll
@@ -685,6 +972,23 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     btnSkrepka.topAnchor.constraint(equalTo: rootView.topAnchor, constant: topMargin4).isActive = true
                     btnSkrepka.layoutIfNeeded()
                     
+                    
+                    
+                    if adress.obyaz! == 1
+                    {
+                        let obyazImage = myObyazImage()
+                        rootView.addSubview(obyazImage)
+                        
+                        obyazImage.widthAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                        obyazImage.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                        obyazImage.leftAnchor.constraint(equalTo: typeImage.rightAnchor, constant: sideInnerMargin4).isActive = true
+                        obyazImage.topAnchor.constraint(equalTo: rootView.topAnchor, constant: sideInnerMargin4).isActive = true
+                        obyazImage.layoutIfNeeded()
+                    }
+                    
+                    
+                    
+                    
                     elementHeight += squareSize36+topMargin4
                     
                     let lblText = myLabelForText()
@@ -774,7 +1078,32 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     btnSkrepka.topAnchor.constraint(equalTo: rootView.topAnchor, constant: topMargin4).isActive = true
                     btnSkrepka.layoutIfNeeded()
                     
+                    
+                    let btnComment = myCommentButton()
+                    rootView.addSubview(btnComment)
+                    
+                    btnComment.widthAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                    btnComment.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                    btnComment.rightAnchor.constraint(equalTo: btnSkrepka.leftAnchor, constant: -sideInnerMargin4).isActive = true
+                    btnComment.topAnchor.constraint(equalTo: rootView.topAnchor, constant: topMargin4).isActive = true
+                    btnComment.layoutIfNeeded()
+                    
                     elementHeight += squareSize36+topMargin4
+                    
+                    if checkBox.obyaz! == 1
+                    {
+                        let obyazImage = myObyazImage()
+                        rootView.addSubview(obyazImage)
+                        
+                        obyazImage.widthAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                        obyazImage.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                        obyazImage.leftAnchor.constraint(equalTo: typeImage.rightAnchor, constant: sideInnerMargin4).isActive = true
+                        obyazImage.topAnchor.constraint(equalTo: rootView.topAnchor, constant: sideInnerMargin4).isActive = true
+                        obyazImage.layoutIfNeeded()
+                    }
+                    
+                    
+                    
                     
                     let viewForCheb = myAuditView()
                     rootView.addSubview(viewForCheb)
@@ -789,8 +1118,9 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     lblQuestion.textAlignment = .left
                     lblQuestion.widthAnchor.constraint(equalTo: viewForCheb.widthAnchor, multiplier: 1, constant: -checkBoxRightMargin).isActive = true
-                    lblQuestion.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
-                    lblQuestion.topAnchor.constraint(equalTo: viewForCheb.topAnchor, constant: topMargin4).isActive = true
+//                    lblQuestion.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                    //lblQuestion.topAnchor.constraint(equalTo: viewForCheb.topAnchor, constant: topMargin4).isActive = true
+                    lblQuestion.centerYAnchor.constraint(equalTo: viewForCheb.centerYAnchor).isActive = true
                     lblQuestion.leftAnchor.constraint(equalTo: viewForCheb.leftAnchor, constant: 8).isActive = true
                     
                     lblQuestion.layoutIfNeeded()
@@ -799,16 +1129,51 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     checkBoxTogg.widthAnchor.constraint(equalToConstant: squareSize36).isActive = true
                     checkBoxTogg.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
-                    checkBoxTogg.centerYAnchor.constraint(equalTo: lblQuestion.centerYAnchor, constant: 0).isActive = true
+                    checkBoxTogg.centerYAnchor.constraint(equalTo: viewForCheb.centerYAnchor, constant: 0).isActive = true
                     checkBoxTogg.leftAnchor.constraint(equalTo: lblQuestion.rightAnchor, constant: 4).isActive = true
                     
-        
-                    viewForCheb.heightAnchor.constraint(equalToConstant: lblQuestion.frame.size.height+sideMargin8).isActive = true
+                    //viewForCheb.heightAnchor.constraint(equalToConstant: lblQuestion.frame.size.height+sideMargin8).isActive = true
+                    if lblQuestion.frame.size.height > 36
+                    {
+                        viewForCheb.bottomAnchor.constraint(equalTo: lblQuestion.bottomAnchor, constant: 4).isActive = true
+                    }
+                    else
+                    {
+                        viewForCheb.heightAnchor.constraint(equalToConstant: 44).isActive = true
+                        checkBoxTogg.layoutIfNeeded()
+                        lblQuestion.layoutIfNeeded()
+                    }
                     
                     viewForCheb.layoutIfNeeded()
                     elementHeight += viewForCheb.frame.size.height + topMargin4
                     
-                    rootView.heightAnchor.constraint(equalToConstant: elementHeight+8).isActive = true
+                    
+                    let commentView = myAuditView()
+                    rootView.addSubview(commentView)
+                    commentView.widthAnchor.constraint(equalTo: rootView.widthAnchor, constant: -12).isActive = true
+                    commentView.heightAnchor.constraint(equalToConstant: 0).isActive = true
+                    commentView.topAnchor.constraint(equalTo: viewForCheb.bottomAnchor, constant: 4).isActive = true
+                    commentView.centerXAnchor.constraint(equalTo: rootView.centerXAnchor).isActive = true
+                    commentView.layoutIfNeeded()
+                    
+                    checkBox.commentView = commentView
+                    
+                    
+                    
+                    
+                    let neOtsenivatsyaBtn = myBtnTogg()
+                    neOtsenivatsyaBtn.setTitle("Не оценивается", for: .normal)
+                    rootView.addSubview(neOtsenivatsyaBtn)
+                    
+                    neOtsenivatsyaBtn.widthAnchor.constraint(equalToConstant: 280).isActive = true
+                    neOtsenivatsyaBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+                    neOtsenivatsyaBtn.centerXAnchor.constraint(equalTo: rootView.centerXAnchor).isActive = true
+                    neOtsenivatsyaBtn.topAnchor.constraint(equalTo: commentView.bottomAnchor, constant: 6).isActive = true
+                    neOtsenivatsyaBtn.layoutIfNeeded()
+                    
+                    checkBox.neOzenBtn = neOtsenivatsyaBtn
+                    ///rootView.heightAnchor.constraint(equalToConstant: elementHeight+8).isActive = true
+                    rootView.bottomAnchor.constraint(equalTo: neOtsenivatsyaBtn.bottomAnchor, constant: 4).isActive = true
                     
                     lastAdded = rootView
                     
@@ -817,12 +1182,27 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     checkBox.auditCheckBox = checkBoxTogg
                     
+                    
+                    
+                    
+                    
+                    
                     btnSkrepka.click =
                         {
                             self.gc.shablonInWork = self.shablonToShow!
                             let skrepkaDialog = mySkrepkaDialog(elem: element)
                             self.present(skrepkaDialog, animated: true, completion: nil)
                         }
+                    
+                    btnComment.click =
+                        {
+                            self.gc.shablonInWork = self.shablonToShow!
+                            let commentDialog = chebCommentDialogVC(cheb: checkBox)
+                            self.present(commentDialog, animated: true, completion: nil)
+                        }
+                    
+                    
+                    
                 }
                 
                 if element is Model_Date
@@ -864,6 +1244,20 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     btnSkrepka.rightAnchor.constraint(equalTo: rootView.rightAnchor, constant: -sideInnerMargin4).isActive = true
                     btnSkrepka.topAnchor.constraint(equalTo: rootView.topAnchor, constant: topMargin4).isActive = true
                     btnSkrepka.layoutIfNeeded()
+                    
+                    
+                    
+                    if date.obyaz! == 1
+                    {
+                        let obyazImage = myObyazImage()
+                        rootView.addSubview(obyazImage)
+                        
+                        obyazImage.widthAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                        obyazImage.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+                        obyazImage.leftAnchor.constraint(equalTo: typeImage.rightAnchor, constant: sideInnerMargin4).isActive = true
+                        obyazImage.topAnchor.constraint(equalTo: rootView.topAnchor, constant: sideInnerMargin4).isActive = true
+                        obyazImage.layoutIfNeeded()
+                    }
                     
                     elementHeight += squareSize36+topMargin4
                     
@@ -942,7 +1336,6 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     rootView.widthAnchor.constraint(equalTo: categScroll.widthAnchor, multiplier: 1, constant: -sideMargin8).isActive = true
                     rootView.centerXAnchor.constraint(equalTo: categScroll.centerXAnchor).isActive = true
-                    rootView.leftAnchor.constraint(equalTo: categScroll.leftAnchor, constant: topMargin4).isActive = true
                     
                     if(lastAdded == nil)
                     {
@@ -962,6 +1355,41 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     headerView.leftAnchor.constraint(equalTo: rootView.leftAnchor, constant: 0).isActive = true
                     headerView.layoutIfNeeded()
                     
+                    
+                    var expBtn = fawButton()
+                    
+                    expBtn.lbl.text = ""
+                    expBtn.lblIcon.setFAIcon(icon: .FAChevronDown, iconSize: 22)
+                    headerView.addSubview(expBtn)
+                    
+                    expBtn.widthAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: 1, constant: -92).isActive = true
+                    expBtn.heightAnchor.constraint(equalToConstant: 32).isActive = true
+                    expBtn.centerXAnchor.constraint(equalTo: headerView.centerXAnchor).isActive = true
+                    expBtn.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
+                    expBtn.layoutIfNeeded()
+                    
+                    
+                    let lbl = myLabelForText()
+                    lbl.text = "Нажми для информации"
+                    lbl.textColor = UIColor.white
+                    lbl.font = UIFont.systemFont(ofSize: 17)
+                    expBtn.addSubview(lbl)
+                    
+                    lbl.widthAnchor.constraint(equalTo: expBtn.widthAnchor, constant: -48).isActive = true
+                    lbl.heightAnchor.constraint(equalTo: expBtn.heightAnchor, multiplier: 1, constant: 0).isActive = true
+                    lbl.leftAnchor.constraint(equalTo: expBtn.leftAnchor,  constant: 12).isActive = true
+                    lbl.centerYAnchor.constraint(equalTo: expBtn.centerYAnchor).isActive = true
+                    lbl.layoutIfNeeded()
+            
+//                    var rotateImg = myRotateImg(frame: CGRect.zero)
+//                    rootView.addSubview(rotateImg)
+//
+//                    rotateImg.widthAnchor.constraint(equalToConstant: squareSize36).isActive = true
+//                    rotateImg.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
+//                    rotateImg.centerXAnchor.constraint(equalTo: headerView.centerXAnchor).isActive = true
+//                    rotateImg.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
+//                    rotateImg.layoutIfNeeded()
+                    
                     headerView.btnSkrepka.isHidden = true
                     headerView.imgObyaz.isHidden = true
                     
@@ -971,6 +1399,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     if info.text != nil
                     {
+                        info.auditViews.append(lblText)
                         
                         rootView.addSubview(lblText)
                         lblText.text = info.text!
@@ -987,6 +1416,8 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     if info.localFileName != nil
                     {
+                        info.auditViews.append(imgView)
+                        
                         let fileName = "\(info.localFileName!).jpg"
                         let fm = FileManager.default
                         let docDir = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -1020,6 +1451,8 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     if info.urlStr != nil
                     {
+                        info.auditViews.append(lblUrl)
+                        
                         rootView.addSubview(lblUrl)
                         let urlstr = info.urlStr!
                         lblUrl.text = urlstr
@@ -1063,12 +1496,100 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     
                     
                     elementHeight += squareSize36+topMargin4
-                    rootView.heightAnchor.constraint(equalToConstant: elementHeight+topMargin4).isActive = true
+                    
+                    info.heightAnchor = rootView.heightAnchor.constraint(equalToConstant: elementHeight+topMargin4)
+                    info.heightAnchor.isActive = true
+                    
                     lastAdded = rootView
                     rootView.layoutIfNeeded()
-                    //fullScrollHeight += rootView.frame.size.height+topMargin4
+
                     
                     info.auditView = rootView
+                    
+            
+                    info.fullHeight = rootView.frame.size.height
+                    
+                    expBtn.click =
+                        {
+                            let currentHeigth  = rootView.frame.size.height
+
+                            //if currentHeigth == 44
+                            if info.expanded == false
+                            {
+                                info.expanded = true
+                                
+//                                let angle: CGFloat =  .pi * 2
+//                                UIView.animate(withDuration: 0.8)
+//                                {
+//                                    rotateImg.transform = CGAffineTransform(rotationAngle: angle)
+//                                }
+                                
+                                
+                                for v in info.auditViews
+                                {
+                                    UIView.animate(withDuration: 0.8, animations:
+                                        {
+                                            v.alpha = 1.0
+                                        })
+                                }
+                                
+                                rootView.visiblity(gone: false,dimension: info.fullHeight)
+                                
+//                                info.heightAnchor.constant = info.fullHeight!
+                                rootView.setNeedsLayout()
+
+                                UIView.animate(withDuration: 0.5)
+                                {
+                                    rootView.layoutIfNeeded()
+
+                                }
+
+                            }
+                            else if info.expanded == true
+                            {
+                                info.expanded = false
+                                
+//                                let angle: CGFloat =  .pi
+//                                UIView.animate(withDuration: 0.8)
+//                                {
+//                                    rotateImg.transform = CGAffineTransform(rotationAngle: angle)
+//                                }
+                                
+                                
+                                for v in info.auditViews
+                                {
+                                    UIView.animate(withDuration: 0.1, animations:
+                                        {
+                                            v.alpha = 0.0
+                                        })
+                                }
+                                
+                                rootView.visiblity(gone: false,dimension: info.smallHeight)
+//                                info.heightAnchor.constant = info.smallHeight
+//
+                                rootView.setNeedsLayout()
+
+                                UIView.animate(withDuration: 0.5)
+                                {
+                                    rootView.layoutIfNeeded()
+
+                                }
+                            }
+                            
+                            rootView.setNeedsLayout()
+                            rootView.layoutIfNeeded()
+                            self.recountScrollSize(scrollV: categScroll, categ: categ)
+                        }
+                    
+                    rootView.visiblity(gone: false, dimension: info.smallHeight)
+                    for v in info.auditViews
+                    {
+                        v.alpha = 0.0
+                    }
+                    info.expanded = false
+                    rootView.setNeedsLayout()
+                    rootView.layoutIfNeeded()
+                    
                 }
                 
                 if element is Model_Media
@@ -1185,13 +1706,6 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                             self.present(imagePicker, animated: false, completion: nil)
                         }
                     
-//                    let btnCamera = myCameraButton()
-//                    rootView.addSubview(btnCamera)
-//
-//                    btnCamera.bottomAnchor.constraint(equalTo: rootView.bottomAnchor, constant: -topMargin4).isActive = true
-//                    btnCamera.widthAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: 0.5, constant: -16).isActive = true
-//                    btnCamera.rightAnchor.constraint(equalTo: rootView.rightAnchor, constant: -12).isActive = true
-//                    btnCamera.heightAnchor.constraint(equalToConstant: squareSize36).isActive = true
                     
                     btnCamera.click =
                         {
@@ -1205,6 +1719,19 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                             
                             self.present(imagePicker, animated: false, completion: nil)
                         }
+                    
+                    print(btnCamera.frame.size.width,"camera widthhhhh")
+                    
+                    if btnCamera.frame.size.width < 144
+                    {
+                        btnCamera.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 30)
+                    }
+                    
+                    if btnGallery.frame.size.width < 144
+                    {
+                        btnGallery.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 30)
+                    }
+                    
                     
                     elementHeight+=squareSize36+textViewTopMargin8
                     
@@ -1301,6 +1828,19 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     imgForSign.centerYAnchor.constraint(equalTo: viewForSignature.centerYAnchor).isActive = true
                     imgForSign.layoutIfNeeded()
                     
+                    
+                    let removeButton = myRemoveButton()
+                    viewForSignature.addSubview(removeButton)
+                    
+                    removeButton.widthAnchor.constraint(equalToConstant: 28).isActive = true
+                    removeButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
+                    removeButton.rightAnchor.constraint(equalTo: viewForSignature.rightAnchor, constant: -2).isActive = true
+                    removeButton.bottomAnchor.constraint(equalTo: viewForSignature.bottomAnchor, constant: -2).isActive = true
+                    removeButton.layoutIfNeeded()
+                    
+                    
+                    
+                    
                     elementHeight+=220 + textViewTopMargin8
                     
                     let btnMakePodpis = myBtnMakePodpis()
@@ -1316,6 +1856,13 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                         {
                             let podpisDialog = myPodpisDialogVC(podpis: podpis)
                             self.present(podpisDialog, animated: true, completion: nil)
+                        }
+                    
+                    
+                    removeButton.click =
+                        {
+                            imgForSign.image = nil
+                            podpis.addSign = nil
                         }
                     
                     elementHeight += squareSize36+topMargin4
@@ -1800,7 +2347,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     lblText.textAlignment = .left
                     lblText.text = toggle.text!
                     
-                    lblText.widthAnchor.constraint(equalTo: viewForToggle.widthAnchor, multiplier: 1, constant: -40).isActive=true
+                    lblText.widthAnchor.constraint(equalTo: viewForToggle.widthAnchor, multiplier: 1, constant: -82).isActive=true
                     lblText.leftAnchor.constraint(equalTo: viewForToggle.leftAnchor, constant: 4).isActive = true
                     lblText.centerYAnchor.constraint(equalTo: viewForToggle.centerYAnchor, constant: 0).isActive = true
                     lblText.layoutIfNeeded()
@@ -2166,8 +2713,8 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             
             removeButton.widthAnchor.constraint(equalToConstant: 28).isActive = true
             removeButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
-            removeButton.centerXAnchor.constraint(equalTo: myInfoImgV.centerXAnchor, constant: width/2).isActive = true
-            removeButton.centerYAnchor.constraint(equalTo: myInfoImgV.centerYAnchor, constant: -height/2).isActive = true
+            removeButton.centerXAnchor.constraint(equalTo: myInfoImgV.centerXAnchor, constant: (width/2) - 14).isActive = true
+            removeButton.centerYAnchor.constraint(equalTo: myInfoImgV.centerYAnchor, constant: -(height/2) + 14).isActive = true
             removeButton.layoutIfNeeded()
             
             removeButton.click =
@@ -2200,7 +2747,7 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
                     lastMediaRootView.heightAnchor.constraint(equalToConstant: defRootHeight + newHeight).isActive = true
                     lastMediaRootView.layoutIfNeeded()
                     
-                    lastModelMedia.lastAddedImage = nil
+                    lastModelMedia.addedPhoto = nil
                     self.recountScrollSize(scrollV: lastMediaRootView.superview as! UIScrollView, categ: self.lastEditedCateg)
                 }
             
@@ -2267,8 +2814,18 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
         }
     }
     
-    @objc func keyboardWillShow(sender: NSNotification) {
-        self.view.frame.origin.y = -200 // Move view 150 points upward
+    @objc func keyboardWillShow(sender: NSNotification)
+    {
+//        if pageIndex < listOfPages.count
+//        {
+//            
+//            let scroll = shablonToShow.allCategs[pageIndex].categScroll!
+//            if scroll.contentOffset.y > CGFloat(200)
+//            {
+//                self.view.frame.origin.y = -200
+//                
+//            }
+//        }
     }
     
     @objc func keyboardWillHide(sender: NSNotification) {
@@ -2291,11 +2848,6 @@ class beginAuVC: TabmanViewController, PageboyViewControllerDataSource, UIImageP
             return true
         }
         return true
-    }
-    
-    override func viewWillAppear(_ animated: Bool)
-    {
-        gh.showToast(message: "appeared ", view: self.view)
     }
     
 }
